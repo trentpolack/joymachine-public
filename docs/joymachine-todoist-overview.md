@@ -36,9 +36,9 @@ Todoist is our task management tool for [Joy Machine](http://joy-machine.com/) a
 
 ###  **Comment Threads** 
 
-While we all use and read Slack and coordinate efforts and tasks and such using that, Slack is not a useful tool for status updates, questions, issues, schedule updates (including if you think you'll miss the assigned date — which isn't usually a problem, but it's helpful for us to know), and, most importantly, **when you are blocked on something** .
+While we all use and read Slack and coordinate efforts and tasks and such using that, Slack is not a useful tool for status updates, questions, issues, schedule updates (including if you think you'll miss the assigned date — which isn't usually a problem, but it's helpful for us to know), and, most importantly, **when you are blocked on something**.
 
-Whenever you comment, you can always choose to notify anyone you wish on the project just to ensure people are aware of your updates. At the minimum, ensure you mark ‣ and ‣ regardless of what the task is about, as we are running the production/schedule for the project (Elgn moreso than Trent, though). You should also opt-in anyone that's related to the task as well.
+Whenever you comment, you can always choose to notify anyone you wish on the project just to ensure people are aware of your updates. At the minimum, ensure you mark Trent and Elgn regardless of what the task is about, as we are running the production/schedule for the project (Elgn moreso than Trent, though). You should also opt-in anyone that's related to the task as well.
 
  **Finally** : Even I forget this from time-to-time (always), but Todoist has complete support for file/image attachments in comment threads. So feel free to use and abuse that.
 
