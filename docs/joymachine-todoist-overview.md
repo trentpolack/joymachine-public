@@ -1,15 +1,14 @@
 # Todoist
 
 -  **Page Details** 
+	**Created By**
+	trent
 
-	 **Created: ** 
-
+	**Created:** 
 	Yesterday at 6:48 PM
 
-	 **Updated:** 
-
+	**Updated:** 
 	Yesterday at 6:49 PM
-
 ---
 
 ## Overview
