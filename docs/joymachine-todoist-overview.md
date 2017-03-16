@@ -16,7 +16,7 @@
 
 Todoist is our task management tool for [Joy Machine](http://joy-machine.com/) and [_Steel Hunters_](https://joy-machine.com/wp-content/steelhunters). There are an abundance of reasons that we've decided on this as opposed to traditional tasking solutions like JIRA, Asana, Trello, etc.
 
--  ‣ hates Kanban (Trello).
+- Trent hates Kanban (Trello).
 - Todoist is a very light, customizable solution for project management.
 	- This allows us a great deal of flexibility in how we setup our particular task assignment/update/completion process.
 	- While not initially intuitive, Todoist offers a lot of flexibility with filters and labels that make customized "dashboards" incredibly easy to define (once you know the query strings).
@@ -32,7 +32,7 @@ Todoist is our task management tool for [Joy Machine](http://joy-machine.com/) a
 - The Todoist web-app is incredibly solid, but they also have a native application for every platform.
 	-  [**Link to Download Page**](https://todoist.com/overview) .
 - Finally, Todoist has a really well-done REST API for querying details on tasks/projects/etc., which we can integrate into our website for communicating progress to our community.
--  ‣ really, really, really hates Kanban.
+- Trent really, really, really hates Kanban.
 
 ###  **Comment Threads** 
 
@@ -44,7 +44,7 @@ Whenever you comment, you can always choose to notify anyone you wish on the pro
 
 ### Karma
 
-There's a ["Karma" functionality built-in to Todoist](https://support.todoist.com/hc/en-us/articles/206209959-Tracking-productivity-with-Karma) which, essentially, is just a bit of gamification/statistics to try and encourage consistent task completion/monitoring. It's stupid and simple, but also it can appeal to people. Like ‣ , who loves stats more than most people.
+There's a ["Karma" functionality built-in to Todoist](https://support.todoist.com/hc/en-us/articles/206209959-Tracking-productivity-with-Karma) which, essentially, is just a bit of gamification/statistics to try and encourage consistent task completion/monitoring. It's stupid and simple, but also it can appeal to people. Like Trent, who loves stats more than most people.
 
 ### Labels
 
