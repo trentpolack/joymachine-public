@@ -1,0 +1,18 @@
+*.h diff merge text
+*.cpp diff merge text
+
+# All maps are LFS.
+*.umap filter=lfs diff=lfs merge=lfs -text
+
+# JM-specific LFS asset folders. 
+Content/audio/**/*.uasset filter=lfs diff=lfs merge=lfs -text
+Content/char/**/*.uasset filter=lfs diff=lfs merge=lfs -text
+Content/env/**/*.uasset filter=lfs diff=lfs merge=lfs -text
+Content/heightmaps/**/*.uasset filter=lfs diff=lfs merge=lfs -text
+Content/materials/**.uasset filter=lfs diff=lfs merge=lfs -text
+Content/materials/**/*.uasset filter=lfs diff=lfs merge=lfs -text
+Content/megascan/**/*.uasset filter=lfs diff=lfs merge=lfs -text
+Content/meshes/**/*.uasset filter=lfs diff=lfs merge=lfs -text
+Content/textures/**/*.uasset filter=lfs diff=lfs merge=lfs -text
+Content/ui/**/*.uasset filter=lfs diff=lfs merge=lfs -text
+Content/water/**/*.uasset filter=lfs diff=lfs merge=lfs -text
