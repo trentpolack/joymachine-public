@@ -21,3 +21,4 @@
  	* Create a new file, if it doesn't already exist, modified at the current date and time.
 	* Modify the modification date/time of an existing file named `rawr.txt`.
 	* NOTE: Useful for simple git status checks.
+		* ISSUE: Upon testing this, git does not actually respect this. Will investigate. I'm on a roll today [@mittens].
