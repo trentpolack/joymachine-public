@@ -1,4 +1,4 @@
-Echo "Hello, $env:Username"
+Echo "Joy Machine wishes you a lovely day, $env:Username."
 
 $JoyShellDirectory = [Environment]::GetEnvironmentVariable("POWERSHELL_MODULES_DIR","User")
 $JoyShellScripts = "$JoyShellDirectory\scripts"
