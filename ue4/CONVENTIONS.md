@@ -9,15 +9,14 @@ For *Steel Hunters*, for instance, we have:
  - `steelhunters-content` - All of our source assets that we use to import into UE as UASSETS.
 
 All **content** file names in both the source directory and the game `Content/` directroy are exclusively lower-case. The one notable exception to this is the identifier for megascan texture sets (ie, the "random" characters in `mesh_foliage_qmBrl_ms`). Beyond that, all files are also prefixed with their type:
- - Texture Prefix: `t_`.
- - Static Mesh Prefix: `sm_`.
- - Skeletal Mesh Prefix: `skm_`.
-  - **Project-side**
-   - Base Rig Prefix: `rig_`.
-   - Animation Sequence Prefix: `anim_`.
-   - Animation Montage Prefix: `anim_montage_`.
-   - Animation Blueprint Prefix: `animbp_`.
- - Blueprints: a bit more complicated to name, general rules TBD.
+* Texture Prefix: `t_`.
+* Static Mesh Prefix: `sm_`.
+* Skeletal Mesh Prefix: `skm_`.
+   - [**Project-Side**] Base Rig Prefix: `rig_`.
+   - [**Project-Side**] Animation Sequence Prefix: `anim_`.
+   - [**Project-Side**] Animation Montage Prefix: `anim_montage_`.
+   - [**Project-Side**] Animation Blueprint Prefix: `animbp_`.
+* Blueprints: a bit more complicated to name, general rules TBD.
 
 ### Organization
 With the exception of miscellaneous packages that have been acquired over time (and have yet to be separated into our component folders), we segregate assets based on what kind of asset they are. We (almost) never have a single directory that contains an asset's mesh, textures, materials, and so on. They're all split up into higher-level folders, such as:
