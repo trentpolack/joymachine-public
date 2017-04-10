@@ -17,6 +17,10 @@ All **content** file names in both the source directory and the game `Content/` 
    - [**Project-Side**] Animation Montage Prefix: `anim_montage_`.
    - [**Project-Side**] Animation Blueprint Prefix: `animbp_`.
 * Blueprints: a bit more complicated to name, general rules TBD.
+* Materials (Base): `m_`
+* Materials (Instances): `mi_`
+* Material Parameter Collections: `mpc_`
+* Material Functions: `mf_`
 
 ### Organization
 With the exception of miscellaneous packages that have been acquired over time (and have yet to be separated into our component folders), we segregate assets based on what kind of asset they are. We (almost) never have a single directory that contains an asset's mesh, textures, materials, and so on. They're all split up into higher-level folders, such as:
