@@ -1,0 +1,20 @@
+[color]
+	ui = true
+	
+[alias]
+	state = "!f(){ \
+				deco_bold='\\x1b[1m'; \
+				deco_invert='\\x1b[7m'; \
+				deco_end='\\x1b[00m'; \
+				git_status=$(git -c color.status=always status -sb); \
+				git_lfs_valid=$(git lfs status --porcelain); \
+				git_lfs_status=$(git -c color.status=always lfs status); \
+				divider='\n------- git-lfs status -------\n'; \
+				echo \"$git_status\"; \
+				if [[ -n \"$git_lfs_valid\" ]]; then \
+					echo -e \"${deco_bold}${deco_invert}$divider${deco_end}\"; \
+					echo \"$git_lfs_status\"; \
+				fi; \
+			}; \
+			f"
+	last = log -1 HEAD
