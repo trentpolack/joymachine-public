@@ -17,12 +17,15 @@ All **content** file names in both the source directory and the game `Content/` 
    - [**Project-Side**] Animation Montage Prefix: `anim_montage_`.
    - [**Project-Side**] Animation Blueprint Prefix: `animbp_`.
 * Blueprints: a bit more complicated to name, general rules TBD.
+* Materials (Base): `m_`
+* Materials (Instances): `mi_`
+* Material Parameter Collections: `mpc_`
+* Material Functions: `mf_`
 
 ### Organization
 With the exception of miscellaneous packages that have been acquired over time (and have yet to be separated into our component folders), we segregate assets based on what kind of asset they are. We (almost) never have a single directory that contains an asset's mesh, textures, materials, and so on. They're all split up into higher-level folders, such as:
  - `audio` - All audio cues, attenuations, concurrencies, etc.
  - `blueprints` - Any blueprints that define script/functionality. This is a distinction with the "blueprints" that go in `data`.
- - `char` - This is a unique folder, but it's basically where all mech parts and animations go. It will likely be renamed to `mech` at some point.
  - `data` - Generally, this is just game data, child actor component data definitions, and so on. So, while technically a blueprint, they're more like Unity's "prefabs". This will slowly become deprecated as we move to a more data-driven solution.
  - `effects` - All VFX. This includes the 
  - `env` - Environment art. While this folder exists, it will eventually be deprecated in favor of splitting things across disparate folders.
@@ -31,6 +34,7 @@ With the exception of miscellaneous packages that have been acquired over time (
  - `lut` - A collection of scene color grading look-up tables.
  - `maps` - All map files for the game.
  - `materials` - One-stop shopping for materials: base material definitions/graphs, material instances, and material functions.
+ - `mech` - This is a unique folder, but it's basically where all mech parts and animations go.
  - `meshes` - Eventually where all meshes will end up (and separated out by their type/environment/etc.).
  - `textures` - All the textures. All of them.
    - With a few exception, all textures follow our standard format as [defined in our megascans assembler](https://github.com/joymachinegames/joymachine-public/tree/master/tools/megascan-assembler). This applies to all textures, not just megascans.
