@@ -9,6 +9,11 @@ The standard material library was developed to help us maintain physically-based
 
 In short, these materials are not intended to be "uber shaders" per se, but rather just the most-frequently used aspects of materials that we want whenever customing our scene.
 
+These materials all adhere pretty strictly to both UE4's PBR practices as well as general PBR practices:
+ * Metallic-based.
+ * Specular is configurable, but should almost always be set to `0.5`.
+ * Please for the love of god don't make non-metallic materials have a metallic value of anything but 0.
+
 There are six shaders that this library includes:
  * `m_foliage_master` -- General-purpose foliage (non-speedtree) shader.
  * `m_foliage_speedtree_master` -- Foliage (speedtree) shader.
