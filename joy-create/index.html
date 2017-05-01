@@ -7,6 +7,9 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="photon/css/photon.min.css">
     <link rel="stylesheet" href="extra.css">
+
+    <!-- JS that doesn't like require -->
+    <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
     <div class="window">
@@ -20,8 +23,11 @@
       <!-- App content goes here -->
       <div class="window-content">
         <div class="pane-group">
-          <div class="pane pane-sm sidebar">
-            <!-- nav sidebar -->
+          <div class="pane">
+            <!-- script editor -->
+            <pre id="editor">int main(int argc, char* argv[]) {
+  printf("Hello, World!\n");
+}</pre>
           </div>
           <div class="pane">
             <!-- main renderer I assume -->
@@ -34,5 +40,11 @@
   <script>
     // You can also require other files to run in this process
     require('./renderer.js')
+  </script>
+  <script>
+    // TODO: split this into a new editor-control.js or something
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/c_cpp");
   </script>
 </html>
