@@ -17,3 +17,5 @@
 			}; \
 			f"
 	last = log -1 HEAD
+	tree = log --pretty=oneline --graph --decorate --all
+	cl = "!git changelog -a -p -n -t \"$1\" -x > CHANGELOG.md" #"
