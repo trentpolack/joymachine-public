@@ -1,6 +1,9 @@
 v0.0.2 / 2017-05-02
 ===================
 
+  * Added an updated foliage standard shader that reads wind values from an MPC (in game_data/env).
+  * Added a README.me file to the git-template gitconfig template.
+  * Added two new aliases to the gitconfig.template (git tree and gt cl).
   * Revamped m_foliage_master (just so happened to be working on our foliage today. COIIIINCIDENCE).
   * moved a lot of 3rd-party files into 'vendor' and also added babylon.js
   * Adding dumb changelog, but better than nothing. Still trying to find a good generator.
