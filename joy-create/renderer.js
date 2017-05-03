@@ -18,9 +18,13 @@ window.addEventListener('resize', () => {
   engine.resize();
 });
 
+function getDefaultCamera(forScene) {
+  return new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -25), forScene);
+}
+
 function makeScene() {
   var scene = new BABYLON.Scene(engine);
-  var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+  var camera = getDefaultCamera(scene);
   return scene;
 }
 
@@ -28,7 +32,7 @@ ipcRenderer.on('load-mesh', function(event, meshPath) {
   meshDirectory = path.dirname(meshPath) + "/" // HACK, probably should write a better function here
   meshFileName = path.basename(meshPath)
   BABYLON.SceneLoader.Load(meshDirectory, meshFileName, engine, function(newScene) {
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), newScene);
+    var camera = getDefaultCamera(newScene);
     newScene.render()
   })
 })
