@@ -35,6 +35,8 @@ Each material also supports additional functionality (which, due to extreme stat
  * Color manipulation parameters.
  * Other stuff I may be forgetting since I'm running a full engine rebuild right now.
  
+If you have a Directional Wind Component in your scene, that is neat. It generates wind with varying gusts/turbulence that do a very adequate job of affecting SpeedTree assets. And that's about it. However, if you'd like those forces to also affect non-SpeedTree foliage, you can pipe the values from the Directional Wind Component into the material parameter collection that we have setup in `game_data/env`: `mpc_world.uasset`. It's a silly simple little structure, but it has just the data you need to help simulate wind on standard foliage. If you fill it with data every frame and then use the non-SpeedTree master foliage material, the results should be obvious. We use a simple vertical gradient to help give the lower parts of foliage more "weight" so they don't waver as much in the wind, but this still needs some work to look even a little bit realistic. Also note: if you have your foliage weighted through vertex colors, the master foliage shader supports an optional parameter to read a weight value from the red vertex color channel. 
+
 If you have any questions, feel free to email [joy@joy-machine.com](mailto:joy@joy-machine.com).
 
 ## General Tips & Tricks
