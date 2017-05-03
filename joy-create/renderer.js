@@ -10,7 +10,7 @@ var engine = undefined; // ugly global FIXME
 
 window.addEventListener('load', () => {
   engine = new BABYLON.Engine(canvas, true);
-  var scene = makeScene();
+  var scene = makeScene(); // load the null scene
   scene.render();
 });
 
@@ -25,7 +25,10 @@ function makeScene() {
 }
 
 ipcRenderer.on('load-mesh', function(event, meshPath) {
-  meshDirectory = path.dirname(meshPath)
+  meshDirectory = path.dirname(meshPath) + "/" // HACK, probably should write a better function here
   meshFileName = path.basename(meshPath)
-  // TODO: Load mesh with Babylon
+  BABYLON.SceneLoader.Load(meshDirectory, meshFileName, engine, function(newScene) {
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), newScene);
+    newScene.render()
+  })
 })
