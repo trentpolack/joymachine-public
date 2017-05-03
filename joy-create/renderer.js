@@ -4,6 +4,7 @@
 
 const { shell, ipcRenderer } = require('electron');
 const BABYLON = require('./vendor/babylon/babylon.custom.js')
+const path = require('path')
 const canvas = document.querySelector("#viewport");
 var engine = undefined; // ugly global FIXME
 
@@ -23,6 +24,8 @@ function makeScene() {
   return scene;
 }
 
-ipcRenderer.on('load-mesh', function(meshPath) {
-  console.log("We made it!")  
+ipcRenderer.on('load-mesh', function(event, meshPath) {
+  meshDirectory = path.dirname(meshPath)
+  meshFileName = path.basename(meshPath)
+  // TODO: Load mesh with Babylon
 })
