@@ -12,3 +12,7 @@ window.addEventListener('load', () => {
   var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
   scene.render();
 });
+
+window.addEventListener('resize', () => {
+  engine.resize();
+});
