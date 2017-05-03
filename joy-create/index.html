@@ -15,8 +15,8 @@
     <div class="window">
       <header class="toolbar toolbar-header">
         <span class="titletext">Joy Create</span>
-        <button class="btn btn-mini btn-default"><span class="icon icon-list-add"></span>&nbsp;import mesh</button>
-        <button class="btn btn-mini btn-default"><span class="icon icon-help"></span>&nbsp;help</button>
+        <button class="btn btn-mini btn-default" id="import-mesh"><span class="icon icon-list-add"></span>&nbsp;import mesh</button>
+        <button class="btn btn-mini btn-default" id="get-help"><span class="icon icon-help"></span>&nbsp;help</button>
         <!-- TODO: global menu options here -->
       </header>
 
@@ -41,6 +41,7 @@
   <script>
     // You can also require other files to run in this process
     require('./renderer.js')
+    require('./io.js')
   </script>
   <script>
     // TODO: split this into a new editor-control.js or something
