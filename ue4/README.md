@@ -1,6 +1,7 @@
-## Generally Helpful Unreal Engine 4 Assets
+# Unreal Engine 4 Infostorm
 ### Copyright 2015-2017 [Joy Machine](https://joy-machine.com), LLC. All rights reserved.
 
+## Assets
 ### Setup
 Just toss this folder inside at the root level of your `/Content` directory (you can get rid of this file, though, unless you *really* love it like we do). The references for tehse assets should remain in tact and not require any special treatment so long as the file structure in relation to `/Content/` remains the same. Once they're imported into the project, you can feel free to mvoe them about the cabin.
 
@@ -39,11 +40,30 @@ If you have a Directional Wind Component in your scene, that is neat. It generat
 
 If you have any questions, feel free to email [joy@joy-machine.com](mailto:joy@joy-machine.com).
 
-## General Tips & Tricks
+## Practice, Convention, and Neat Things
 
 ### Asset Management
 
-### Coding
+### Development
+#### Object/Component/Actor Initialization Process
+There's backstory for this one.
+
+For the most part, the creation/spawning of objects, components, actors, etc. (henceforth called "entities") is actually pretty manageable and sometimes aren't even a real concern. There are certain situations where you have a set of dependencies that is particularly rough to ensure are setup properly, but that shouldn't be the case terribly often. If it is, reevaluate your approach.
+
+That said, there is an aspect to this entire process that is a living nightmare from which there is not only no escape, but in this nightmare you also have nightmares. And that aspect is: **actors that must exist in a fully-initialized and functional form in the editor outside of gameplay**. With maybe one or two exceptions, everything in our workflow, game architecture, and general practices is completely dynamic. And we like to have as much of our worlds active and functioning like normal while we're in the editor. This is partially because it's just a fantastic way to sanity check the health of every system in the game and engine. The other reason is that we're a small team making a game whose events and flow are very difficult to every predict. If we can't build systems that are bulletproof during development, we're going to be constantly revisiting old work to bring it up to snuff throughout production (and, likely, beyond). And that's no bueno. Plus, it's nice to just see everything working in harmony while you're working in the editor. It's just a good feeling.
+
+Eventually, I'd like to be able to say: here's a C++ template for dealing with actors/components that must be routinely setup and torn down due to frequent editor manipulation. I thought I had a pretty good idea of the ins-and-outs of that whole *thing* when I wrapped up our `AMechController` which is the core pawn derivative that defines the logic for every mech in the world. And that meant destroying and reassembling the entire mech whenever that actor was affected by an editor change (at the time, we had an idle mech in the scene, so we had to deal with that often). Then when I started working on our primary world simulation mega-system -- which operates at an even higher level than a single mech -- I realized that I was so young and naive to think I had *things* down.
+
+Oh, and once I had the world simulation core in and working, I then decided it would be neat to have it run its `::Tick` method while the editor was just running (not in PIE nor in simulation, just while working in the editor).
+
+**ANYWAY**. This led to a lot of reading and experimenting and researching and mostly digging through file after file in the Unreal Engine codebase. That all helped a lot, but the following documents are really (almost) one-stop shopping for everything you need to know (the one with all caps and bolded letters is the main one):
+* [Actors Overview](https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Actors/index.html)
+* [**ACTOR LIFECYCLE**](https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Actors/ActorLifecycle/index.html)
+* [Components Overview](https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Actors/Components/index.html)
+* [Actor Spawning](https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Actors/Spawning/index.html)
+* [Actor Ticking](https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Actors/Ticking/index.html)
+
+Read. Read so hard.
 
 ### Documentation
 
