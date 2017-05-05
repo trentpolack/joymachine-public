@@ -5,7 +5,7 @@ We're adding to this pretty regularly, so check in every now and then to see wha
 
 Most recent change log (which is poorly-updated until we finally find a good generator): [CHANGELOG.md](https://github.com/joymachinegames/joymachine-public/blob/master/CHANGELOG.md).
 
-* `git-template` - Some git configurations for ignoring files, LFS-managed files, and then detailed config settings for everyday interaction with git on the command line.
+* `git` - Some git configurations for ignoring files, LFS-managed files, and then detailed config settings for everyday interaction with git on the command line.
 * `joy-create` - This is mega early in development (like, two days old), but it's eventually going to be a standalone L-system turtle-based procedural mesh generation system. You'll be able to instantiate any mesh you want using a series of grammars to dictate the progression of the generation, then export the resulting mesh.
 * `powershell` - I (trent) use Powershell almost exclusively, so I made some littles scripts as well as some shortcuts I dig.
 * `tools` - At the moment, this just contains our batch script for taking megascans output and assembling it into our texture use conventions (three channel-packed textures: albedo (RGB)/displacement (A), metal (R)/roughness (G)/cavity (B)/AO (A), and normal map).
