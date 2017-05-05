@@ -1,4 +1,5 @@
 # Unreal Engine 4 Infostorm
+This is a combination of random notes and mini-tutorials as well as any useful assets that we have. 
 
 ## Assets
 ### Setup
@@ -37,7 +38,12 @@ Each material also supports additional functionality (which, due to extreme stat
  
 If you have a Directional Wind Component in your scene, that is neat. It generates wind with varying gusts/turbulence that do a very adequate job of affecting SpeedTree assets. And that's about it. However, if you'd like those forces to also affect non-SpeedTree foliage, you can pipe the values from the Directional Wind Component into the material parameter collection that we have setup in `game_data/env`: `mpc_world.uasset`. It's a silly simple little structure, but it has just the data you need to help simulate wind on standard foliage. If you fill it with data every frame and then use the non-SpeedTree master foliage material, the results should be obvious. We use a simple vertical gradient to help give the lower parts of foliage more "weight" so they don't waver as much in the wind, but this still needs some work to look even a little bit realistic. Also note: if you have your foliage weighted through vertex colors, the master foliage shader supports an optional parameter to read a weight value from the red vertex color channel. 
 
-If you have any questions, feel free to email [joy@joy-machine.com](mailto:joy@joy-machine.com).
+#### Procedural Water Material
+**Disclaimer**: This is a material and material function set I wrote for a previous project; it hasn't really been used in about a year and a half or so, but it does work! Also, none of the necessary textures for this were included as we don't have the rights to distribute the ones being used.
+
+Aside from diffuse/normal textures and a noise texture -- as noise wasn't available in the material editor "back in the day" -- this is a wholly procedural solution for water and wave generation purely done through the material editor. As such, it's not the most realistic, performant, nor attractive water rendering option in the world. That said, it is pretty customizable and has some neat things going on, so hopefully it's useful for someone.
+
+The gist of the whole system is given a bit of an overview in an article on our site: [https://joy-machine.com/devlog/20151021water-rendering-moby-dick-something-something](https://joy-machine.com/devlog/20151021water-rendering-moby-dick-something-something).
 
 ## Practice, Convention, and Neat Things
 

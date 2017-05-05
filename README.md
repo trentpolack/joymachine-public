@@ -9,9 +9,11 @@ Most recent change log (which is poorly-updated until we finally find a good gen
 * `joy-create` - This is mega early in development (like, two days old), but it's eventually going to be a standalone L-system turtle-based procedural mesh generation system. You'll be able to instantiate any mesh you want using a series of grammars to dictate the progression of the generation, then export the resulting mesh.
 * `powershell` - I (trent) use Powershell almost exclusively, so I made some littles scripts as well as some shortcuts I dig.
 * `tools` - At the moment, this just contains our batch script for taking megascans output and assembling it into our texture use conventions (three channel-packed textures: albedo (RGB)/displacement (A), metal (R)/roughness (G)/cavity (B)/AO (A), and normal map).
-* `ue4` - Our general-purpose Unreal Engine 4 stockpile. Contains our team production conventions and, more interestingly at the moment, a variety of material functions and our "standard shader set" (they're just materials, but I call them shaders because they're pretty... intense). 
+* `ue4` - Our general-purpose Unreal Engine 4 stockpile. Contains our team production conventions and, more interestingly at the moment, a variety of material functions and our "standard shader set" (they're just materials, but I call them shaders because they're pretty... intense). There is also an old procedural water and wave generation/rendering asset set (all done through the material editor) if, you know, you like water.
 
 More will be added soon!
 
 hugs,
 Joy Machine
+
+If you have any questions, feel free to email us: [joy@joy-machine.com](mailto:joy@joy-machine.com).
