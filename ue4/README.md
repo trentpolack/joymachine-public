@@ -1,5 +1,4 @@
 # Unreal Engine 4 Infostorm
-### Copyright 2015-2017 [Joy Machine](https://joy-machine.com), LLC. All rights reserved.
 
 ## Assets
 ### Setup
