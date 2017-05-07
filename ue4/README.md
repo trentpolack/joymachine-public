@@ -1,5 +1,7 @@
 # Unreal Engine 4 Infostorm
-This is a combination of random notes and mini-tutorials as well as any useful assets that we have. 
+This is a combination of random notes and mini-tutorials as well as any useful assets that we have.
+
+We also have our [**internal team conventions listed in extruciating detail**](https://github.com/joymachinegames/joymachine-public/blob/master/ue4/CONVENTIONS.md) for those that want to read them.
 
 ## Assets
 ### Setup
