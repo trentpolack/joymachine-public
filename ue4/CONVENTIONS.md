@@ -51,6 +51,17 @@ For *Steel Hunters*, for instance, we have:
  	- For the love of all that is holy, do not prefix boolean values of any kind with `b`. 
 * For `UPROPERTY` members with the `Transient` property, put them in their appropriate category, but under a nested `Runtime`:
  	- For members that are in the `Core` group, a transient member would be in `Category = "Core|Runtime"`.
+* Variables rarely should require a comment to explain what they are.
+	- This doesn't mean you have to be verbose for the sake of explicitness, of course, just organize a class/function and then read the contained data and see if everything makes sense given the context.
+* _Don't_ add comments for the sake of adding comments.
+	- If a variable is named `IgnoreIncomingDamage`, don't comment it with `// When enabled, ignore all incoming damage.`.
+* _Do_ add comments to demarcate sections of code, especially in class/structure declarations. 
+* Typos in variable names happen (but fix them); consistent misspellings do not.
+* Use constants for any known strings. Do not just type them in the middle of a function.
+* When dealing with In/Out arguments or Start/End/Current/Previous variable names, always append them to the _end_ of the variable (i.e. `VelocityIn` and `VelocityOut` or `SpeedStart` and `SpeedCurrent`.
+	- If you prepend `Start` to a set of variables intended to initialize values, typing `Start` will yield a variety of unrelated variable types as opposed to typing `Speed` and getting its various states. Intelli-gent intelli-sense! MAGICK.
+* If you use a singleton, you need to have a five-paragraph essay prepared as to why you're using a singleton.
+* **THIS IS VERY IMPORTANT**: Don't shorten parts of variable/function names just to save four-five letters. I will hunt you down, and my vengeance will be the things urban legends are born from.
 
 #### Engine Code Conventions
 * Don't touch unless explicitly told to by Trent. He's very particular of his baby.
