@@ -19,19 +19,21 @@ struct STEELHUNTERS_API FCollisionShapeSet
 
 public:
 	FCollisionShapeSet( );
-	FCollisionShapeSet( ECollisionShape ShapeTypeIn );
+	FCollisionShapeSet( ECollisionShape::Type ShapeTypeIn );
 	FCollisionShapeSet( const FCollisionShapeSet& ShapeSetInstance );
-	FCollisionShapeSet( const FCollisionShape& ShapeInstance );
 
 public:
 	// Base shape type.
 	//	NOTE (trent, 5/9/17): This may not actually be necessary.
-	ECollisionShape ShapeType;
+	ECollisionShape::Type ShapeType;
 
 	// FCollisionShape is implemented as a union, so only one shape is ever fully supported. So, this is a way to support any shape (when the desired shape is unknown from code).
 	FCollisionShape ShapeBox;
 	FCollisionShape ShapeSphere;
 	FCollisionShape ShapeCapsule;
+
+public:
+	static float CapsuleRadiusFromBoxExtent;
 
 public:
 	static FCollisionShapeSet MakeShapeBox( const FVector& HalfExtents );

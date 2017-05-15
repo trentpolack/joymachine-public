@@ -9,12 +9,17 @@
 
 #include "CollisionShapeSet.h"
 
+/* 
+ * Static Definitions.
+*/
+float FCollisionShapeSet::CapsuleRadiusFromBoxExtent = 0.707f;
+
 //----------------------------------------------------------------------------------------------------
 FCollisionShapeSet::FCollisionShapeSet( )
 {	}
 
 //----------------------------------------------------------------------------------------------------
-FCollisionShapeSet( ECollisionShape ShapeTypeIn )
+FCollisionShapeSet::FCollisionShapeSet( ECollisionShape::Type ShapeTypeIn )
 : ShapeType( ShapeTypeIn )
 {	}
 
@@ -25,24 +30,6 @@ FCollisionShapeSet::FCollisionShapeSet( const FCollisionShapeSet& ShapeSetInstan
 	ShapeBox = ShapeSetInstance.ShapeBox;
 	ShapeSphere = ShapeSetInstance.ShapeSphere;
 	ShapeCapsule = ShapeSetInstance.ShapeCapsule;
-}
-
-//----------------------------------------------------------------------------------------------------
-FCollisionShapeSet::FCollisionShapeSet( const FCollisionShape& ShapeInstance )
-{
-	// Create the various shape instances based on the type of shape passed in.
-	if( ShapeInstance.IsBox( ) )
-	{
-		this = MakeShapeBox( ShapeInstance.GetExtent( ) );
-	}
-	else if( ShapeInstance.IsSphere( ) )
-	{
-		this = MakeShapeSphere( ShapeInstance.GetSphereRadius( ) );
-	}
-	else if( ShapeInstance.IsCapsule( ) )
-	{
-		this = MakeShapeCapsule( ShapeInstance.GetCapsuleRadius( ), ShapeInstance.GetCapsuleHalfHeight( ) );
-	}
 }
 
 //----------------------------------------------------------------------------------------------------
