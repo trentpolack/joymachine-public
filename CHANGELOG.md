@@ -1,3 +1,17 @@
+
+v0.0.4 / 2017-05-30
+=============
+
+  * Moved the powershell scripts into the scripts folder because... Well. I mean. It makes sense, yeah?
+  * Added a VS extension (for VSCMD and the source VB file) for outputting a build time start/end timestamp as well as total time taken.
+  * Added a simple overload of USpringArmComponent that can account for more than one ignored actor (the owner).
+  * Adding mailmap to fix my name. This probably isn't supposed to be checked in.
+  * Adding software link to the readme.
+  * Removing dumb line.
+  * Filling out AWESOME_SOFTWARE with... good... software?
+  * Adding stub AWESOME_SOFTWARE.md file. Which I will then fill out on the computer that has the file.
+  * Updated CHANGELOG for v0.0.3. I need to remember to do this before the tag.
+
 v0.0.3 / 2017-05-27
 ===================
 
