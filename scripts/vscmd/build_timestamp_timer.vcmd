@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SerializableSnippets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <commands />
+  <extensions>
+    <Snippet>
+      <id>1</id>
+      <name>Build Timestamp and Timer</name>
+      <code>Imports EnvDTE
+Imports EnvDTE80
+Imports Microsoft.VisualStudio.Shell
+Imports System
+Public Class E
+	Implements VisualCommanderExt.IExtension
+	Sub SetSite(DTE_ As DTE2, package As Package) Implements VisualCommanderExt.IExtension.SetSite
+		DTE = DTE_
+		events = DTE.Events
+		buildEvents = events.BuildEvents
+		AddHandler buildEvents.OnBuildBegin, AddressOf OnBuildBegin
+		AddHandler buildEvents.OnBuildDone, AddressOf OnBuildDone
+	End Sub
+	Sub Close() Implements VisualCommanderExt.IExtension.Close
+		RemoveHandler buildEvents.OnBuildBegin, AddressOf OnBuildBegin
+		RemoveHandler buildEvents.OnBuildDone, AddressOf OnBuildDone
+	End Sub
+	Private Sub OnBuildBegin(ByVal Scope As EnvDTE.vsBuildScope, ByVal Action As vsBuildAction)
+		timerStart = DateTime.Now
+
+		Dim window As Window = DTE.Windows.Item(EnvDTE.Constants.vsWindowKindOutput)
+		Dim output As OutputWindow = CType(window.Object, OutputWindow)
+		For Each pane As OutputWindowPane In output.OutputWindowPanes
+			If (pane.Name = "Build") Then
+				pane.Activate()
+				pane.OutputString("Build Started: " &amp; DateTime.Now.ToLocalTime().ToString() &amp; Environment.NewLine)
+			End If
+		Next
+
+		window.Activate()
+	End Sub
+	Private Sub OnBuildDone(ByVal Scope As EnvDTE.vsBuildScope, ByVal Action As vsBuildAction)
+		Dim ow As OutputWindow = DTE.Windows.Item(EnvDTE.Constants.vsWindowKindOutput).Object
+		Dim build As OutputWindowPane = ow.OutputWindowPanes.Item("Build")
+
+		build.Activate()
+
+		Dim completed As String = "Build Completed: " &amp; DateTime.Now.ToLocalTime().ToString() &amp; Environment.NewLine &amp; "Build Time: " &amp; DateTime.Now.Subtract(timerStart).ToString("hh\:mm\:ss") &amp; Environment.NewLine &amp; ""
+		build.OutputString(completed)
+		ow.Activate()
+	End Sub
+	Private DTE As EnvDTE80.DTE2
+	Private events As EnvDTE.Events
+	Private buildEvents As EnvDTE.BuildEvents
+	Private timerStart As DateTime
+End Class</code>
+      <referencedAssemblies />
+      <type>Extension</type>
+      <lang>VB</lang>
+      <langVersion>v4.0</langVersion>
+      <enabled>true</enabled>
+      <includeDebugInformation>false</includeDebugInformation>
+    </Snippet>
+  </extensions>
+  <commonCode />
+</SerializableSnippets>
