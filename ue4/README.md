@@ -76,6 +76,10 @@ Read. Read so hard.
 
 ### Gameplay
 
+#### Collision
+I generally say that doing anything *unfamiliar* in C++ in Unreal Engine means you should double your time estimate for the given task. When it involves collision and collision response, maybe quadruple your time estimate.
+- The Unreal Engine blog has [one of the best breakdowns of collision filtering](https://www.unrealengine.com/en-US/blog/collision-filtering) around. I don't think it's integrated into the proper documentation, which is a source of endless confusion for me. But it exists! And that's what matters.
+
 ### Rendering/Shading
 - When working within the post-stack, `r.CompositionGraphDebug` is your bestest best friend. Just invoke it from the console, the editor will freeze for a bit, and then you'll see debug output in your console of the stack breakdown.
   - But, beyond that, a handful of `GML` files will be output into your `Saved/Screenshots/*` folder. These, when loaded up in a [program that supports them](http://www.yworks.com), look like this:
