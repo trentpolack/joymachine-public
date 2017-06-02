@@ -14,8 +14,8 @@ def do_folder(src_folder):
     for f in os.listdir(src_folder):
         base,ext = os.path.splitext(f)
         src_file = os.path.join(src_folder, f)
-        if os.path.isfile(src_file) and ext.lower() == '.png':
-            ctime = os.path.getctime(src_file)
+        if os.path.isfile(src_file) and ext.lower() in ['.png','.jpg','.gif']:
+            ctime = os.path.getmtime(src_file)
             dt = datetime.utcfromtimestamp(ctime)
             dst_file = os.path.join(dst_folder, dt.strftime("%Y_%m_%d_")+f)
             print '%s ---> %s' % (src_file,dst_file)
