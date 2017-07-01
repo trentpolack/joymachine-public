@@ -1,7 +1,24 @@
+v0.0.5 / 2017-06-30
+=============
+  * Moved kernel generator and joy-create into a tools directory in the root folder.
+  * Adding basic JSON serialization utility class (struct-oriented; UObject-based one is... Touchy still).
+  * Moving .gitignore/attributes from kernel generator into root folder.
+  * Provide pre-compiled release binary for jmkernels.exe
+  * Moved the kernels app into this repository
+  * Adding a batch file of limited-usefulness outside our terrain tile export process.
+  * Updating README to reflect reorganized repo.
+  * Improved distance fade material function; fade SSS on foliage over distance.
+  * Add readme for rename_images_by_timestamp.py
+  * Renamed rename_by_timestamp.py to rename_images_by_timestamp.py
+  * Tweaks to python image rename script to use modified date + support JPG/GIF. Moved tools to scripts folder.
+  * Add script to create copies of PNG files w/ filenames prefixed with their creation time (Windows only)
+  * Added section on collision filtering.
+  * Updated the sample PowerShell profile with some new alises for counting lines of code in a folder (*.h, *.cpp, *.cs) as well as clipboard manipulation.
+  * Renamed scripts/vcmd to scripts/visualstudio. Added an extension to show full path of active file in status bar.
 
 v0.0.4 / 2017-05-30
-=============
-
+===================
+  * Updated CHANGELOG.
   * Moved the powershell scripts into the scripts folder because... Well. I mean. It makes sense, yeah?
   * Added a VS extension (for VSCMD and the source VB file) for outputting a build time start/end timestamp as well as total time taken.
   * Added a simple overload of USpringArmComponent that can account for more than one ignored actor (the owner).
@@ -14,7 +31,6 @@ v0.0.4 / 2017-05-30
 
 v0.0.3 / 2017-05-27
 ===================
-
   * Adding AutoHotkey script for Windows' SnippingTool.
   * Words are hard.
   * Added a brief summary on the ue4-source folder.
@@ -45,7 +61,6 @@ v0.0.3 / 2017-05-27
 
 v0.0.2 / 2017-05-02
 ===================
-
   * Added an updated foliage standard shader that reads wind values from an MPC (in game_data/env).
   * Added a README.me file to the git-template gitconfig template.
   * Added two new aliases to the gitconfig.template added: git tree -- Just prints a pretty-formatted revision history in tree form. added: git cl -- NOTE: Required git-extras installed (for now). Generated a simple CHANGELOG based on commit log.
@@ -71,7 +86,6 @@ v0.0.2 / 2017-05-02
 
 v0.0.1 / 2017-04-30
 ===================
-
   * Tweaks to the 'git state' alias.
   * Added .gitconfig template with state and last aliases.
   * Added batch file for renaming branches on local and remote git repos. Will eventually be replaced with a git alias.
