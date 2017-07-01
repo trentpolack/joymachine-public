@@ -1,4 +1,5 @@
-# [Joy Machine](http://joy-machine.com/) - Repo of *Things*
+# [Joy Machine](https://joy-machine.com/) - Repo of *Things*
+### Currently Being Developed Alongside [*Steel Hunters*](https://joy-machine.com/steel-hunters)
 This is Joy Machine's public repository of everything that we can easily separate from our main engine and game source base that we think is useful for people. There are some proprietary things we'd adore to include as well, but alas, we have to have some secrets.
 
 We're adding to this pretty regularly, so check in every now and then to see what's new. And, of course, if there is anything in particular that you're looking for, just put up an Issue in the repo and we'll see what we can do. Or we'll shoot your idea down instantly and viciously 
@@ -6,7 +7,7 @@ We're adding to this pretty regularly, so check in every now and then to see wha
 Most recent change log (which is poorly-updated until we finally find a good generator): [CHANGELOG.md](https://github.com/joymachinegames/joymachine-public/blob/master/CHANGELOG.md).
 
 * `git` - Some git configurations for ignoring files, LFS-managed files, and then detailed config settings for everyday interaction with git on the command line.
-* `joy-create` - This is mega early in development (like, two days old), but it's eventually going to be a standalone L-system turtle-based procedural mesh generation system. You'll be able to instantiate any mesh you want using a series of grammars to dictate the progression of the generation, then export the resulting mesh.
+* `tools` - Tools for content generation (`joy-create` -- nowhere near useful yet and `jmkernels` for generating an HDR/EXE file for use as an FFT bloom convolution image in UE 4.16+ (can be customized further for stylization).
 * `scripts` - Miscellaneous scripts (tools, powershell, visual studio extensions, batch files, etc.) 
 * `ue4-source` - Whatever C++ actors/components/utilities/etc. we end up being able to easily divorce from our projects. Or, if not easily divorced, whatever seems worth divorcing so others never have to know the pain that we did. This will likely be the least frequently-updated part of the repo.
 * `ue4` - Our general-purpose Unreal Engine 4 stockpile. Contains our team production conventions and, more interestingly at the moment, a variety of material functions and our "standard shader set" (they're just materials, but I call them shaders because they're pretty... intense). There is also an old procedural water and wave generation/rendering asset set (all done through the material editor) if, you know, you like water.
