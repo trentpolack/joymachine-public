@@ -47,6 +47,20 @@ Aside from diffuse/normal textures and a noise texture -- as noise wasn't availa
 
 The gist of the whole system is given a bit of an overview in an article on our site: [https://joy-machine.com/devlog/20151021water-rendering-moby-dick-something-something](https://joy-machine.com/devlog/20151021water-rendering-moby-dick-something-something).
 
+#### Smear Frame
+"Smear frame" material effect for (originally created in Unreal Engine 4.12; should be fine still, however). Created by Jan Kaluza of [Broad Strokes](http://www.broad-strokes.com) ([@JKashaar on Twitter](https://twitter.com/JKashaar)). He's a Joy Machine team member, though, so we also put in here.
+
+![Smear Frame effect](http://i.giphy.com/l46CcnrPYQsJ0ejw4.gif "UE4 Smear Frame effect")
+
+##### What is this?
+This is an Unreal Engine 4 project containing a simple implementation of a "smear frame" effect, as recently popularized by the game Overwatch.
+
+##### How do I use this?
+This effect consists of two parts: a blueprint component you add to an actor you want to be affected by the smear frame effect, and a material function that you add to its material.
+
+##### Limitations
+As a quick and dirty proof of concept, this effect uses the actor's velocity to determine smear strength. As such, it does not work with animated skeletal meshes in the way you'd expect. Suggestions or pull requests are very welcome though! :)
+
 ## Practice, Convention, and Neat Things
 
 ### Asset Management
