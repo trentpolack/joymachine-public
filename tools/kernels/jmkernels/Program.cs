@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using System;
+using System.Linq;
 
 namespace Joy.Kernels
 {
@@ -48,7 +49,7 @@ namespace Joy.Kernels
             return buf;
         }
 
-        [Verb("sphere", HelpText="Do a sphere corona, falling off from a maximum value at the center.")]
+        [Verb("sphere", HelpText="Do a sphere corona, falling off from a maximum value at the center.", Hidden=false)]
         class SphereCoronaOptions
         {
             [Option('c', "center", Required = false, HelpText = "The maximum intensity at the center of the corona.")]
@@ -63,7 +64,7 @@ namespace Joy.Kernels
             [Option('w', "width", Required = false, HelpText = "The width in pixels. This will also be the height of the resulting image, as it is square.")]
             public int Width { get; set; }
 
-            [Option('o', "output", Required = true, HelpText = "Path of the output EXR file that will contain your corona image.")]
+            [Option('o', "output", HelpText = "Path of the output EXR file that will contain your corona image.")]
             public string OutputPath { get; set; }
 
             public SphereCoronaOptions()
@@ -72,6 +73,7 @@ namespace Joy.Kernels
                 FalloffPower = 2.0; // a good basic setting.
                 Width = 1024; // same.
                 FalloffDistance = Width * 0.5; // will need to adjust these in pairs.
+                OutputPath = "kernel.exr";
             }
         }
 
@@ -85,6 +87,7 @@ namespace Joy.Kernels
                 {
                     // build a sphere corona ranging from the centre to its extent radius
                     buf = GenerateSphereCorona(opts.CenterValue, opts.FalloffDistance, opts.FalloffPower, opts.Width);
+                    outputPath = opts.OutputPath;
                 });
 
             if(!string.IsNullOrWhiteSpace(outputPath) && null != buf)
