@@ -12,6 +12,18 @@ Remove-Variable JoyShellScripts
 
 # I suck at wrapping this command in an actual alias/function, so just send it to the clipboard. Also add alises for the clipboard cmdlets.
 function ClipLOC { Set-Clipboard 'Get-ChildItem -Include *.cs,*.h,*.cpp -Recurse | Get-Content | Measure-Object -line -word -character' }
-Set-Alias loc 'ClipLOC'
+function GetLOC { Get-ChildItem -Include *.cs,*.h,*.cpp -Recurse | Get-Content | Measure-Object -line -word -character }
+Set-Alias get-loc 'GetLOC'
+Set-Alias clip-loc 'ClipLOC'
 Set-Alias setclip Set-Clipboard
 Set-Alias getclip Get-Clipboard
+
+# Superfetch management.
+function SuperfetchEnable { net start superfetch }
+function SuperfetchDisable { net stop superfetch }
+Set-Alias superfetch_on SuperfetchEnable
+Set-Alias superfetch_off SuperfetchDisable
+
+# Miscellaneous commands.
+function TopMemoryProcesses { Get-Process | Sort-Object -Property WS | Select-Object -Last 5 }
+Set-Alias check-processmemory TopMemoryProcesses
