@@ -14,6 +14,7 @@ Most recent change log (which is poorly-updated until we finally find a good gen
 
 ### Other Things of Note:
 * [AWESOME_SOFTWARE.md](https://github.com/joymachinegames/joymachine-public/blob/master/AWESOME_SOFTWARE.md) -- Has a list of all of the software that I (trent) have found to be the best solution within its given context.
+* [AWESOME_GAMEDEV_MENTORS](https://github.com/ishansharma/twitter-mentors) -- Technically, it's "twitter-mentors", but I like my name better. Anyway, this is @ishansharma's compilation of people (@trentpolack included) who offer game development mentoring to anyone that seeks it.
 
 ### More to Come!
 hugs,
