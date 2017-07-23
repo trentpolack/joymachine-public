@@ -22,3 +22,7 @@
 	* Modify the modification date/time of an existing file named `rawr.txt`.
 	* NOTE: Useful for simple git status checks.
 		* ISSUE: Upon testing this, git does not actually respect this. Will investigate. I'm on a roll today [Trent, 4/3/17].
+ * Execute `Compress-PNGS -root <directory>` to:
+    * Iterate through all PNGs in that directory recursively. Compress them to a temp file. If temp file is significantly smaller than
+      the original file, replace original file with temp file.
+    * Requires ImageMagick's `magick` to be in your `PATH`.
