@@ -1,5 +1,23 @@
-v0.0.5 / 2017-06-30
+v0.0.7 / 2017-07-23
 =============
+
+  * Add PNG compressor script.
+  * Adding some additional powershell scripts/aliases.
+  * Fixed mentor link to go to the site, not the repo for the site.
+  * Added @ishansharma callout proper.
+  * Added gamedev mentors link.
+
+v0.0.6 / 2017-07-05
+===================
+
+  * Fix bug that prevented sphere output from ever occurring.
+  * Added Vector Field Generator (python), SmearFrame (UE4 material), reorganization.
+  * Updating README to reflect v0.0.5 repo changes.
+
+v0.0.5 / 2017-06-30
+===================
+
+  * Adding v0.0.5 change log.
   * Moved kernel generator and joy-create into a tools directory in the root folder.
   * Adding basic JSON serialization utility class (struct-oriented; UObject-based one is... Touchy still).
   * Moving .gitignore/attributes from kernel generator into root folder.
@@ -18,6 +36,7 @@ v0.0.5 / 2017-06-30
 
 v0.0.4 / 2017-05-30
 ===================
+
   * Updated CHANGELOG.
   * Moved the powershell scripts into the scripts folder because... Well. I mean. It makes sense, yeah?
   * Added a VS extension (for VSCMD and the source VB file) for outputting a build time start/end timestamp as well as total time taken.
@@ -31,6 +50,7 @@ v0.0.4 / 2017-05-30
 
 v0.0.3 / 2017-05-27
 ===================
+
   * Adding AutoHotkey script for Windows' SnippingTool.
   * Words are hard.
   * Added a brief summary on the ue4-source folder.
@@ -61,6 +81,7 @@ v0.0.3 / 2017-05-27
 
 v0.0.2 / 2017-05-02
 ===================
+
   * Added an updated foliage standard shader that reads wind values from an MPC (in game_data/env).
   * Added a README.me file to the git-template gitconfig template.
   * Added two new aliases to the gitconfig.template added: git tree -- Just prints a pretty-formatted revision history in tree form. added: git cl -- NOTE: Required git-extras installed (for now). Generated a simple CHANGELOG based on commit log.
@@ -86,6 +107,7 @@ v0.0.2 / 2017-05-02
 
 v0.0.1 / 2017-04-30
 ===================
+
   * Tweaks to the 'git state' alias.
   * Added .gitconfig template with state and last aliases.
   * Added batch file for renaming branches on local and remote git repos. Will eventually be replaced with a git alias.
