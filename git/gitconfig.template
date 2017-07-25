@@ -4,6 +4,22 @@
 [color]
 	ui = true
 
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+
+[color "status"]
+    added = green bold
+    changed = cyan
+    untracked = magenta reverse
+	
 [alias]
 	state = "!f(){ \
 				deco_bold='\\x1b[1m'; \
@@ -19,6 +35,8 @@
 				fi; \
 			}; \
 			f"
+	lard = "!git rev-list --all --objects | sed -n $(git rev-list --objects --all | cut -f1 -d' ' | git cat-file --batch-check | grep blob | sort -n -k 3 | tail -n40 | while read hash type size; do echo -n \"-e s/$hash/$size/p \"; done) | sort -n -k1"
 	last = log -1 HEAD
-	tree = log --pretty=oneline --graph --decorate --all
-	cl = "!git changelog -a -p -n -t \"$1\" -x > CHANGELOG.md" #"
+	uncommit = git reset --soft HEAD^
+	prettylog =  "!git log --pretty=format:'%C(yellow)%h|%Cred%ad|%Cblue%an|%Cgreen%d %Creset%s' --date=short | column -ts'|' | less -r"
+	tree = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
