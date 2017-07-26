@@ -21,6 +21,7 @@
     untracked = magenta reverse
 	
 [alias]
+	s = -c color.status=always status -sb
 	state = "!f(){ \
 				deco_bold='\\x1b[1m'; \
 				deco_invert='\\x1b[7m'; \
