@@ -1,3 +1,5 @@
+# From this wonderful, wonderful human being: https://gist.github.com/gregorynicholas/1812027
+
 "\e[1~": beginning-of-line
 "\e[4~": end-of-line
 "\e[5~": history-search-backward
