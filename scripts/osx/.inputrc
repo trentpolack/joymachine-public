@@ -16,4 +16,3 @@ set input-meta on
 set output-meta on
 set show-all-if-ambiguous on
 set visible-stats on
-set -o vi
