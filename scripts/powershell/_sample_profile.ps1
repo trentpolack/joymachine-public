@@ -10,9 +10,9 @@ Foreach( $PS1File in Get-ChildItem $JoyShellScripts *.ps1 -Recurse ) {
 
 Remove-Variable JoyShellScripts
 
-# I suck at wrapping this command in an actual alias/function, so just send it to the clipboard. Also add alises for the clipboard cmdlets.
-function ClipLOC { Set-Clipboard 'Get-ChildItem -Include *.cs,*.h,*.cpp -Recurse | Get-Content | Measure-Object -line -word -character' }
-function GetLOC { Get-ChildItem -Include *.cs,*.h,*.cpp -Recurse | Get-Content | Measure-Object -line -word -character }
+# Count lines of code in CS, H, CPP, JS, and HTML files. Functions/aliases for copying the command to the clipboard or executing it out-right.
+function ClipLOC { Set-Clipboard 'Get-ChildItem -Include *.cs,*.h,*.cpp,*.js,*.html -Recurse | Get-Content | Measure-Object -line -word -character' }
+function GetLOC { Get-ChildItem -Include *.cs,*.h,*.cpp,*.js,*.html -Recurse | Get-Content | Measure-Object -line -word -character }
 Set-Alias get-loc 'GetLOC'
 Set-Alias clip-loc 'ClipLOC'
 Set-Alias setclip Set-Clipboard
@@ -24,6 +24,11 @@ function SuperfetchDisable { net stop superfetch }
 Set-Alias superfetch_on SuperfetchEnable
 Set-Alias superfetch_off SuperfetchDisable
 
-# Miscellaneous commands.
+# System/File System commands.
+function GetEnv { Get-ChildItem Env: }
+Set-Alias get-env GetEnv
+function GetExtensionsRecursively { dir -recurse | Select-Object extension -Unique }
+Set-Alias get-extensions GetExtensionsRecursively
+
 function TopMemoryProcesses { Get-Process | Sort-Object -Property WS | Select-Object -Last 5 }
 Set-Alias check-processmemory TopMemoryProcesses
