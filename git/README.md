@@ -26,9 +26,33 @@ Point being: these are great tools to build into the git command line. This is m
 
 This allows me to use Beyond Compare whenever I enter `git difftool <file>` (which will check the remote version of the file); `prompt = false` ensures I don't have to agree to a (Y/N) question for every file I diff. And, alternatively, if you just enter `git difftool` to bring up a diff of all modified files. This is all true of mergetool as well. I tossed the `prompt = false` into the `gitconfig.template` for reference. 
 
+## Colors
+Additionally, I added some colors for varying results printed by `git status`, `git branch`, and `git diff`. Here's the list of valid colors:
+* `normal`.
+* `black`
+* `red`.
+* `green`.
+* `yellow`.
+* `blue`.
+* `magenta`.
+* `cyan`.
+* `white`.
+
+### Color Decorators
+AND YOU CAN DECORATE THEM!
+* `bold`.
+* `dim`.
+* `ul` (underline).
+* `blink` (rock it like an Angelfire website).
+* `reverse` (swap foreground/background colors).
+
 ## Aliases
+* `git s` -- Short format `git status` (no lfs status report like `git state`, below). With colors!
 * `git state` -- Does a full evaluation of your current repo state across git and git-lfs, with some decent formatting to separate the two. Does not display git-lfs info if the repo doesn't use lfs.
+* `git lard` -- Lists the top 40 heaviest assets in your repository.
 * `git last` -- Just print out the last commit to your command line.
+* `git uncommit` -- Uncommit whatever you just did.
+* `git prettylog` -- Pretty log with some branch graphics.
 * `git tree` -- Just prints a pretty-formatted revision history in tree form.
 * `git cl` -- Generated a simple CHANGELOG.md based on commit log.
 	* NOTE: This requires [git-extras](https://github.com/tj/git-extras) installed. For now, anyway. We're working on our own little solution right now.
