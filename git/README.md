@@ -54,3 +54,4 @@ AND YOU CAN DECORATE THEM!
 * `git uncommit` -- Uncommit whatever you just did.
 * `git prettylog` -- Pretty log with some branch graphics.
 * `git tree` -- Just prints a pretty-formatted revision history in tree form.
+* `git holy-fsck` -- Does a full and strict verification of the git repository.
