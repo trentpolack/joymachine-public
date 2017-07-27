@@ -3,6 +3,8 @@ These are just some handy references for gitignore/gitattributes for handling a 
 
 The entirety of this doc is for use with git on the command line (as a note: you do *not* have to use git bash; it can be easily integrated into the standard Powershell and Windows cmd prompt). The only *remotely* decent GUI client for git on Windows is [GitKraken](https://www.gitkraken.com) -- but the number of "quirks" that it has makes it unusable in my opinion. So: command line.
 
+I also [wrote an article on my experience with source control](https://blog.joy-machine.com/working-with-git-for-games-and-in-general-a0efb78f3a01) on [*Steel Hunters*](http://steel-hunters.com) and general git *stuff*.
+
 ## `difftool` and `mergetool`
 Setting up a difftool and mergetool for the git command line is a lovely thing to do, unless you like pain. Or *really* like text editors. Customizing these commands will allow you to use a GUI-based comparison tool to handle merges and differences between files. Up until yesterday, I'd have recommended [`p4merge`](https://www.perforce.com/product/components/perforce-visual-merge-and-diff-tools) (from Perforce). Then I found [Beyond Compare 4](https://www.scootersoftware.com/) -- ignore the site design, it's great software -- which I used at my first professional game development job and had *no* idea it was still around. Unlike `p4merge`, Beyond Compare offers an easy solution to simply compare two folders (whether they're in a repository or not) and git a list of files that are added/removed/changed/unchanged in the file hierarchy. And then you can go through and diff/merge what you want to.
 
