@@ -54,5 +54,3 @@ AND YOU CAN DECORATE THEM!
 * `git uncommit` -- Uncommit whatever you just did.
 * `git prettylog` -- Pretty log with some branch graphics.
 * `git tree` -- Just prints a pretty-formatted revision history in tree form.
-* `git cl` -- Generated a simple CHANGELOG.md based on commit log.
-	* NOTE: This requires [git-extras](https://github.com/tj/git-extras) installed. For now, anyway. We're working on our own little solution right now.
