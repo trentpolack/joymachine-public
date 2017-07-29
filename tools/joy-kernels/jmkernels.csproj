@@ -7,7 +7,7 @@
     <ProjectGuid>{F8C7CDED-3189-43E9-A021-85B59EEE446B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Joy.Kernels</RootNamespace>
-    <AssemblyName>jmkernels</AssemblyName>
+    <AssemblyName>joy-kernels</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

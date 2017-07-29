@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jmkernels", "jmkernels\jmkernels.csproj", "{F8C7CDED-3189-43E9-A021-85B59EEE446B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "joy-kernels", "joy-kernels.csproj", "{F8C7CDED-3189-43E9-A021-85B59EEE446B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyEXR", "TinyEXR\TinyEXR.vcxproj", "{F7375707-944B-4E04-B335-970E715BBACB}"
 EndProject
