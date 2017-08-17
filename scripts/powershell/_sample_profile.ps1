@@ -32,3 +32,7 @@ Set-Alias get-extensions GetExtensionsRecursively
 
 function TopMemoryProcesses { Get-Process | Sort-Object -Property WS | Select-Object -Last 5 }
 Set-Alias check-processmemory TopMemoryProcesses
+
+# Pretty file directory printout (I don't feel like handling an unspecified filename atm).
+function GetDirTree { Tree . /F | Select-Object -Skip 2 | Set-Content $args }
+Set-Alias get-dirtree GetDirTree
