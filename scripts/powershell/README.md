@@ -16,6 +16,12 @@
 		* This will reload your profile with the new contents.
 		* If SUCCESSFUL (!), you should see a "Hello, <your username>" upon execution.
 
+## General Scripts
+ * `generate-changelog.ps1`:
+	* Execute this script from a powershell session and it will look for (and update) `CHANGELOG.md` and append the contents of `HISTORY.md` (in case you have a changelog from a separate repo with more history) to it.
+		* If the history isn't needed, just remove everything below "Remove these lines if a HISTORY.md file is not necessary.".
+	* Changelog details will be split up by tags.
+
 ## Usage
  * Execute `touch rawr.txt` to:
  	* Create a new file, if it doesn't already exist, modified at the current date and time.
