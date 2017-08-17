@@ -96,11 +96,9 @@ I generally say that doing anything *unfamiliar* in C++ in Unreal Engine means y
 
 ### Rendering/Shading
 - When working within the post-stack, `r.CompositionGraphDebug` is your bestest best friend. Just invoke it from the console, the editor will freeze for a bit, and then you'll see debug output in your console of the stack breakdown.
-  - But, beyond that, a handful of `GML` files will be output into your `Saved/Screenshots/*` folder. These, when loaded up in a [program that supports them](http://www.yworks.com), look like this:
-
-![Post-Processor Stack Breakdown](https://joy-machine.com/wp-content/uploads/2017/04/ue4_poststack_debug_graph.png "Post-Processor Stack Breakdown")
-
-**NOTE**: Make sure that you have the program organize the nodes hierarchically, so you can see the actual order of operations.
+  - But, beyond that, a handful of `GML` files will be output into your `Saved/Screenshots/*` folder. These, when loaded up in a [program that supports them](http://www.yworks.com), can be super, super helpful in debugging and finessing your composition.
+ **NOTE**: Make sure that you have the program organize the nodes hierarchically, so you can see the actual order of operations.
+- A [concise engine and shader modification](https://github.com/hallatore/UnrealEngine) that handles sharper/less noisy temporal antiliasing (ty @hallatore).
 
 ### Scripting
 
