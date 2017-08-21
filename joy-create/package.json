@@ -1,0 +1,22 @@
+{
+    "name": "joy-create",
+    "version": "v0.0.1",
+    "description": "Very, very work-in-progress electron app for a procedural generation (shape-based) system.",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "repository": "https://github.com/electron/electron-quick-start",
+    "keywords": [
+        "electron",
+        "procedural",
+        "games",
+        "joy",
+        "joymachine"
+    ],
+    "author": "Joy Machine",
+    "license": "MIT",
+    "devDependencies": {
+        "electron": "~1.6.2"
+    }
+}

@@ -1,7 +1,7 @@
 # Joy Create
 
 ## Current Status
-In active development as of May 2017.
+In active development as of August 2017.
 
 ## Building
  1. Clone the parent repository to disk.
