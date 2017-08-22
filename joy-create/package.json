@@ -4,6 +4,8 @@
     "description": "Very, very work-in-progress electron app for a procedural generation (shape-based) system.",
     "main": "main.js",
     "scripts": {
+        "preinstall": "rimraf vendor/stats.min.js && rimraf vendor/ace",
+        "postinstall": "vendor-copy",
         "start": "electron ."
     },
     "repository": "https://github.com/joymachinegames/joymachine-public",
@@ -18,7 +20,6 @@
     "license": "MIT",
     "dependencies": {
         "dat-gui": "^0.5.0",
-        "electron-compile": "^6.4.1",
         "electron-is": "^2.4.0",
         "electron-log": "^2.2.7",
         "electron-require": "^0.3.0",
@@ -30,18 +31,13 @@
         "three.meshline": "^1.0.3"
     },
     "devDependencies": {
-        "babel-core": "^6.18.2",
-        "babel-loader": "^6.2.8",
-        "babel-preset-es2015": "^6.18.0",
+        "ace-builds": "^1.2.8",
         "colors": "^1.1.2",
         "electron": "~1.6.2",
-        "electron-compilers": "^5.9.0",
         "elemon": "^5.0.3",
         "jquery": "^3.2.1",
-        "webpack": "^1.13.3",
-        "webpack-dashboard": "^1.0.0-4",
-        "webpack-dev-server": "^1.16.2",
-        "webpack-glsl-loader": "^1.0.1"
+        "rimraf": "^2.6.1",
+        "vendor-copy": "^1.3.1"
     },
     "electron-require": {
         "root": "",
@@ -51,5 +47,14 @@
         "editor": "src/editor",
         "pcg": "src/pcg",
         "viewport": "src/viewport"
-    }
+    },
+    "vendorCopy": [{
+            "from": "node_modules/stats-js/build/stats.min.js",
+            "to": "vendor/stats.min.js"
+        },
+        {
+            "from": "node_modules/ace-builds/src-min",
+            "to": "vendor/ace"
+        }
+    ]
 }
