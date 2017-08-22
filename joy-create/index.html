@@ -26,30 +26,15 @@
         <div class="window-content">
             <div class="pane-group">
                 <div class="pane">
-                    <!-- main renderer I assume -->
-                    <canvas id="viewport"></canvas>
+                    <div id="renderer"></div>
                 </div>
                 <div class="pane">
                     <!-- script editor -->
-                    <pre id="editor">int main(int argc, char* argv[]) {
-  printf("Hello, World!\n");
-}</pre>
+                    <pre id="editor"></pre>
                 </div>
             </div>
         </div>
     </div>
 </body>
-
-<script>
-    // You can also require other files to run in this process
-    require('src/renderer.js')
-    require('src/io.js')
-</script>
-<script>
-    // TODO: split this into a new editor-control.js or something
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/twilight");
-    editor.session.setMode("ace/mode/c_cpp");
-</script>
 
 </html>
