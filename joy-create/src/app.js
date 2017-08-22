@@ -25,21 +25,13 @@ function init(callback, update) {
     var gui = new DAT.GUI();
 
     var sim = {
+        container: container,
+
         gui: gui,
         stats1: stats1,
         stats2: stats2,
         stats3: stats3
     };
-
-    window.addEventListener('load', () => {
-        engine = new BABYLON.Engine(canvas, true);
-        var scene = makeScene(); // load the null scene
-        scene.render();
-    });
-
-    window.addEventListener('resize', () => {
-        engine.resize();
-    });
 
     ipcRenderer.on('load-mesh', function(event, meshPath) {
         meshDirectory = path.dirname(meshPath) + "/" // HACK, probably should write a better function here
@@ -73,7 +65,7 @@ function init(callback, update) {
         controls.zoomSpeed = 1.0;
         controls.panSpeed = 2.0;
 
-        document.body.appendChild(renderer.domElement);
+        sim.container.appendChild(renderer.domElement);
 
         // resize the canvas when the window changes
         window.addEventListener('resize', function() {

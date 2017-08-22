@@ -1,4 +1,5 @@
 const path = require('path');
+const DashboardPlugin = require('webpack-dashboard/plugin');
 
 module.exports = {
     entry: path.join(__dirname, "src/app"),
@@ -20,6 +21,10 @@ module.exports = {
             },
         ]
     },
+    plugins: [
+        // ... your other plugins
+        new DashboardPlugin()
+    ],
     devtool: 'source-map',
     devServer: {
         port: 7000
