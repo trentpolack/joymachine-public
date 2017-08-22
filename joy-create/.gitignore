@@ -1,1 +1,7 @@
+# Ignore npm directory.
 node_modules
+
+# Ignore the vendor directory (save for Photon).
+vendor/
+!vendor/photon
+
