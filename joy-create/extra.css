@@ -1,27 +1,31 @@
 .titletext {
-  vertical-align: middle;
-  font-weight: bolder;
+    vertical-align: middle;
+    font-weight: bolder;
 }
 
+
 /* ace editor demo stuff */
+
 #editor {
-  margin: 0;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .pane {
-  overflow-y: hidden;
+    overflow-y: hidden;
 }
 
+
 /* babylon renderer canvas */
-#viewport {
-  width: 100%;
-  height: 100%;
-  touch-action: none;
-  margin: 0;
-  padding: 0;
+
+#renderer {
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+    margin: 0;
+    padding: 0;
 }

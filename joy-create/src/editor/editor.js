@@ -1,5 +1,5 @@
-const App = require('src/app.js');
-const IO = require('src/io.js');
+const rq = require('electron-require');
+const IO = rq.app('./io.js');
 
 function init() {
     // TODO: split this into a new editor-control.js or something

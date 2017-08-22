@@ -1,5 +1,7 @@
 const { shell, ipcRenderer } = require('electron');
-const { dialog } = require('electron').remote; // TODO: Am I doing this right if I need 'remote'?
+const rq = require('electron-require');
+const dialog = rq.remote('dialog');
+
 const importMeshButton = document.querySelector("#import-mesh")
 const getHelpButton = document.querySelector("#get-help")
 
