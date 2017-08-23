@@ -25,7 +25,7 @@ Set-Alias superfetch_on SuperfetchEnable
 Set-Alias superfetch_off SuperfetchDisable
 
 # System/File System commands.
-function GetEnv { Get-ChildItem Env: }
+function GetEnv { gci env: | Format-Table -Wrap -AutoSize }
 Set-Alias get-env GetEnv
 function GetExtensionsRecursively { dir -recurse | Select-Object extension -Unique }
 Set-Alias get-extensions GetExtensionsRecursively
