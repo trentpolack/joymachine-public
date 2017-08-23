@@ -5,21 +5,39 @@
     <meta charset="UTF-8">
     <title>joy-create</title>
 
-    <!-- Stylesheets -->
+    <!-- Base Photon Stylesheet -->
     <link rel="stylesheet" href="vendor/photon/css/photon.min.css">
-    <link rel="stylesheet" href="extra.css">
 
-    <!-- JS that doesn't like require -->
-    <script src="vendor/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <!-- Application-Specific Theme/Style -->
+    <link rel="stylesheet" href="theme/app.css">
 </head>
 
 <body>
     <div class="window">
         <header class="toolbar toolbar-header">
-            <span class="titletext">Joy Create</span>
-            <button class="btn btn-mini btn-default" id="import-mesh"><span class="icon icon-list-add"></span>&nbsp;import mesh</button>
-            <button class="btn btn-mini btn-default" id="get-help"><span class="icon icon-help"></span>&nbsp;help</button>
-            <!-- TODO: global menu options here -->
+            <h1 class="title">joy-create</h1>
+
+            <div class="toolbar-actions">
+                <div class="btn-group">
+                    <button class="btn btn-default" id="import-mesh">
+                        <span class="icon icon-database"></span>
+                        Load Mesh
+                    </button>
+                    <button class="btn btn-default" id="get-help">
+                        <span class="icon icon-help"></span>
+                        Help
+                    </button>
+                    <button class="btn btn-default" id="get-about">
+                        <span class="icon icon-info-circled"></span>
+                        Help
+                    </button>
+                </div>
+
+                <button class="btn btn-default">
+                    <span class="icon icon-home icon-text"></span>
+                        Filters
+                </button>
+            </div>
         </header>
 
         <!-- App content goes here -->
@@ -28,18 +46,18 @@
                 <div class="pane">
                     <div id="viewport"></div>
                 </div>
-                <div class="pane">
+                <div class="pane-sm sidebar">
                     <!-- script editor -->
-                    <pre id="editor"></pre>
+                    <div id="editor"></div>
                 </div>
             </div>
         </div>
-    </div>
 
 </body>
 
 <script>
-    require('./src/app/app.js')
+    // You can also require other files to run in this process
+    require('./src/app/joyapp.js')
 </script>
 
 </html>

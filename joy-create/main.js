@@ -17,9 +17,11 @@ const url = require('url')
 let mainWindow
 let webContents
 
+let joyapp
+
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({ width: 800, height: 600 })
+    mainWindow = new BrowserWindow({ width: 800, height: 600, show: false })
     webContents = mainWindow.webContents
 
     // and load the index.html of the app.
@@ -32,7 +34,9 @@ function createWindow() {
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
     // Show window when page is ready
-    mainWindow.once('ready-to-show', function() {})
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
+    })
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {
@@ -60,7 +64,6 @@ app.on('activate', function() {
     }
 })
 
-// In this file you can include the rest of your app's specific main process code. You can also put them in separate files and require them here.
 ipcMain.on('load-mesh', function(event, args) {
     // Received from io.js, pass it to renderer.js
     // 	FIXME: this feels like the wrong way to do this for sure

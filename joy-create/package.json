@@ -4,7 +4,7 @@
     "description": "Very, very work-in-progress electron app for a procedural generation (shape-based) system.",
     "main": "main.js",
     "scripts": {
-        "preinstall": "rimraf vendor/stats.min.js && rimraf vendor/ace",
+        "preinstall": "rimraf vendor/codemirror",
         "postinstall": "vendor-copy",
         "start": "electron ."
     },
@@ -25,14 +25,16 @@
         "electron-require": "^0.3.0",
         "gl-matrix": "^2.3.2",
         "lodash": "^4.17.4",
+        "menubar": "^5.2.3",
         "stats-js": "^1.0.0-alpha1",
         "three": "^0.82.1",
         "three-orbit-controls": "^82.1.0",
         "three.meshline": "^1.0.3"
     },
     "devDependencies": {
-        "ace-builds": "^1.2.8",
+        "codemirror": "^5.28.0",
         "colors": "^1.1.2",
+        "devtron": "^1.4.0",
         "electron": "~1.6.2",
         "elemon": "^5.0.3",
         "jquery": "^3.2.1",
@@ -49,12 +51,7 @@
         "viewport": "src/viewport"
     },
     "vendorCopy": [{
-            "from": "node_modules/stats-js/build/stats.min.js",
-            "to": "vendor/stats.min.js"
-        },
-        {
-            "from": "node_modules/ace-builds/src-min",
-            "to": "vendor/ace"
-        }
-    ]
+        "from": "node_modules/codemirror/lib",
+        "to": "vendor/codemirror"
+    }]
 }
