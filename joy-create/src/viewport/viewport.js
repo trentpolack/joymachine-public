@@ -31,7 +31,7 @@ function initViewport(callback, update) {
     //    var container = document.createElement("div");
     viewport.container = document.querySelector("#viewport"); //.appendChild(container);
 
-    
+
 
     // Stats.
     viewport.stats1 = new Stats();
