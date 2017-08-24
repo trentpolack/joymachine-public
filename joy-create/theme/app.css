@@ -1,3 +1,8 @@
+html,
+body {
+    -webkit-app-region: drag;
+}
+
 .titletext {
     vertical-align: middle;
     font-weight: bolder;
@@ -5,11 +10,13 @@
 
 .pane {
     overflow-y: hidden;
+    -webkit-app-region: no-drag;
 }
 
 .pane-sm {
     max-width: 400px;
     min-width: 250px;
+    -webkit-app-region: no-drag;
 }
 
 #editor {

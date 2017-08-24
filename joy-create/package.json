@@ -4,7 +4,7 @@
     "description": "Very, very work-in-progress electron app for a procedural generation (shape-based) system.",
     "main": "main.js",
     "scripts": {
-        "preinstall": "rimraf vendor/codemirror",
+        "preinstall": "rimraf vendor/codemirror && rimraf vendor/jquery",
         "postinstall": "vendor-copy",
         "start": "electron ."
     },
@@ -50,8 +50,14 @@
         "pcg": "src/pcg",
         "viewport": "src/viewport"
     },
-    "vendorCopy": [{
-        "from": "node_modules/codemirror/lib",
-        "to": "vendor/codemirror"
-    }]
+    "vendorCopy": [ 
+        {
+            "from": "node_modules/codemirror/lib",
+            "to": "vendor/codemirror"
+        },
+        {
+            "from": "node_modules/jquery/dist",
+            "to": "vendor/jquery"
+        }
+    ]
 }
