@@ -21,4 +21,4 @@ Most recent change log (which is poorly-updated until we finally find a good gen
 hugs,
 Joy Machine
 
-If you have any questions, feel free to email us: [joy@joy-machine.com](mailto:joy@joy-machine.com).
+If you have any questions, feel free to email us: [joy@joy-machine.com](mailto:joy@joy-machine.com) (or [trent@joy-machine.com](mailto:trent@joy-machine.com) if you prefer that).
