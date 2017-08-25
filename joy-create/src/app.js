@@ -7,8 +7,10 @@ import './helpers/external_links.js';
 // All stuff below is just to show you how it works. You can delete all of it.
 import { remote } from 'electron';
 import jetpack from 'fs-jetpack';
-import { greet } from './hello_world/hello_world';
 import env from './env';
+
+import viewport from './viewport/viewport';
+import editor from './editor/editor';
 
 const app = remote.app;
 const appDir = jetpack.cwd(app.getAppPath());
@@ -23,5 +25,7 @@ const osMap = {
   linux: 'Linux',
 };
 
-document.querySelector('#viewport').innerHTML = greet();
-document.querySelector('#editor').innerHTML = osMap[process.platform];
+viewport.initViewport()
+
+//document.querySelector('#viewport').innerHTML = greet();
+//document.querySelector('#editor').innerHTML = osMap[process.platform];

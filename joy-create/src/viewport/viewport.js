@@ -2,6 +2,9 @@
 
 const rq = require('electron-require');
 
+import THREE from 'three';
+import OrbitControls from 'three-orbit-controls';
+import DAT from 'three';
 const THREE = require('three');
 const OrbitControls = require('three-orbit-controls')(THREE)
 const DAT = require('dat-gui');
@@ -30,8 +33,6 @@ function initViewport(callback, update) {
     //    window.addEventListener('load', function() {
     //    var container = document.createElement("div");
     viewport.container = document.querySelector("#viewport"); //.appendChild(container);
-
-
 
     // Stats.
     viewport.stats1 = new Stats();
