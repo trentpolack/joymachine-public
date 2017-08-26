@@ -9,8 +9,8 @@ import { remote } from 'electron';
 import jetpack from 'fs-jetpack';
 import env from './env';
 
-import viewport from './viewport/viewport';
 import editor from './editor/editor';
+import scene from './viewport/scene';
 
 const app = remote.app;
 const appDir = jetpack.cwd(app.getAppPath());
@@ -25,7 +25,6 @@ const osMap = {
   linux: 'Linux',
 };
 
-viewport.initViewport()
-
+scene.init();
 //document.querySelector('#viewport').innerHTML = greet();
 //document.querySelector('#editor').innerHTML = osMap[process.platform];

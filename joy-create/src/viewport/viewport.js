@@ -1,17 +1,13 @@
 'use strict';
 
-const rq = require('electron-require');
-
-import THREE from 'three';
-import OrbitControls from 'three-orbit-controls';
-import DAT from 'three';
 const THREE = require('three');
 const OrbitControls = require('three-orbit-controls')(THREE)
 const DAT = require('dat-gui');
 
-const Stats = rq('stats-js');
+const Stats = require('stats-js');
 
-function initViewport(callback, update) {
+//function initViewport(callback, update) {
+export default (callback, update) => {
     var gui = new DAT.GUI()
 
     var viewport = {
@@ -31,8 +27,8 @@ function initViewport(callback, update) {
 
     //    // run this function after the window loads
     //    window.addEventListener('load', function() {
-    //    var container = document.createElement("div");
-    viewport.container = document.querySelector("#viewport"); //.appendChild(container);
+    var container = document.createElement("div");
+    viewport.container = document.querySelector("#viewport").appendChild(container);
 
     // Stats.
     viewport.stats1 = new Stats();
@@ -98,6 +94,6 @@ function initViewport(callback, update) {
     return callback(viewport);
 }
 
-module.exports = {
-    initViewport: initViewport
-};
+//module.exports = {
+//    initViewport: initViewport
+//};

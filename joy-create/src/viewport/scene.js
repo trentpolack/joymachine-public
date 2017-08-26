@@ -3,8 +3,9 @@ const path = require('path')
 const THREE = require('three');
 const _ = require('lodash');
 
-module.exports = function( ) {
-    const rq = require('electron-require');
+import viewport from './viewport';
+
+var scene = () => {
     //import Lsystem, { LinkedListToString } from './pcg/lsystem.js'
     //import City from './pcg/city.js'
     //import ShapeGrammar from './pcg/grammar.js'
@@ -13,7 +14,8 @@ module.exports = function( ) {
     var geometry, sun, material;
     var torus;
 
-    window.addEventListener('load', () => {
+//    window.addEventListener('load', () => {
+    function init() {
         ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
         directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 
@@ -33,11 +35,10 @@ module.exports = function( ) {
         torus.castShadow = true;
         torus.receiveShadow = true;
 
-        let viewport = rq.viewport('viewport.js');
-        viewport.initViewport(onLoad, onUpdate);
-    });
+        viewport( onLoad, onUpdate );
+    }
 
-    function renderLight(scene) {
+    function renderLight(viewportScene) {
         var directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 5);
         var cameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
 
@@ -50,12 +51,12 @@ module.exports = function( ) {
         sun.translateY(-100);
         sun.translateZ(20);
 
-        scene.add(directionalLight);
-        scene.add(ambientLight);
-        scene.add(sun);
-        scene.add(torusMesh1);
-        // scene.add(directionalLightHelper);
-        // scene.add(cameraHelper);
+        viewportScene.add(directionalLight);
+        viewportScene.add(ambientLight);
+        viewportScene.add(sun);
+        viewportScene.add(torusMesh1);
+        // viewportScene.add(directionalLightHelper);
+        // viewportScene.add(cameraHelper);
 
     }
 
@@ -94,3 +95,5 @@ module.exports = function( ) {
         sun.position.applyAxisAngle(z, Math.PI / 180);
     }
 };
+
+export default scene;
