@@ -4,72 +4,6 @@ import zipfile
 
 TEXTURE_FILE_PREFIX = "t_"
 
-def do_normal_map(directoryPath, familyRoot, filenameRoot):
-    # pkfg22_4K_Normal.jpg -> pkfg22_4K_n.tga
-    jpg_path = os.path.join(directoryPath, filenameRoot + "Normal.jpg")
-    if not os.path.exists(jpg_path):
-        print('Normal map file is missing: %s' % jpg_path)
-        sys.exit(1)
-
-    tga_path = lower(TEXTURE_FILE_PREFIX + familyRoot + "_n.tga")
-    Image.open(jpg_path).save(tga_path)
-    print(" -> Normal map at %s" % tga_path)
-    return tga_path
-
-def do_albedo_displacement(directoryPath, familyRoot, filenameRoot):
-    # pkfg22_4K_Albedo.jpg (RGB) + pkfg22_4K_Displacement.jpg (A)
-    albedo_jpg_path = os.path.join(directoryPath, filenameRoot + "Albedo.jpg")
-    displacement_jpg_path = os.path.join(directoryPath, filenameRoot + "Displacement.jpg")
-    if not os.path.exists(albedo_jpg_path):
-        print('Albedo file is missing: %s' % albedo_jpg_path)
-        sys.exit(1)
-    if not os.path.exists(displacement_jpg_path):
-        print('Displacement map file is missing: %s' % displacement_jpg_path)
-        sys.exit(1)
-
-    output_tga_path = lower(TEXTURE_FILE_PREFIX + familyRoot + "_a_d.tga")
-    with Image.open(albedo_jpg_path) as albedo_src:
-        with Image.open(displacement_jpg_path) as displacement_src:
-            displacement_alpha = displacement_src.split()[0]
-            with Image.new("RGBA", albedo_src.size) as output:
-                output.paste(albedo_src)
-                output.putalpha(displacement_alpha)
-                output.save(output_tga_path)
-                print(" -> Albedo/Displacement map at %s" % output_tga_path)
-    return output_tga_path
-
-def do_compact_ao(directoryPath, familyRoot, filenameRoot):
-    # pkfg22_4K_Metallic.jpg (R, optional) +
-    # pkfg22_4K_Roughness.jpg (G, mandatory) +
-    # pkfg22_4K_Cavity.jpg (B, mandatory) +
-    # pkfg22_4K_AO.jpg (A, mandatory) +
-    metallic_jpg_path = os.path.join(directoryPath, filenameRoot + "Metallic.jpg")
-    roughness_jpg_path = os.path.join(directoryPath, filenameRoot + "Roughness.jpg")
-    cavity_jpg_path = os.path.join(directoryPath, filenameRoot + "Cavity.jpg")
-    ao_jpg_path = os.path.join(directoryPath, filenameRoot + "AO.jpg")
-    if not os.path.exists(roughness_jpg_path): print('Roughness map is missing: %s' % roughness_jpg_path); sys.exit(1)
-    if not os.path.exists(cavity_jpg_path): print('Cavity map is missing: %s' % cavity_jpg_path); sys.exit(1)
-    if not os.path.exists(ao_jpg_path): print('AO map is missing: %s' % ao_jpg_path); sys.exit(1)
-
-    output_tga_path = lower(TEXTURE_FILE_PREFIX + familyRoot + "_m_r_c_ao.tga")
-
-    with Image.open(ao_jpg_path) as ao_src:
-        with Image.open(cavity_jpg_path) as cavity_src:
-            with Image.open(roughness_jpg_path) as roughness_src:
-                if os.path.exists(metallic_jpg_path):
-                    # this set has a metallic
-                    metallic_src = Image.open(metallic_jpg_path)
-                else:
-                    # no metallic, use a stub black one
-                    metallic_src = Image.new('RGBA', ao_src.size)
-
-                output = Image.merge("RGBA", (metallic_src.split()[0], roughness_src.split()[0], cavity_src.split()[0], ao_src.split()[0]))
-                output.save(output_tga_path)
-                print(" -> M/R/C/AO map at %s" % output_tga_path)
-
-                metallic_src.close()
-    return output_tga_path
-
 def get_family_root(directoryPath):
     return os.path.basename(os.path.normpath(directoryPath))
 
@@ -81,17 +15,78 @@ def get_filename_root(directoryPath):
     albedo_idx = albedo_path.lower().find("albedo")
     return albedo_path[:albedo_idx]
 
-def handle_directory(directoryPath):
+def get_filename_for_channel(directoryPath, filenameRoot, channel_type):
+    # e.g. "pkfg22_4K_" + "Roughness.jpg"
+    return os.path.join(directoryPath, filenameRoot + channel_type)
+
+def is_rgb_plan(plan):
+    return 'r' in plan and 'g' in plan and 'b' in plan
+
+def do_single_channel(directoryPath, familyRoot, filenameRoot, outputSuffix, single_channel_name):
+    output_tga_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
+
+    # load the channel
+    sourceChannelPath = get_filename_for_channel(directoryPath, filenameRoot, single_channel_name)
+    with Image.open(sourceChannelPath) as sourceChannel:
+        with Image.new('L', sourceChannel.size) as output:
+            output.paste(sourceChannel)
+            output.save(output_tga_path)
+    return output_tga_path
+
+def do_rgb(directoryPath, familyRoot, filenameRoot, outputSuffix, plan):
+    output_tga_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
+
+    # HACK: since M is optional in M_R_AO, we're going to go backwards
+    # and just guess that AO is always here and M isn't. in the future, maybe
+    # add some magic to the filename for 'is optional?' but then how do we decide
+    # sizes? who cares for now...
+    b_path = get_filename_for_channel(directoryPath, filenameRoot, plan['b'])
+    g_path = get_filename_for_channel(directoryPath, filenameRoot, plan['g'])
+    r_path = get_filename_for_channel(directoryPath, filenameRoot, plan['r'])
+
+    with Image.open(b_path) as bSource:
+        with Image.open(g_path) as gSource:
+            if os.path.exists(r_path):
+                rSource = Image.open(r_path)
+            else:
+                rSource = Image.new('RGB', bSource.size)
+
+            output = Image.merge('RGB', (rSource.split()[0], gSource.split()[0], bSource.split()[0]))
+            output.save(output_tga_path)
+
+            rSource.close()
+
+    return output_tga_path
+
+def pack_directory(directoryPath, plan):
     if not os.path.isdir(directoryPath):
         print('Directory %s does not exist. Aborting.' % (directoryPath))
         sys.exit(1)
     family_root = get_family_root(directoryPath)
     filename_root = get_filename_root(directoryPath)
     print('Handling family %s at %s*.jpg' % (family_root, filename_root))
-    normal_map_path = do_normal_map(directoryPath, family_root, filename_root)
-    ad_path = do_albedo_displacement(directoryPath, family_root, filename_root)
-    compact_path = do_compact_ao(directoryPath, family_root, filename_root)
-    archive_family(family_root, [normal_map_path, ad_path, compact_path])
+
+    converted = []
+
+    for planned_suffix in plan:
+        planned = plan[planned_suffix]
+        # determine k or r, g, b
+        if 'k' in planned.keys():
+            # single channel mode
+            greyscale_result = do_single_channel(directoryPath, family_root, filename_root, planned_suffix, planned['k'])
+            converted.append(greyscale_result)
+            print 'Rule ' + planned_suffix + ' (1-channel) generated file ' + greyscale_result
+        elif is_rgb_plan(planned):
+            # assume r, g, b
+            colour_result = do_rgb(directoryPath, family_root, filename_root, planned_suffix, planned)
+            converted.append(colour_result)
+            print 'Rule ' + planned_suffix + ' (RGB) generated file ' + colour_result
+        else:
+            print 'Error in build plan: Do not know how to handle ' + planned_suffix + ', channels provided are ' + ', '.join(planned.keys())
+            return
+
+    # all done, bundle them into a zip.
+    archive_family(family_root, converted)
 
 def archive_family(family_root, paths):
     zipname = lower(family_root.strip("-_ ") + ".zip")
@@ -107,10 +102,36 @@ def printUsage():
     print('Usage: %s [directories]' % (sys.argv[0]))
 
 def main():
+    plan = {
+        # r = red, g = green, b = blue, k = grey (single channel)
+        'm_r_ao.png': {
+            # Metallic, roughness, AO
+            'r': 'Metallic.jpg',
+            'g': 'Roughness.jpg',
+            'b': 'AO.jpg'
+        },
+        'c.png': {
+            # Just cavity
+            'k': 'Cavity.jpg'
+        },
+        'a.png': {
+            # Just albedo
+            'k': 'Albedo.jpg'
+        },
+        'd.png': {
+            # Displacement map (single channel texture)
+            'k': 'Displacement.jpg'
+        },
+        'n.png': {
+            # Normal map
+            'k': 'Normal.jpg'
+        }
+    }
+
     if len(sys.argv) < 2:
         printUsage()
         sys.exit(1)
     for d in sys.argv[1:]:
-        handle_directory(d)
+        pack_directory(d, plan)
 
 if __name__ == '__main__': main()
