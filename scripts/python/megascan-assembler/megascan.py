@@ -104,25 +104,25 @@ def printUsage():
 def main():
     plan = {
         # r = red, g = green, b = blue, k = grey (single channel)
-        'm_r_ao.png': {
+        '_m_r_ao.png': {
             # Metallic, roughness, AO
             'r': 'Metallic.jpg',
             'g': 'Roughness.jpg',
             'b': 'AO.jpg'
         },
-        'c.png': {
+        '_c.png': {
             # Just cavity
             'k': 'Cavity.jpg'
         },
-        'a.png': {
+        '_a.png': {
             # Just albedo
             'k': 'Albedo.jpg'
         },
-        'd.png': {
+        '_d.png': {
             # Displacement map (single channel texture)
             'k': 'Displacement.jpg'
         },
-        'n.png': {
+        '_n.png': {
             # Normal map
             'k': 'Normal.jpg'
         }
