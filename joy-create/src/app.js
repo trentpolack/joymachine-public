@@ -10,7 +10,7 @@ import jetpack from 'fs-jetpack';
 import env from './env';
 
 import editor from './editor/editor';
-import scene from './viewport/scene';
+import { scene } from './viewport/scene';
 
 const app = remote.app;
 const appDir = jetpack.cwd(app.getAppPath());
