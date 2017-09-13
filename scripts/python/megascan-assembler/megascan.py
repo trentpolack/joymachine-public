@@ -23,18 +23,18 @@ def is_rgb_plan(plan):
     return 'r' in plan and 'g' in plan and 'b' in plan
 
 def do_single_channel(directoryPath, familyRoot, filenameRoot, outputSuffix, single_channel_name):
-    output_tga_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
+    output_file_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
 
     # load the channel
     sourceChannelPath = get_filename_for_channel(directoryPath, filenameRoot, single_channel_name)
     with Image.open(sourceChannelPath) as sourceChannel:
         with Image.new('L', sourceChannel.size) as output:
             output.paste(sourceChannel)
-            output.save(output_tga_path)
-    return output_tga_path
+            output.save(output_file_path)
+    return output_file_path
 
 def do_rgb(directoryPath, familyRoot, filenameRoot, outputSuffix, plan):
-    output_tga_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
+    output_file_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
 
     # HACK: since M is optional in M_R_AO, we're going to go backwards
     # and just guess that AO is always here and M isn't. in the future, maybe
@@ -52,11 +52,11 @@ def do_rgb(directoryPath, familyRoot, filenameRoot, outputSuffix, plan):
                 rSource = Image.new('RGB', bSource.size)
 
             output = Image.merge('RGB', (rSource.split()[0], gSource.split()[0], bSource.split()[0]))
-            output.save(output_tga_path)
+            output.save(output_file_path)
 
             rSource.close()
 
-    return output_tga_path
+    return output_file_path
 
 def pack_directory(directoryPath, plan):
     if not os.path.isdir(directoryPath):
@@ -113,6 +113,14 @@ def main():
         '_c.png': {
             # Just cavity
             'k': 'Cavity.jpg'
+        },
+        '_o.png': {
+            # Opacity (mask).
+            'k': 'Opacity.jpg'
+        },
+        '_t.png': {
+            # Translucency (subsurface scattering -- generally reserved only for foliage).
+            'k': 'Translucency.jpg'
         },
         '_a.png': {
             # Just albedo
