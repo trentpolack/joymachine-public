@@ -152,7 +152,7 @@ def main():
             'b': 'AO.jpg'
         },
         '_n.png': {
-            # Just rename the file.
+            # Normal map
             'n': 'Normal.jpg'
         },
         '_c.png': {
@@ -174,10 +174,6 @@ def main():
         '_d.png': {
             # Displacement map (single channel texture)
             'k': 'Displacement.jpg'
-        },
-        '_n.png': {
-            # Normal map
-            'n': 'Normal.jpg'
         }
     }
 
