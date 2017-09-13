@@ -27,11 +27,18 @@ def do_single_channel(directoryPath, familyRoot, filenameRoot, outputSuffix, sin
 
     # load the channel
     sourceChannelPath = get_filename_for_channel(directoryPath, filenameRoot, single_channel_name)
-    with Image.open(sourceChannelPath) as sourceChannel:
+    try:
+        sourceChannel = Image.open(sourceChannelPath)
+    except IOError:
+        return
+    else:
         with Image.new('L', sourceChannel.size) as output:
             output.paste(sourceChannel)
             output.save(output_file_path)
-    return output_file_path
+            return output_file_path
+
+    # File doesn't exist.
+    return
 
 def do_rgb(directoryPath, familyRoot, filenameRoot, outputSuffix, plan):
     output_file_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
@@ -67,15 +74,15 @@ def pack_directory(directoryPath, plan):
     print('Handling family %s at %s*.jpg' % (family_root, filename_root))
 
     converted = []
-
     for planned_suffix in plan:
         planned = plan[planned_suffix]
         # determine k or r, g, b
         if 'k' in planned.keys():
-            # single channel mode
             greyscale_result = do_single_channel(directoryPath, family_root, filename_root, planned_suffix, planned['k'])
-            converted.append(greyscale_result)
-            print 'Rule ' + planned_suffix + ' (1-channel) generated file ' + greyscale_result
+            if greyscale_result is not None:
+                # single channel mode
+                converted.append(greyscale_result)
+                print 'Rule ' + planned_suffix + ' (1-channel) generated file ' + greyscale_result
         elif is_rgb_plan(planned):
             # assume r, g, b
             colour_result = do_rgb(directoryPath, family_root, filename_root, planned_suffix, planned)
