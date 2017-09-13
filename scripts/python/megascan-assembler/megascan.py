@@ -111,6 +111,12 @@ def pack_directory(directoryPath, plan):
                 # Yay, Trent copied a file.
                 converted.append(normal_result)
                 print 'Rule ' + planned_suffix + ' generated normal map ' + normal_result
+        elif 't' in planned.keys():
+            transparency_result = do_saveas(directoryPath, family_root, filename_root, planned_suffix, planned['t'])
+            if transparency_result is not None:
+                # Yay, Trent copied a file.
+                converted.append(transparency_result)
+                print 'Rule ' + planned_suffix + ' generated transparency map ' + transparency_result
         elif is_rgb_plan(planned):
             # assume r, g, b
             colour_result = do_rgb(directoryPath, family_root, filename_root, planned_suffix, planned)
@@ -159,7 +165,7 @@ def main():
         },
         '_t.png': {
             # Translucency (subsurface scattering -- generally reserved only for foliage).
-            'k': 'Translucency.jpg'
+            't': 'Translucency.jpg'
         },
         '_a.png': {
             # Just albedo
