@@ -40,6 +40,22 @@ def do_single_channel(directoryPath, familyRoot, filenameRoot, outputSuffix, sin
     # File doesn't exist.
     return
 
+def do_saveas(directoryPath, familyRoot, filenameRoot, outputSuffix, output_name):
+    output_file_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
+
+    # Just copy the normal channel over. There has to be a better way to do this. But I'm Trent and I've never used Python before.
+    n_path = get_filename_for_channel(directoryPath, filenameRoot, output_name)
+
+    try:
+        nSource = Image.open(n_path)
+    except IOError:
+        return
+    else:
+        nSource.save(output_file_path)
+        return output_file_path
+
+    return
+
 def do_rgb(directoryPath, familyRoot, filenameRoot, outputSuffix, plan):
     output_file_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
 
@@ -83,6 +99,18 @@ def pack_directory(directoryPath, plan):
                 # single channel mode
                 converted.append(greyscale_result)
                 print 'Rule ' + planned_suffix + ' (1-channel) generated file ' + greyscale_result
+        elif 'a' in planned.keys():
+            albedo_result = do_saveas(directoryPath, family_root, filename_root, planned_suffix, planned['a'])
+            if albedo_result is not None:
+                # Yay, Trent copied a file.
+                converted.append(albedo_result)
+                print 'Rule ' + planned_suffix + ' generated albedo map ' + albedo_result
+        elif 'n' in planned.keys():
+            normal_result = do_saveas(directoryPath, family_root, filename_root, planned_suffix, planned['n'])
+            if normal_result is not None:
+                # Yay, Trent copied a file.
+                converted.append(normal_result)
+                print 'Rule ' + planned_suffix + ' generated normal map ' + normal_result
         elif is_rgb_plan(planned):
             # assume r, g, b
             colour_result = do_rgb(directoryPath, family_root, filename_root, planned_suffix, planned)
@@ -110,12 +138,16 @@ def printUsage():
 
 def main():
     plan = {
-        # r = red, g = green, b = blue, k = grey (single channel)
+        # r = red, g = green, b = blue, n = normal map, k = grey (single channel)
         '_m_r_ao.png': {
             # Metallic, roughness, AO
             'r': 'Metallic.jpg',
             'g': 'Roughness.jpg',
             'b': 'AO.jpg'
+        },
+        '_n.png': {
+            # Just rename the file.
+            'n': 'Normal.jpg'
         },
         '_c.png': {
             # Just cavity
@@ -131,7 +163,7 @@ def main():
         },
         '_a.png': {
             # Just albedo
-            'k': 'Albedo.jpg'
+            'a': 'Albedo.jpg'
         },
         '_d.png': {
             # Displacement map (single channel texture)
@@ -139,7 +171,7 @@ def main():
         },
         '_n.png': {
             # Normal map
-            'k': 'Normal.jpg'
+            'n': 'Normal.jpg'
         }
     }
 
