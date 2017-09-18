@@ -5,24 +5,33 @@ import zipfile
 TEXTURE_FILE_PREFIX = "t_"
 
 def get_family_root(directoryPath):
+    """ guess the path on disk to the texture family's directory """
     return os.path.basename(os.path.normpath(directoryPath))
 
 def get_filename_root(directoryPath):
-    # figure out who the albedo is
+    """ guess the prefix of texture filenames """
+    # guess the filename root by figuring out the full filename for 'albedo'
     albedo_path = next(f for f in os.listdir(directoryPath) if "albedo" in f.lower())
     if albedo_path == None:
         print('Could not find an albedo file in directory %s. Aborting.' % directoryPath)
+    # ...then chop that full filename, to guess the prefix
     albedo_idx = albedo_path.lower().find("albedo")
     return albedo_path[:albedo_idx]
 
 def get_filename_for_channel(directoryPath, filenameRoot, channel_type):
+    """ combine the directory path and filename root to guess the filename for a source image """
     # e.g. "pkfg22_4K_" + "Roughness.jpg"
     return os.path.join(directoryPath, filenameRoot + channel_type)
 
-def is_rgb_plan(plan):
+def is_combined_texture_plan(plan):
+    """
+    If true, this texture is composed of three other single-channel textures,
+    which are copied into the R, G, and B channels of the destination image.
+    """
     return 'r' in plan and 'g' in plan and 'b' in plan
 
 def do_single_channel(directoryPath, familyRoot, filenameRoot, outputSuffix, single_channel_name):
+    """ Take a texture from disk and convert it to a single-channel texture """
     output_file_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
 
     # load the channel
@@ -41,6 +50,7 @@ def do_single_channel(directoryPath, familyRoot, filenameRoot, outputSuffix, sin
     return
 
 def do_saveas(directoryPath, familyRoot, filenameRoot, outputSuffix, output_name):
+    """ Take an RGB texture from disk and save it as an RGB texture with the name and format we expect """
     output_file_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
 
     # Just copy the normal channel over. There has to be a better way to do this. But I'm Trent and I've never used Python before.
@@ -57,6 +67,7 @@ def do_saveas(directoryPath, familyRoot, filenameRoot, outputSuffix, output_name
     return
 
 def do_rgb(directoryPath, familyRoot, filenameRoot, outputSuffix, plan):
+    """ Take multiple textures and combine them into a single RGB texture. """
     output_file_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
 
     # HACK: since M is optional in M_R_AO, we're going to go backwards
@@ -99,31 +110,19 @@ def pack_directory(directoryPath, plan):
                 # single channel mode
                 converted.append(greyscale_result)
                 print 'Rule ' + planned_suffix + ' (1-channel) generated file ' + greyscale_result
-        elif 'a' in planned.keys():
-            albedo_result = do_saveas(directoryPath, family_root, filename_root, planned_suffix, planned['a'])
-            if albedo_result is not None:
-                # Yay, Trent copied a file.
-                converted.append(albedo_result)
-                print 'Rule ' + planned_suffix + ' generated albedo map ' + albedo_result
-        elif 'n' in planned.keys():
-            normal_result = do_saveas(directoryPath, family_root, filename_root, planned_suffix, planned['n'])
-            if normal_result is not None:
-                # Yay, Trent copied a file.
-                converted.append(normal_result)
-                print 'Rule ' + planned_suffix + ' generated normal map ' + normal_result
-        elif 't' in planned.keys():
-            transparency_result = do_saveas(directoryPath, family_root, filename_root, planned_suffix, planned['t'])
-            if transparency_result is not None:
-                # Yay, Trent copied a file.
-                converted.append(transparency_result)
-                print 'Rule ' + planned_suffix + ' generated transparency map ' + transparency_result
-        elif is_rgb_plan(planned):
-            # assume r, g, b
+        elif 'rgb' in planned.keys():
+            # copy this texture directly
+            copied_result = do_saveas(directoryPath, family_root, filename_root, planned_suffix, planned['rgb'])
+            if copied_result is not None:
+                converted.append(copied_result)
+                print 'Rule ' + planned_suffix + ' was converted to RGB texture ' + copied_result
+        elif is_combined_texture_plan(planned):
+            # assume r, g, b => rgb
             colour_result = do_rgb(directoryPath, family_root, filename_root, planned_suffix, planned)
             converted.append(colour_result)
             print 'Rule ' + planned_suffix + ' (RGB) generated file ' + colour_result
         else:
-            print 'Error in build plan: Do not know how to handle ' + planned_suffix + ', channels provided are ' + ', '.join(planned.keys())
+            print 'Error in build plan: Do not know how to build ' + planned_suffix + ', channels provided are ' + ', '.join(planned.keys())
             return
 
     # all done, bundle them into a zip.
@@ -144,7 +143,7 @@ def printUsage():
 
 def main():
     plan = {
-        # r = red, g = green, b = blue, n = normal map, k = grey (single channel)
+        # r = red, g = green, b = blue, k = grey (single channel), 'rgb' = copy directly
         '_m_r_ao.png': {
             # Metallic, roughness, AO
             'r': 'Metallic.jpg',
@@ -153,7 +152,7 @@ def main():
         },
         '_n.png': {
             # Normal map
-            'n': 'Normal.jpg'
+            'rgb': 'Normal.jpg'
         },
         '_c.png': {
             # Just cavity
@@ -165,11 +164,11 @@ def main():
         },
         '_t.png': {
             # Translucency (subsurface scattering -- generally reserved only for foliage).
-            't': 'Translucency.jpg'
+            'rgb': 'Translucency.jpg'
         },
         '_a.png': {
             # Just albedo
-            'a': 'Albedo.jpg'
+            'rgb': 'Albedo.jpg'
         },
         '_d.png': {
             # Displacement map (single channel texture)
