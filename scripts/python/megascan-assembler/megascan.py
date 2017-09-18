@@ -53,15 +53,15 @@ def do_saveas(directoryPath, familyRoot, filenameRoot, outputSuffix, output_name
     """ Take an RGB texture from disk and save it as an RGB texture with the name and format we expect """
     output_file_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
 
-    # Just copy the normal channel over. There has to be a better way to do this. But I'm Trent and I've never used Python before.
-    n_path = get_filename_for_channel(directoryPath, filenameRoot, output_name)
+    # Just copy the entire image over.
+    source_path = get_filename_for_channel(directoryPath, filenameRoot, output_name)
 
     try:
-        nSource = Image.open(n_path)
+        source = Image.open(source_path)
     except IOError:
         return
     else:
-        nSource.save(output_file_path)
+        source.save(output_file_path)
         return output_file_path
 
     return
