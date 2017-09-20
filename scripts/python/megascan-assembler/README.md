@@ -15,9 +15,14 @@ Defined in requirements.txt (automatically install the dependencies via `pip ins
  * Pillow library
 
 ## Packed-channel Textures
-Right now the only textures it generates are:
- * Normal map (`n.tga`) - Direct copy of the Normal.jpg source texture
- * Albedo/displacement (`a_d.tga`) - Albedo.jpg packed into RGB, displacement packed into the alpha channel
- * Metallic/Roughness/Cavity/AO (`m_r_c_ao.tga`) - Metallic packed into R, Roughness packed into G, Cavity packed into B, AO packed into the alpha channel.
-  * If Metallic does not exist, will just render 0 into R.
-  * TODO: Implement Specular/Roughness/Cavity/AO
+A very simple strategy is used to assemble textures. Right now it's set to:
+ * Metallic + Roughness + AO -> `_m_r_ao.png`
+   * Metallic (R)
+   * Roughness (G)
+   * AO (B)
+ * Cavity -> `_c.png`
+ * Albedo -> `_a.png`
+ * Opacity (mask) -> `_o.png`
+ * Translucency (typically subsurface scattering coloring on foliage) -> `_t.png`
+ * Displacement -> `_d.png`
+ * Normal map -> `_n.png`

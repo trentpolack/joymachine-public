@@ -6,19 +6,22 @@ We're adding to this pretty regularly, so check in every now and then to see wha
 
 Most recent change log (which is poorly-updated until we finally find a good generator): [CHANGELOG.md](https://github.com/joymachinegames/joymachine-public/blob/master/CHANGELOG.md).
 
-* `git` - Some git configurations for ignoring files, LFS-managed files, and then detailed config settings for everyday interaction with git on the command line.
-* `tools` - Tools for content generation (`joy-create` -- nowhere near useful yet and `jmkernels` for generating an HDR/EXE file for use as an FFT bloom convolution image in UE 4.16+ (can be customized further for stylization).
-* `scripts` - Miscellaneous scripts (tools, powershell, visual studio extensions, batch files, etc.) 
-* `ue4-source` - Whatever C++ actors/components/utilities/etc. we end up being able to easily divorce from our projects. Or, if not easily divorced, whatever seems worth divorcing so others never have to know the pain that we did. This will likely be the least frequently-updated part of the repo.
-* `ue4` - Our general-purpose Unreal Engine 4 stockpile. Contains our team production conventions and, more interestingly at the moment, a variety of material functions and our "standard shader set" (they're just materials, but I call them shaders because they're pretty... intense). There is also an old procedural water and wave generation/rendering asset set (all done through the material editor) if, you know, you like water.
+* `git` -- Some git configurations for ignoring files, LFS-managed files, and then detailed config settings for everyday interaction with git on the command line.
+* `joy-create` -- A very, very, _very_ work-in-progress electron application for procedurally generating meshes from simple primitives or other imported meshes. The result can then be exported as an FBX. Eventually.
+* `tools` -- Tools for content generation (`jmkernels` for generating an HDR/EXE file for use as an FFT bloom convolution image in UE 4.16+ (can be customized further for stylization).
+* `scripts` -- Miscellaneous scripts (tools, powershell, visual studio extensions, batch files, etc.) 
+* `ue4-source` -- Whatever C++ actors/components/utilities/etc. we end up being able to easily divorce from our projects. Or, if not easily divorced, whatever seems worth divorcing so others never have to know the pain that we did. This will likely be the least frequently-updated part of the repo.
+* `ue4` -- Our general-purpose Unreal Engine 4 stockpile. Contains our team production conventions and, more interestingly at the moment, a variety of material functions and our "standard shader set" (they're just materials, but I call them shaders because they're pretty... intense). There is also an old procedural water and wave generation/rendering asset set (all done through the material editor) if, you know, you like water.
 
 ### Other Things of Note:
-* [RESOURCES.md](https://github.com/joymachinegames/joymachine-public/blob/master/RESOURCES.md) -- A list of general resources for game development across a number of disciplines. (Work-in-Progress at the moment)
-* [AWESOME_SOFTWARE.md](https://github.com/joymachinegames/joymachine-public/blob/master/AWESOME_SOFTWARE.md) -- Has a list of all of the software that I (trent) have found to be the best solution within its given context.
-* [AWESOME_GAMEDEV_MENTORS](https://ishansharma.github.io/twitter-mentors/) -- Technically, it's "twitter-mentors", but I like my name better. Anyway, this is [@ishansharma](https://github.com/ishansharma)'s compilation of people ([@trentpolack](https://github.com/trentpolack) included) who offer game development mentoring to anyone that seeks it.
+* [**RESOURCES**](https://github.com/joymachinegames/joymachine-public/blob/master/RESOURCES.md) -- A list of general resources for game development across a number of disciplines. (Work-in-Progress at the moment)
+* [**AWESOME_SOFTWARE**](https://github.com/joymachinegames/joymachine-public/blob/master/AWESOME_SOFTWARE.md) -- Has a list of all of the software that I (trent) have found to be the best solution within its given context.
+* [**AWESOME_GAMEDEV_MENTORS**](https://ishansharma.github.io/twitter-mentors/) -- Technically, it's "twitter-mentors", but I like my name better. Anyway, this is [@ishansharma](https://github.com/ishansharma)'s compilation of people ([@trentpolack](https://github.com/trentpolack) included) who offer game development mentoring to anyone that seeks it.
+* [**Unreal Engine 4 - General Information**](https://github.com/joymachinegames/joymachine-public/blob/master/ue4/README.md) -- A collection of information, links, and whatever else seems helpful to include. It also contains a summary of the UE4 content contained therein.
+* [**Unreal Engine 4 - Joy Machine Conventions**](https://github.com/joymachinegames/joymachine-public/blob/master/ue4/CONVENTIONS.md) -- Our internal development conventions for working with UE4.
 
 ### More to Come!
 hugs,
 Joy Machine
 
-If you have any questions, feel free to email us: [joy@joy-machine.com](mailto:joy@joy-machine.com).
+If you have any questions, feel free to email us: [joy@joy-machine.com](mailto:joy@joy-machine.com) (or [trent@joy-machine.com](mailto:trent@joy-machine.com) if you prefer that).
