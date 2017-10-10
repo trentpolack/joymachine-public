@@ -1,11 +1,67 @@
-v0.0.7 / 2017-07-23
-=============
+v0.1.0 / 2017-10-10
+===================
+  * WARNING: ue4 asset folder hierarchy will invalidate old assets. Changed the hierarchy/naming conventions for the ue4 asset folder. Which also means that I had to delete all the old assets or they would no longer work anyway, so this is kind of a clean slate. On the plus side: lot's of new, rewritten, tweaked, improved, added etc. material functions/shaders/etc.
+  * Remove references to 'normal' in the do_saveas code, since it is not just for normals
+  * Add 'rgb' texture build rule, which just copies the texture using the do_saveas function
+  * Completely rewrote the master foliage shader, the material functions for handling wind, added an easy hue-saturation-luminance material function, and other fun stuff. Will document later.
+  * Added a 'deletebranch' alias to help with deleting branches locally and remotely.
+  * I also apparently REALLY wanted to handle the normal map case an extra time or so.
+  * Balls. Forgot about the transparency/SSS map.
+  * Fixed the albedo/normal maps being output as single-channel images. BOOSH. I KNOW PYTHON NOW.
+  * Good news: I was right to think I was stupid and kind of fixed the python script (I don't know python). Bad news: normal maps are wonked up on output and the powershell script is all sorts of sideways bad.
+  * Added support for opacity masks and subsurface (translucency) textures -- each as their own output. I haven't tested these changes yet, but what could go wrong.
+  * Updated a bunch of material functions: `mf_truesky_directional_light` (which is actually a light function material), `mf_luminance`, `mf_radial_color`, and `mf_radial_normal`.
+  * Forgot to add the trailing _ on the suffixes
+  * Update readme for clarification
+  * Megascan assembler has a dynamic strategy now and no longer generates RGBA textures because those were huge.
+  * Actually for-realsies updating the README to reflect the state of the repo.
+  * Adding information about joy-create.
+  * Added email address.
+  * Updated the RESOURCES page with some additional links.
+  * Updated the speedtree master shader as well as the master triplanar one.
+  * Added a material function for angle-based roughness; while this functionality exists at a high-level in UE 4.17, it doesn't allow for any customization.
+  * Added the beginning of a new foliage master shader; it's... Costly. Maybe decent ideas, but not practical yet.
+  * Moved joy-create back to the repo root as I want to give it some love during these painful SH build times lately.
+  * Added a link to the RESOURCES.md page in the README.
+  * Added syntax highlighting for shaders links.
+  * Much, much more handy way to get environment variables (yay table wrapping).
+  * Starting a general resources file; currently only has one link.
+  * Added a powershell alias for printing out a file directory tree to a text file (it's handy, okay); needs a text file as its one and only argument.
+  * Apparently mentions aren't a thing in READMEs.
+  * Added TAA sharpening link.
+  * Moved generate-changelog.ps1 to scripts-standalone subdirectory (scripts subdirectory is automatically searched/executed at startup if you use the existing powershell profile from this repo.
+  * Moved generate-changelog.ps1 to the scripts folder. Like it should have been initially. If I wasn't dumb.
+  * Added generate-changelog.ps1 and updated README.
+  * Updating foliage and standard (+ standard metallic) master materials.
+  * Moved jmkernels up a directory; renamed it to joy-kernels.
+  * Create `CONTRIBUTING.md`
+  * Create `CODE_OF_CONDUCT.md`
+  * Added article link.
+  * Updating the gitattributes template with DLL/PDB/LIB.
+  * Documenting holy-fsck.
+  * Added alias `holy-fsck`. What? It's useful.
+  * Removed `git cl` as I didn't want to include things with dependencies.
+  * Updating README with new aliases and colors/decorators.
+  * Fixed the wonky tabs going on, what the hell, git.
+  * Added get-extension-files to list all files of a given extension in a directory. Updated the sample powershell profile with some new commands.
+  * Attribution is nice sometimes.
+  * Stupid vi. No one likes vi.
+  * Added an .inputrc for OSX/bash that make terminals... Much better.
+  * Ignore .DS_Store on OSX.
+  * Added an 's' alias for showing a colored, minimal git status
+  * Removed specific folder filters for LFS; now blanket applied to UASSET/UMAP files.
+  * Added a whole bunch of fancy new aliases to the gitconfig template.
+  * Fixed the awful `mf_normal_lerp`. Updated `mf_wind` (and `mpc_world`).
 
-  * Add PNG compressor script.
-  * Adding some additional powershell scripts/aliases.
+v0.0.7 / 2017-07-23
+===================
+
+  * Adding v0.0.7 changelog.
   * Fixed mentor link to go to the site, not the repo for the site.
   * Added @ishansharma callout proper.
   * Added gamedev mentors link.
+  * Add PNG compressor script.
+  * Adding some additional powershell scripts/aliases.
 
 v0.0.6 / 2017-07-05
 ===================
@@ -26,8 +82,8 @@ v0.0.5 / 2017-06-30
   * Adding a batch file of limited-usefulness outside our terrain tile export process.
   * Updating README to reflect reorganized repo.
   * Improved distance fade material function; fade SSS on foliage over distance.
-  * Add readme for rename_images_by_timestamp.py
-  * Renamed rename_by_timestamp.py to rename_images_by_timestamp.py
+  * Add readme for `rename_images_by_timestamp.py`
+  * Renamed `rename_by_timestamp.py` to `rename_images_by_timestamp.py`
   * Tweaks to python image rename script to use modified date + support JPG/GIF. Moved tools to scripts folder.
   * Add script to create copies of PNG files w/ filenames prefixed with their creation time (Windows only)
   * Added section on collision filtering.
@@ -88,7 +144,7 @@ v0.0.2 / 2017-05-02
   * Added CHANGELOG.md link in the README.
   * Added a change log.
   * Made the root README suck marginally less.
-  * Revamped m_foliage_master (just so happened to be working on our foliage today. COIIIINCIDENCE).
+  * Revamped `m_foliage_master` (just so happened to be working on our foliage today. COIIIINCIDENCE).
   * moved a lot of 3rd-party files into 'vendor' and also added babylon.js
   * Adding dumb changelog, but better than nothing. Still trying to find a good generator.
   * Additional information on PBR adherence.
@@ -113,7 +169,7 @@ v0.0.1 / 2017-04-30
   * Added batch file for renaming branches on local and remote git repos. Will eventually be replaced with a git alias.
   * Replaced the Content/char directory with Content/mech.
   * Added material-related naming conventions.
-  * Updated the materials library. added: mf_distance_fade (kind of what it sounds like). added: mf_fresnel_gradient (this may not work at the moment). added: mf_fuzzy_shading (more customizable version of Epic's fuzzy shading function). added: mf_highprecision_worldpos_sampling (I hope it's what it sounds like because I don't remember even writing it). added: mf_luminance_adaptive (calculates the luminance of a single buffer sample, optionally taking eye adaptation into account). added: mf_metallic_shading (exaggerated shading for metallic materials; based on Epic's with iterations on our side). added: smooth step material function; changed scalar-based one based on research, float3 one is pretty standard. added: SRGB->Linear color conversation using a best-fit value. added: A whole lot of texture bombing functions in order to split out the complexity from Epic's one-stop-shopping one. Note: still very expensive. added: mf_truesky_directional_light (just a copy of trueSKY's shadow mapping function). added: mf_wind (gets a float4 from a material parameter collection and uses the X/Y as wind direction and W as wind speed). added: the miscellaneous post-effect sharpening materials I've been playing with.
+  * Updated the materials library. added: `mf_distance_fade` (kind of what it sounds like). added: `mf_fresnel_gradient` (this may not work at the moment). added: `mf_fuzzy_shading` (more customizable version of Epic's fuzzy shading function). added: `mf_highprecision_worldpos_sampling` (I hope it's what it sounds like because I don't remember even writing it). added: `mf_luminance_adaptive` (calculates the luminance of a single buffer sample, optionally taking eye adaptation into account). added: `mf_metallic_shading` (exaggerated shading for metallic materials; based on Epic's with iterations on our side). added: smooth step material function; changed scalar-based one based on research, float3 one is pretty standard. added: SRGB->Linear color conversation using a best-fit value. added: A whole lot of texture bombing functions in order to split out the complexity from Epic's one-stop-shopping one. Note: still very expensive. added: `mf_truesky_directional_light` (just a copy of trueSKY's shadow mapping function). added: mf_wind (gets a float4 from a material parameter collection and uses the X/Y as wind direction and W as wind speed). added: the miscellaneous post-effect sharpening materials I've been playing with.
   * Misc. updates and fixed the list views.
   * Updated CONVENTIONS.md with some filename prefixes.
   * Created CONVENTIONS.md and got it kinda started.
