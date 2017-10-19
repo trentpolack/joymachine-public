@@ -1,7 +1,9 @@
 # Research Papers
 List of a bunch of rendering whitepapers I've found handy over the years.
-  NOTE: Not all of these have links I can distribute, but they can be found. They're usually just behind registration pages and such.
-  NOTE_2: I'll link to what I can later, I want to get the proper source and these have just accumulated in my dropbox folder.
+
+**NOTE**: Not all of these have links I can distribute, but they can be found. They're usually just behind registration pages and such.
+  
+**NOTE-2**: I'll link to what I can later, I want to get the proper source and these have just accumulated in my dropbox folder.
 
 # Graphics, Rendering, and Shading
 - **Real Shading in Unreal Engine 4** - Bryan Karis
