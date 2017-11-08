@@ -8,3 +8,4 @@
 - [**FastNoise**](https://github.com/Auburns/FastNoise) - A wonderful, fast, and compact noise generation library written in C++. Alternatively: [**FastNoiseSIMD**](https://github.com/Auburns/FastNoiseSIMD).
 - [**JSON for Modern C++**](https://github.com/nlohmann/json) - A generally solid C++ JSON library.
   - BSON (Binary JSON) libraries: [**bson-cpp**](https://github.com/jbenet/bson-cpp), [**bson-cxx**](https://github.com/dwight/bson-cxx), and [**jbson**](https://github.com/chrismanning/jbson).
+- [**Random Source Gems from Atrix256**](https://github.com/Atrix256/RandomCode) - A lovely, lovely repository of random source code gems.
