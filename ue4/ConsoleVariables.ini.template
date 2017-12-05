@@ -1,0 +1,111 @@
+; ConsoleVariables.ini
+;
+; Joy Engine's ConsoleVariables.ini during development. At some point, I had every GI option available enabled, but most weren't worth it.
+;   NOTE (trent, 10/18/17): Not all of these features are available in stock UE4.
+[Startup]
+r.LightPropagationVolume=0
+;r.LPV.NumAOPropagationSteps=2
+;r.LPV.RSMResolution=1024
+
+r.AllowStaticLighting=0
+
+r.GenerateMeshDistanceFields=1
+
+r.DistanceFieldGI=1
+r.DistanceFieldAO=1
+
+; Full resolution distance field shadowing (1).
+r.DFFullResolution=0
+;r.DFTwoSidedMeshDistanceBias
+
+r.VPLMeshGlobalIllumination=0
+
+r.GenerateLandscapeGIData=0
+r.HeightfieldGlobalIllumination=0
+
+; NOTE: Likely should be 2048.
+r.Shadow.MaxResolution=2048
+r.ShadowQuality=5
+
+r.ContactShadows=0
+
+; r.Streaming.PoolSize=1600
+r.Streaming.LimitPoolSizeToVRAM=1
+
+r.MaxAnisotropy=16
+
+r.RenderTargetPoolMin=500
+
+; This is absolute overkill in every sense of the word. 
+; NOTE: Should likely be 4.
+r.SceneColorFormat=4
+
+; Prefer compute shaders.
+;	NOTE (trent, 8/28/17): do not prefer. do not prefer at all.
+; r.PostProcessing.PreferCompute=1
+
+; NOTE: Set to 1 for an unreasonably high-precision color format for testing (PF_A32B32G32R32F).
+r.PostProcessingColorFormat=0
+
+r.SeparateTranslucencyScreenPercentage=100
+
+; Post Effect Quality/Configuration.
+r.AmbientOcclusion.Compute=1
+r.AOComputeShaderNormalCalculation=1
+r.AOSpecularOcclusionMode=2
+r.AOFillGapsHighQuality=2
+r.Atmosphere=1
+r.HBAO.Enable=1
+r.LensFlareQuality=3
+r.MotionBlurQuality=4
+r.MotionBlurSeparable=1
+
+; Gaussian filtering parameters (see: FilterPixelShader.usf).
+; Defines what radius the post effect gaussian blur kicks in (The optimization uses slightly less memory and has a quality loss on smallblur radius).
+;	0: use the optimization always (fastest, lowest quality)\n")
+;	3: use the optimization starting at a 3 pixel radius (quite fast)\n")
+; 	7: use the optimization starting at a 7 pixel radius (default)\n")
+;	>15: barely ever use the optimization (high quality)"),
+;r.FastBlurThreshold=7
+
+; How to execute the gaussian filtering (rolled or unrolled loops). 
+; 	Defaults to 0 (unrolled loops only; maximum of 32 samples); options: 1 (fall back to dynamic loop if more than 32 samples are needed), and 2 (dynamic loop only).
+;r.Filter.LoopMode=1
+
+; 3 is highest quality, but not yet implemented. For both of these, for some reason.
+r.LightFunctionQuality=2
+r.EyeAdaptationQuality=2
+
+; NVIDIA Volumetric Lighting.
+;r.NvVl=0
+;r.NvVl.ScatterScale=15
+;r.NvVl.Fog=0
+
+; Bloom quality.
+r.BloomQuality=5
+
+; Antialiasing Settings.
+r.PostProcessAAQuality=6
+r.TemporalAASamples=16
+r.TemporalAASharpen=0.3
+
+; Setting this down from its max of 4 (there's an issue in the editor that causes the first HZB mip pass to go crazy that is apparently linked to this).
+r.SSR.Quality=3
+
+; Sharpen on the tonemapper side as well.
+r.Tonemapper.Quality=5
+r.Tonemapper.Sharpen=0.6
+r.TonemapperFilm=1
+
+; High-precision GBuffer.
+r.GBufferFormat=5
+
+; Expand the scene render target to the largest requested size (most memory, least re-allocation stalls)
+; Default: 0. 2 is the aforementioned configuration.
+r.SceneRenderTargetResizeMethod=0
+
+; General.
+r.DontLimitOnBattery=1
+
+; Development.
+;r.ShaderDevelopmentMode=1
