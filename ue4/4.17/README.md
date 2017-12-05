@@ -1,6 +1,4 @@
-**NOTE**: This document needs to be updated for all the changes made in the 4.18 asset update. I will hopefully do that soon (trent, 12/5/17).
-
-# Unreal Engine 4 Infostorm
+# Unreal Engine 4 Infostorm (**4.17 Archive Version**)
 This is a combination of random notes and mini-tutorials as well as any useful assets that we have.
 
 We also have our [**internal team conventions listed in extruciating detail**](https://github.com/joymachinegames/joymachine-public/blob/master/ue4/CONVENTIONS.md) for those that want to read them.
