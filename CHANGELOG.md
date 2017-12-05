@@ -1,3 +1,17 @@
+v0.1.1 / 2017-12-05
+==================
+  * Removed the tools subdirectory as the kernel generator was not anywhere near properly conceived (my fault).
+  * Updated base repo README with change information for the UE4 assets.
+  * Merge branch 'master' of https://github.com/joymachinegames/joymachine-public
+  * - Adding updated UE4 assets (NOTE: created by 4.18; 4.17 assets are archived in a subfolder) and a PowerShell script for finding duplicate files recursively from a working directory.
+  * Added a note that the UE4 assets are saved from UE 4.17.2, so anything lower won't jive.
+  * Added Atrix256's random source code repo to the resources list.
+  * Fixing note display.
+  * Added the RESEARCH_PAPERS.md link.
+  * Finally starting to list out research papers. Links forthcoming once I track down original sources.
+  * Added a template ConsoleVariables.ini file to show what we use internally.
+  * Clarifying the state of joy-create a bit better.
+
 v0.1.0 / 2017-10-10
 ===================
   * WARNING: ue4 asset folder hierarchy will invalidate old assets. Changed the hierarchy/naming conventions for the ue4 asset folder. Which also means that I had to delete all the old assets or they would no longer work anyway, so this is kind of a clean slate. On the plus side: lot's of new, rewritten, tweaked, improved, added etc. material functions/shaders/etc.
