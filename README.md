@@ -8,7 +8,6 @@ Most recent change log (which is poorly-updated until we finally find a good gen
 
 * `git` -- Some git configurations for ignoring files, LFS-managed files, and then detailed config settings for everyday interaction with git on the command line.
 * `joy-create` -- A very, very, _very_ work-in-progress electron application for procedurally generating meshes from simple primitives or other imported meshes. The result can then be exported as an FBX. Eventually.
-* `tools` -- Tools for content generation (`jmkernels` for generating an HDR/EXE file for use as an FFT bloom convolution image in UE 4.16+ (can be customized further for stylization).
 * `scripts` -- Miscellaneous scripts (tools, powershell, visual studio extensions, batch files, etc.) 
 * `ue4-source` -- Whatever C++ actors/components/utilities/etc. we end up being able to easily divorce from our projects. Or, if not easily divorced, whatever seems worth divorcing so others never have to know the pain that we did. This will likely be the least frequently-updated part of the repo.
 * `ue4` -- Our general-purpose Unreal Engine 4 stockpile. Contains our team production conventions and, more interestingly at the moment, a variety of material functions and our "standard shader set" (they're just materials, but I call them shaders because they're pretty... intense).
