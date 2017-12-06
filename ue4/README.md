@@ -66,6 +66,8 @@ As a quick and dirty proof of concept, this effect uses the actor's velocity to 
 ## Asset Management
 
 ## Development
+
+### C++ Development
 Most of this section will be updated later, but for now here's a link to a gist about enumerations in UE4 C++ code: [Enumerations in Unreal Engine 4 C++ Code](https://gist.github.com/trentpolack/ad361a4d3d6e46d1a1ff82c03a997f28).
 
 ### Object/Component/Actor Initialization Process
