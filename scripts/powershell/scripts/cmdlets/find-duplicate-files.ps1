@@ -1,54 +1,74 @@
 # find-duplicate-files.ps1
 #
-# Finds duplicate files in the current directly recursively and then outputs the duplicates.
-#	NOTE: I don't automatically siphon the results into an output log, but that's easy enough to do outside the script.
+# Logs duplicate files in the current directly recursively (based on file name and file size).
+#	NOTE: Results are output into duplicate_files.log in the working directory.
+#	NOTE: File Checker can be used too, but that's commented out for now since it was having issues with UASSETs.
 function Find-Duplicate-Files
 {
-    [CmdletBinding( )]
-	#Grab Input Directories
+	[CmdletBinding( )]
+	Param()
+	
+	# Grab Input Directories
 	$WorkingDirectory = Get-Location
 	
-	if( !(Test-Path -PathType Container $WorkingDirectory ) )
-	{
-		Write-Error "Invalid path specified."
-		Exit
-	}
-	
 	Write-Verbose "Scanning Path: $WorkingDirectory"
-	$Files=gci -File -Recurse -path $WorkingDirectory | Select-Object -property FullName,Length
-	$Count=1
-	$TotalFiles=$Files.Count
-	$MatchedSourceFiles=@( )
+	$Files = gci -path $WorkingDirectory -File -Recurse | Select-Object -property FullName,Name,Length
+	$Count = 1
+	$TotalFiles = $Files.Count
+	$MatchedSourceFiles = @( )
 	
+	# Setup the log file.
+	$LogOutput = -join( $WorkingDirectory, "\duplicate_files.log" )
+	if( Test-Path $LogOutput )
+	{
+		Clear-Content $LogOutput
+	}
+	else
+	{
+		New-Item $LogOutput -ItemType file > $null
+	}
+	Add-Content $LogOutput "Finding Duplicate Files in: $WorkingDirectory"
+	Add-Content $LogOutput ""
+	
+	# Go through the file list.
 	ForEach( $SourceFile in $Files )
 	{
 		Write-Progress -Activity "Processing Files" -status "Processing File $Count / $TotalFiles" -PercentComplete( $Count / $TotalFiles * 100 )
-		$MatchingFiles=@( )
-		$MatchingFiles=$Files |Where-Object {$_.Length -eq $SourceFile.Length}
+	
+		$MatchingFiles = @( )
+		$MatchingFiles = $Files | Where-Object { ( $_.FullName -ne $SourceFile.FullName ) -and ( $_.Name -eq $SourceFile.Name ) -and ( $_.Length -eq $SourceFile.Length ) }
+		$Matches = @( )
+		
 		Foreach( $TargetFile in $MatchingFiles )
 		{
-			if( ($SourceFile.FullName -ne $TargetFile.FullName ) -and !(($MatchedSourceFiles | Select-Object -ExpandProperty File ) -contains $TargetFile.FullName ) )
+			if( !( ( $MatchedSourceFiles | Select-Object -ExpandProperty File ) -contains $TargetFile.FullName ) )
 			{
-				Write-Verbose "Matching $($SourceFile.FullName) and $($TargetFile.FullName)"
-				Write-Verbose "File sizes match."
-				if( (fc.exe /A $SourceFile.FullName $TargetFile.FullName )  -contains "FC: no differences encountered" )
-				{
-					Write-Verbose "Match found."
-					$MatchingFiles+=$TargetFile.FullName
-				}
+#				if( ( fc.exe /A $SourceFile.FullName $TargetFile.FullName ) -contains "FC: no differences encountered" )
+#				{
+					Write-Verbose "Matched $($SourceFile.FullName) and $($TargetFile.FullName)"
+	
+					$Matches+= $TargetFile
+#				}
 			}
 		}
-		if( $MatchingFiles.Count -gt 0 )
+	
+		if( $Matches.Count -gt 0 )
 		{
 			$NewObject=[pscustomobject][ordered]@{
 				File=$SourceFile.FullName
-				MatchingFiles=$MatchingFiles
+				MatchingFiles=$Matches
 			}
-			$MatchedSourceFiles+=$NewObject
-		}
-		$Count+=1
-	}
 	
-	$MatchedSourceFiles
+			$MatchedSourceFiles+=$NewObject
+	
+			Add-Content $LogOutput "Duplicates of: $($SourceFile.FullName)"
+			Foreach( $MatchFile in $Matches )
+			{
+				Add-Content $LogOutput "	$($MatchFile.FullName)"
+			}
+		}
+	
+		$Count+= 1
+	}
 }
 Set-Alias get-duplicates Find-Duplicate-Files
