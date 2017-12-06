@@ -63,12 +63,12 @@ This effect consists of two parts: a blueprint component you add to an actor you
 ##### Limitations
 As a quick and dirty proof of concept, this effect uses the actor's velocity to determine smear strength. As such, it does not work with animated skeletal meshes in the way you'd expect. Suggestions or pull requests are very welcome though! :)
 
-## Practice, Convention, and Neat Things
+## Asset Management
 
-### Asset Management
+## Development
+Most of this section will be updated later, but for now here's a link to a gist about enumerations in UE4 C++ code: [Enumerations in Unreal Engine 4 C++ Code](https://gist.github.com/trentpolack/ad361a4d3d6e46d1a1ff82c03a997f28).
 
-### Development
-#### Object/Component/Actor Initialization Process
+### Object/Component/Actor Initialization Process
 There's backstory for this one.
 
 For the most part, the creation/spawning of objects, components, actors, etc. (henceforth called "entities") is actually pretty manageable and sometimes aren't even a real concern. There are certain situations where you have a set of dependencies that is particularly rough to ensure are setup properly, but that shouldn't be the case terribly often. If it is, reevaluate your approach.
@@ -88,23 +88,23 @@ Oh, and once I had the world simulation core in and working, I then decided it w
 
 Read. Read so hard.
 
-### Documentation
+## Documentation
 
-### Gameplay
+## Gameplay
 
-#### Collision
+## Collision
 I generally say that doing anything *unfamiliar* in C++ in Unreal Engine means you should double your time estimate for the given task. When it involves collision and collision response, maybe quadruple your time estimate.
 - The Unreal Engine blog has [one of the best breakdowns of collision filtering](https://www.unrealengine.com/en-US/blog/collision-filtering) around. I don't think it's integrated into the proper documentation, which is a source of endless confusion for me. But it exists! And that's what matters.
 
-### Rendering/Shading
+## Rendering/Shading
 - When working within the post-stack, `r.CompositionGraphDebug` is your bestest best friend. Just invoke it from the console, the editor will freeze for a bit, and then you'll see debug output in your console of the stack breakdown.
   - But, beyond that, a handful of `GML` files will be output into your `Saved/Screenshots/*` folder. These, when loaded up in a [program that supports them](http://www.yworks.com), can be super, super helpful in debugging and finessing your composition.
  **NOTE**: Make sure that you have the program organize the nodes hierarchically, so you can see the actual order of operations.
 - A [concise engine and shader modification](https://github.com/hallatore/UnrealEngine) that handles sharper/less noisy temporal antiliasing.
 
-### Scripting
+## Scripting
 
-### Source Control
+## Source Control
 Source control is great. And this repo already has [an entire section devoted to it](https://github.com/joymachinegames/joymachine-public/tree/master/git-template). Check it out! We're very git-focused. 
 
-### Tools
+## Tools
