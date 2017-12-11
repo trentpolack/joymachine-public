@@ -9,8 +9,8 @@
 #include "IPooledObject.h"
 
 // Console variable definition.
-static TAutoConsoleVariable< bool > CVarDebugObjectPooling( TEXT( "joy.DebugObjectPooling" ), 
-	false,
+static TAutoConsoleVariable< int > CVarDebugObjectPooling( TEXT( "joy.DebugObjectPooling" ), 
+	0,
 	TEXT( "Verbose output from the object pooling system for debugging." ),
 	ECVF_Default );
 
@@ -193,7 +193,7 @@ bool UObjectPool::Add( IPooledObject* ObjectIn, bool Active )
 	ObjectIn->ID = IDCounter++;
 
 	// Setup the object's pool return delegate (executed when the object is deactivated).
-	ObjectIn->ReturnToPool.BindSP( this, &UObjectPool::OnObjectReturn );
+	ObjectIn->ReturnToPool.BindUObject( this, &UObjectPool::OnObjectReturn );
 
 	{
 		const bool debug = CVarDebugObjectPooling.GetValueOnGameThread( );
@@ -203,6 +203,8 @@ bool UObjectPool::Add( IPooledObject* ObjectIn, bool Active )
 			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Adding object to pool (Pool: %s, Object Count: %d)." ), *Name.ToString( ), Pool.Num( ) );
 		}
 	}
+
+	return true;
 }
 
 //----------------------------------------------------------------------------------------------------
