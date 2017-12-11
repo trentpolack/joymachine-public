@@ -70,6 +70,8 @@ public:
 	// Set the pool name; not necessary, just useful.
 	UFUNCTION( )
 	void SetName( const FName& PoolName );
+	UFUNCTION( )
+	static FName GenerateName( const FName& BaseName = TEXT( "ObjectPool" ) );
 
 	// Empty the pool and destroy its instances.
 	//	NOTE: if SeparateActiveInstances is enabled (it's disabled by default), then each object's ::OnPoolRemovalWhileActive will be executed.

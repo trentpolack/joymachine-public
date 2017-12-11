@@ -102,7 +102,13 @@ void UObjectPool::Prune( )
 void UObjectPool::SetName( const FName& PoolName )
 {
 	// Just set the pool name; doesn't have to be unique.
-	Name = *FString::Printf( TEXT( "%s-%d" ), PoolName, PoolCount );
+	Name = GenerateName( PoolName );
+}
+
+//----------------------------------------------------------------------------------------------------
+FName UObjectPool::GenerateName( const FName& BaseName )
+{
+	return( *FString::Printf( TEXT( "%s-%d" ), BaseName, PoolCount ) );
 }
 
 //----------------------------------------------------------------------------------------------------
