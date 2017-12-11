@@ -8,6 +8,14 @@
 
 #include "IObjectPooled.h"
 
+// Forces any pooled object to be a derivative of UObject.
+//	NOTE: I don't want to force IObjectPooled to derive from UObject, so this is the only real solution I can think of.
+#if !UE_BUILD_SHIPPING
+	#define OBJECT_POOL_FORCE_UOBJECT true
+#else
+	#define OBJECT_POOL_FORCE_UOBJECT false
+#endif
+
 // Console variable definition.
 static TAutoConsoleVariable< bool > CVarDebugObjectPooling( TEXT( "joy.DebugObjectPooling" ), 
 	false,
@@ -48,7 +56,7 @@ UObjectPool::UObjectPool( const class FObjectInitializer& ObjectInitializer )
 //----------------------------------------------------------------------------------------------------
 void UObjectPool::OnObjectReturn( IObjectPooled* pObject )
 {
-	check( IsValid( pObject ) );
+	check( pObject != nullptr );
 
 	// Reset the object (pure virtual method, so the logic is reliant on the child class).
 	pObject->IsActive = false;
@@ -68,8 +76,8 @@ void UObjectPool::Prune( )
 				// Just in case any logic in ::Deactivate is necessary, execute that, and then the ::Destroy method.
 				pObject->ReturnToPool.Unbind( );
 
-				pObject->Deactivate( );
 				pObject->Destroy( );
+				pObject = nullptr;
 			}
 
 			return true;
@@ -98,9 +106,67 @@ void UObjectPool::SetName( const FName& PoolName )
 }
 
 //----------------------------------------------------------------------------------------------------
+bool UObjectPool::Empty( bool SeparateActiveInstances )
+{
+	const bool debug = CVarDebugObjectPooling.GetValueOnGameThread( );
+
+	// Remove all objects from the pool and destroy them (unless SeparateActiveInstances is true, in which case leave them alone for now).
+	int32 destroyedObjectCount = Pool.RemoveAll( [&]( IObjectPooled* pObject ) {
+		if( !( SeparateActiveInstances && ( pObject != nullptr ) && pObject->GetIsActive( ) ) )
+		{
+			// Just in case any logic in ::Deactivate is necessary, execute that, and then the ::Destroy method.
+			pObject->ReturnToPool.Unbind( );
+
+			pObject->Destroy( );
+			pObject = nullptr;
+			return true;
+		}
+
+		return false;
+	} );
+
+	if( !SeparateActiveInstances )
+	{
+		if( debug )
+		{
+			// Log the object destroyed count and the destruction of the pool.
+			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Pool destroy completed (Pool: %s, Destroyed Object Count: %d)." ), Name, destroyedObjectCount );
+		}
+
+		return;
+	}
+
+	// Now handle the separation of objects.
+	int32 separatedObjectCount = Pool.RemoveAll( [&]( IObjectPooled* pObject ) {
+		pObject->ReturnToPool.Unbind( );
+
+		pObject->OnPoolRemovalWhileActive( );
+		return true;
+	} );
+
+	if( debug )
+	{
+		// Log the object destroyed count and the destruction of the pool.
+		UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Pool destroy completed with object separation (Pool: %s, Separated Object Count: %d, Destroyed Object Count: %d)." ), Name, separatedObjectCount, destroyedObjectCount );
+	}
+
+#if !UE_BUILD_SHIPPING
+	ensure( Pool.Num( ) == 0 );
+#endif
+}
+
+//----------------------------------------------------------------------------------------------------
 bool UObjectPool::Add( IObjectPooled* ObjectIn, bool Active )
 {
 	check( ObjectIn != nullptr );
+
+#if OBJECT_POOL_FORCE_UOBJECT
+	{
+		// Check to ensure that IObjectPooled is a derivative of UObject.
+		UObject* pUObject = dynamic_cast< UObject* >( ObjectIn );
+		ensure( IsValid( pUObject ) );
+	}
+#endif
 
 	// Predicate to check if this object is already in the pool.
 	const uint32 objectID = ObjectIn->ID;
@@ -199,7 +265,6 @@ IObjectPooled* UObjectPool::GetPooledObject( )
 	// Activate the object.
 	pValidObject->IsActive = true;
 	pValidObject->LastActiveTimestamp = FDateTime::Now( ).ToUnixTimestamp( );
-	pValidObject->Activate( );
 
 	if( executePrune )
 	{

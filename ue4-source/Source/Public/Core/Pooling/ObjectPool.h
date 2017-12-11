@@ -72,6 +72,11 @@ public:
 	UFUNCTION( )
 	void SetName( const FName& PoolName );
 
+	// Empty the pool and destroy its instances.
+	//	NOTE: if SeparateActiveInstances is enabled (it's disabled by default), then each object's ::OnPoolRemovalWhileActive will be executed.
+	UFUNCTION( )
+	bool Empty( bool SeparateActiveInstances = false );
+
 	// Add an instance of a pooled object to this pool.
 	//	NOTE: will return false if this object is in this pool already.
 	UFUNCTION( )
