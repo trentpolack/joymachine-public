@@ -8,14 +8,6 @@
 
 #include "IPooledObject.h"
 
-// Forces any pooled object to be a derivative of UObject.
-//	NOTE: I don't want to force IPooledObject to derive from UObject, so this is the only real solution I can think of.
-#if !UE_BUILD_SHIPPING
-	#define OBJECT_POOL_FORCE_UOBJECT true
-#else
-	#define OBJECT_POOL_FORCE_UOBJECT false
-#endif
-
 // Console variable definition.
 static TAutoConsoleVariable< bool > CVarDebugObjectPooling( TEXT( "joy.DebugObjectPooling" ), 
 	false,
@@ -67,17 +59,24 @@ void UObjectPool::OnObjectReturn( IPooledObject* pObject )
 void UObjectPool::Prune( )
 {
 	const int64 currentTime = FDateTime::Now( ).ToUnixTimestamp( );
-	int32 prunedObjectCount = Pool.RemoveAll( [&]( IPooledObject* pObject ) {
-		if( !pObject->GetIsActive( ) && !pObject->Check( ) || ( PruneStale && ( ( currentTime - pObject->LastActiveTimestamp ) > PruneStale_Seconds ) ) )
+	int32 prunedObjectCount = Pool.RemoveAll( [&]( TWeakObjectPtr< UObject > pObject ) {
+		if( !pObject.IsStale( ) && pObject.IsValid( ) )
+		{
+			// The object pointer is either stale or no longer valid.
+			return false;
+		}
+
+		IPooledObject* pPooledObject = dynamic_cast< IPooledObject* >( pObject.Get( ) );
+		if( !pPooledObject->GetIsActive( ) && !pPooledObject->Check( ) || ( PruneStale && ( ( currentTime - pPooledObject->LastActiveTimestamp ) > PruneStale_Seconds ) ) )
 		{
 			// This object is invalid or stale. Remove it.
-			if( pObject != nullptr )
+			if( pPooledObject != nullptr )
 			{
 				// Just in case any logic in ::Deactivate is necessary, execute that, and then the ::Destroy method.
-				pObject->ReturnToPool.Unbind( );
+				pPooledObject->ReturnToPool.Unbind( );
 
-				pObject->DestroyInstance( );
-				pObject = nullptr;
+				pPooledObject->DestroyInstance( );
+				pPooledObject = nullptr;
 			}
 
 			return true;
@@ -91,7 +90,7 @@ void UObjectPool::Prune( )
 		if( debug )
 		{
 			// Log the number of pruned objects.
-			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Pool pruning logic completed (Pool: %s, Object Count: %d, Pruned Count: %d." ), Name, Pool.Num( ), prunedObjectCount );
+			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Pool pruning logic completed (Pool: %s, Object Count: %d, Pruned Count: %d." ), *Name.ToString( ), Pool.Num( ), prunedObjectCount );
 		}
 	}
 
@@ -108,7 +107,7 @@ void UObjectPool::SetName( const FName& PoolName )
 //----------------------------------------------------------------------------------------------------
 FName UObjectPool::GenerateName( const FName& BaseName )
 {
-	return( *FString::Printf( TEXT( "%s-%d" ), BaseName, PoolCount ) );
+	return( *FString::Printf( TEXT( "%s-%d" ), *BaseName.ToString( ), PoolCount ) );
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -117,14 +116,15 @@ void UObjectPool::Empty( bool SeparateActiveInstances )
 	const bool debug = CVarDebugObjectPooling.GetValueOnGameThread( );
 
 	// Remove all objects from the pool and destroy them (unless SeparateActiveInstances is true, in which case leave them alone for now).
-	int32 destroyedObjectCount = Pool.RemoveAll( [&]( IPooledObject* pObject ) {
-		if( !( SeparateActiveInstances && ( pObject != nullptr ) && pObject->GetIsActive( ) ) )
+	int32 destroyedObjectCount = Pool.RemoveAll( [&]( TWeakObjectPtr< UObject > pObject ) {
+		IPooledObject* pPooledObject = dynamic_cast< IPooledObject* >( pObject.Get( ) );
+		if( !( SeparateActiveInstances && ( pPooledObject != nullptr ) && pPooledObject->GetIsActive( ) ) )
 		{
 			// Just in case any logic in ::Deactivate is necessary, execute that, and then the ::Destroy method.
-			pObject->ReturnToPool.Unbind( );
+			pPooledObject->ReturnToPool.Unbind( );
 
-			pObject->DestroyInstance( );
-			pObject = nullptr;
+			pPooledObject->DestroyInstance( );
+			pPooledObject = nullptr;
 			return true;
 		}
 
@@ -136,29 +136,30 @@ void UObjectPool::Empty( bool SeparateActiveInstances )
 		if( debug )
 		{
 			// Log the object destroyed count and the destruction of the pool.
-			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Pool destroy completed (Pool: %s, Destroyed Object Count: %d)." ), Name, destroyedObjectCount );
+			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Pool destroy completed (Pool: %s, Destroyed Object Count: %d)." ), *Name.ToString( ), destroyedObjectCount );
 		}
 
 		return;
 	}
 
 	// Now handle the separation of objects.
-	int32 separatedObjectCount = Pool.RemoveAll( [&]( IPooledObject* pObject ) {
-		pObject->ReturnToPool.Unbind( );
+	int32 separatedObjectCount = Pool.RemoveAll( [&]( TWeakObjectPtr< UObject > pObject ) {
+		IPooledObject* pPooledObject = dynamic_cast< IPooledObject* >( pObject.Get( ) );
+		pPooledObject->ReturnToPool.Unbind( );
 
-		pObject->OnPoolRemovalWhileActive( );
+		pPooledObject->OnPoolRemovalWhileActive( );
 		return true;
 	} );
 
 	if( debug )
 	{
 		// Log the object destroyed count and the destruction of the pool.
-		UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Pool destroy completed with object separation (Pool: %s, Separated Object Count: %d, Destroyed Object Count: %d)." ), Name, separatedObjectCount, destroyedObjectCount );
+		UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Pool destroy completed with object separation (Pool: %s, Separated Object Count: %d, Destroyed Object Count: %d)." ), *Name.ToString( ), separatedObjectCount, destroyedObjectCount );
 	}
 
 #if !UE_BUILD_SHIPPING
 	ensure( Pool.Num( ) == 0 );
-#endif
+#endif	// !UE_BUILD_SHIPPING.
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -166,23 +167,26 @@ bool UObjectPool::Add( IPooledObject* ObjectIn, bool Active )
 {
 	check( ObjectIn != nullptr );
 
-#if OBJECT_POOL_FORCE_UOBJECT
-	{
-		// Check to ensure that IPooledObject is a derivative of UObject.
-		UObject* pUObject = dynamic_cast< UObject* >( ObjectIn );
-		ensure( IsValid( pUObject ) );
-	}
-#endif
+	// Check to ensure that IPooledObject is a derivative of UObject.
+	UObject* pUObject = dynamic_cast< UObject* >( ObjectIn );
+
+#if !UE_BUILD_SHIPPING
+	ensure( IsValid( pUObject ) );
+#endif	// !UE_BUILD_SHIPPING.
 
 	// Predicate to check if this object is already in the pool.
 	const uint32 objectID = ObjectIn->ID;
-	if( Pool.ContainsByPredicate( [objectID]( const IPooledObject* pObject ) {
-		return( objectID == pObject->ID );
+	if( Pool.ContainsByPredicate( [objectID]( TWeakObjectPtr< UObject > pObject ) {
+		IPooledObject* pPooledObject = dynamic_cast< IPooledObject* >( pObject.Get( ) );
+		return( objectID == pPooledObject->ID );
 	} ) )
 	{
 		// Object is already in the pool.
 		return false;
 	}
+
+	// Add this object to the pool.
+	Pool.Add( pUObject );
 
 	// Set whether or not the object is active (if being added, it usually is), and give it an ID.
 	ObjectIn->IsActive = Active;
@@ -196,7 +200,7 @@ bool UObjectPool::Add( IPooledObject* ObjectIn, bool Active )
 		if( debug )
 		{
 			// Debug logging.
-			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Adding object to pool (Pool: %s, Object Count: %d)." ), Name, Pool.Num( ) );
+			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Adding object to pool (Pool: %s, Object Count: %d)." ), *Name.ToString( ), Pool.Num( ) );
 		}
 	}
 }
@@ -205,28 +209,17 @@ bool UObjectPool::Add( IPooledObject* ObjectIn, bool Active )
 template< typename T >
 T* UObjectPool::GetPooledObject( )
 {
-	T* pPooledObject = GetPooledObject( );
+	IPooledObject* pPooledObject = GetPooledObject( );
 	if( pPooledObject == nullptr )
 	{
 		// No valid pooled objects.
 		return nullptr;
 	}
 
-	{
-		UObject* pUObject = static_cast< UObject* >( pPooledObject );
-		if( pUObject != nullptr )
-		{
-			pPooledObject = Cast< T >( pUObject );
-			check( IsValid( pPooledObject ) );
+	T* pTemplateObject = Cast< T >( pPooledObject );
+	check( IsValid( pTemplateObject ) );
 
-			return pPooledObject;
-		}
-	}
-
-	// Not a UObject-derived class; use standard checks.
-	T* pCastPooledObject = static_cast< T* >( pPooledObject );
-	check( pCastPooledObject != nullptr );
-	return pCastPooledObject;
+	return pTemplateObject;
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -236,10 +229,11 @@ IPooledObject* UObjectPool::GetPooledObject( )
 	bool executePrune = PruneStale && ( ( currentTime - PruneLastTimestamp ) > PruneStale_Seconds );		// If this isn't true, then it may be time to prune anyway if the search finds an invalid object.
 
 	// Find the first inactive and valid object.
-	int32 idx = Pool.IndexOfByPredicate( [&]( IPooledObject* pObject ) {
-		if( !pObject->GetIsActive( ) )
+	int32 idx = Pool.IndexOfByPredicate( [&]( TWeakObjectPtr< UObject > pObject ) {
+		IPooledObject* pPooledObject = dynamic_cast< IPooledObject* >( pObject.Get( ) );
+		if( !pPooledObject->GetIsActive( ) )
 		{
-			if( !pObject->Check( ) )
+			if( !pPooledObject->Check( ) )
 			{
 				// This object is invalid. Prune the pool after this search.
 				executePrune = true;
@@ -258,7 +252,7 @@ IPooledObject* UObjectPool::GetPooledObject( )
 		if( debug )
 		{
 			// Debug logging.
-			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Unable to get a free object from the pool using ::GetPooledObject (Pool: %s, Object Count: %d)." ), Name, Pool.Num( ) );
+			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Unable to get a free object from the pool using ::GetPooledObject (Pool: %s, Object Count: %d)." ), *Name.ToString( ), Pool.Num( ) );
 		}
 	}
 
