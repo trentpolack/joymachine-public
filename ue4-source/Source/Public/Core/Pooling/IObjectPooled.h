@@ -47,7 +47,7 @@ protected:
 	virtual void Activate( ) = 0;
 
 	UFUNCTION( )
-	virtual void Destroy( ) = 0;
+	virtual void DestroyInstance( ) = 0;
 
 	UFUNCTION( )
 	virtual void OnPoolRemovalWhileActive( ) = 0;

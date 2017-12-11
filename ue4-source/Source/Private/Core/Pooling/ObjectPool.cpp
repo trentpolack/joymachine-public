@@ -76,7 +76,7 @@ void UObjectPool::Prune( )
 				// Just in case any logic in ::Deactivate is necessary, execute that, and then the ::Destroy method.
 				pObject->ReturnToPool.Unbind( );
 
-				pObject->Destroy( );
+				pObject->DestroyInstance( );
 				pObject = nullptr;
 			}
 
@@ -117,7 +117,7 @@ bool UObjectPool::Empty( bool SeparateActiveInstances )
 			// Just in case any logic in ::Deactivate is necessary, execute that, and then the ::Destroy method.
 			pObject->ReturnToPool.Unbind( );
 
-			pObject->Destroy( );
+			pObject->DestroyInstance( );
 			pObject = nullptr;
 			return true;
 		}
