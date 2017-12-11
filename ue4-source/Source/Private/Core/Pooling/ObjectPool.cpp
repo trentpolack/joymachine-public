@@ -6,10 +6,10 @@
 
 #include "DateTime.h"
 
-#include "IObjectPooled.h"
+#include "IPooledObject.h"
 
 // Forces any pooled object to be a derivative of UObject.
-//	NOTE: I don't want to force IObjectPooled to derive from UObject, so this is the only real solution I can think of.
+//	NOTE: I don't want to force IPooledObject to derive from UObject, so this is the only real solution I can think of.
 #if !UE_BUILD_SHIPPING
 	#define OBJECT_POOL_FORCE_UOBJECT true
 #else
@@ -54,7 +54,7 @@ UObjectPool::UObjectPool( const class FObjectInitializer& ObjectInitializer )
 }
 
 //----------------------------------------------------------------------------------------------------
-void UObjectPool::OnObjectReturn( IObjectPooled* pObject )
+void UObjectPool::OnObjectReturn( IPooledObject* pObject )
 {
 	check( pObject != nullptr );
 
@@ -67,7 +67,7 @@ void UObjectPool::OnObjectReturn( IObjectPooled* pObject )
 void UObjectPool::Prune( )
 {
 	const int64 currentTime = FDateTime::Now( ).ToUnixTimestamp( );
-	int32 prunedObjectCount = Pool.RemoveAll( [&]( IObjectPooled* pObject ) {
+	int32 prunedObjectCount = Pool.RemoveAll( [&]( IPooledObject* pObject ) {
 		if( !pObject->GetIsActive( ) && !pObject->Check( ) || ( PruneStale && ( ( currentTime - pObject->LastActiveTimestamp ) > PruneStale_Seconds ) ) )
 		{
 			// This object is invalid or stale. Remove it.
@@ -106,12 +106,12 @@ void UObjectPool::SetName( const FName& PoolName )
 }
 
 //----------------------------------------------------------------------------------------------------
-bool UObjectPool::Empty( bool SeparateActiveInstances )
+void UObjectPool::Empty( bool SeparateActiveInstances )
 {
 	const bool debug = CVarDebugObjectPooling.GetValueOnGameThread( );
 
 	// Remove all objects from the pool and destroy them (unless SeparateActiveInstances is true, in which case leave them alone for now).
-	int32 destroyedObjectCount = Pool.RemoveAll( [&]( IObjectPooled* pObject ) {
+	int32 destroyedObjectCount = Pool.RemoveAll( [&]( IPooledObject* pObject ) {
 		if( !( SeparateActiveInstances && ( pObject != nullptr ) && pObject->GetIsActive( ) ) )
 		{
 			// Just in case any logic in ::Deactivate is necessary, execute that, and then the ::Destroy method.
@@ -137,7 +137,7 @@ bool UObjectPool::Empty( bool SeparateActiveInstances )
 	}
 
 	// Now handle the separation of objects.
-	int32 separatedObjectCount = Pool.RemoveAll( [&]( IObjectPooled* pObject ) {
+	int32 separatedObjectCount = Pool.RemoveAll( [&]( IPooledObject* pObject ) {
 		pObject->ReturnToPool.Unbind( );
 
 		pObject->OnPoolRemovalWhileActive( );
@@ -156,13 +156,13 @@ bool UObjectPool::Empty( bool SeparateActiveInstances )
 }
 
 //----------------------------------------------------------------------------------------------------
-bool UObjectPool::Add( IObjectPooled* ObjectIn, bool Active )
+bool UObjectPool::Add( IPooledObject* ObjectIn, bool Active )
 {
 	check( ObjectIn != nullptr );
 
 #if OBJECT_POOL_FORCE_UOBJECT
 	{
-		// Check to ensure that IObjectPooled is a derivative of UObject.
+		// Check to ensure that IPooledObject is a derivative of UObject.
 		UObject* pUObject = dynamic_cast< UObject* >( ObjectIn );
 		ensure( IsValid( pUObject ) );
 	}
@@ -170,7 +170,7 @@ bool UObjectPool::Add( IObjectPooled* ObjectIn, bool Active )
 
 	// Predicate to check if this object is already in the pool.
 	const uint32 objectID = ObjectIn->ID;
-	if( Pool.ContainsByPredicate( [objectID]( const IObjectPooled* pObject ) {
+	if( Pool.ContainsByPredicate( [objectID]( const IPooledObject* pObject ) {
 		return( objectID == pObject->ID );
 	} ) )
 	{
@@ -224,13 +224,13 @@ T* UObjectPool::GetPooledObject( )
 }
 
 //----------------------------------------------------------------------------------------------------
-IObjectPooled* UObjectPool::GetPooledObject( )
+IPooledObject* UObjectPool::GetPooledObject( )
 {
 	const int64 currentTime = FDateTime::Now( ).ToUnixTimestamp( );
 	bool executePrune = PruneStale && ( ( currentTime - PruneLastTimestamp ) > PruneStale_Seconds );		// If this isn't true, then it may be time to prune anyway if the search finds an invalid object.
 
 	// Find the first inactive and valid object.
-	int32 idx = Pool.IndexOfByPredicate( [&]( IObjectPooled* pObject ) {
+	int32 idx = Pool.IndexOfByPredicate( [&]( IPooledObject* pObject ) {
 		if( !pObject->GetIsActive( ) )
 		{
 			if( !pObject->Check( ) )
@@ -258,9 +258,10 @@ IObjectPooled* UObjectPool::GetPooledObject( )
 
 	// Get the found valid object, remove its place in the array, and add it to the back for a more efficient check later.
 	//	NOTE (trent, 12/10/17): Ensure that this is actually an optimization.
-	IObjectPooled* pValidObject = Pool[idx].Get( );
+	UObject* pUObject = Pool[idx].Get( );
+	IPooledObject* pValidObject = dynamic_cast< IPooledObject* >( pUObject );
 	Pool.RemoveAtSwap( idx, 1, false );
-	Pool.Add( pValidObject );
+	Pool.Add( pUObject );
 
 	// Activate the object.
 	pValidObject->IsActive = true;

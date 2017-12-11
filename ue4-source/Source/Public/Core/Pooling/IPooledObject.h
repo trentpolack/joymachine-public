@@ -10,17 +10,17 @@
 
 #include "ObjectPool.h"
 
-#include "IObjectPooled.generated.h"
+#include "IPooledObject.generated.h"
 
 // UObjectPooledInterface Object Interface Definition.
 UINTERFACE( BlueprintType, MinimalAPI, meta = ( CannotImplementInterfaceInBlueprint ) )
-class UObjectPooled : public UInterface
+class UPooledObject : public UInterface
 {
 	GENERATED_BODY( )
 };
 
 // IObjectPooled Interface Definition.
-class STEELHUNTERS_API IObjectPooled
+class STEELHUNTERS_API IPooledObject
 {
 	GENERATED_BODY( )
 	friend class UObjectPool;
@@ -35,7 +35,10 @@ private:
 
 private:
 	UFUNCTION( )
-	virtual bool GetIsActive( ) const;
+	virtual bool GetIsActive( ) const
+	{
+		return IsActive;
+	}
 
 protected:
 	UFUNCTION( )
@@ -53,5 +56,8 @@ protected:
 	virtual void OnPoolRemovalWhileActive( ) = 0;
 
 public:
-	void Deactivate( );
+	void Deactivate( )
+	{
+		ReturnToPool.Execute( this );
+	}
 };

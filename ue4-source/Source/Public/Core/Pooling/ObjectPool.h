@@ -10,14 +10,14 @@
 #include "ObjectPool.generated.h"
 
 // Declarations.
-class IObjectPooled;
+class IPooledObject;
 
 // Delegate for pooled objects to execute when returning to the pool.
-DECLARE_DELEGATE_OneParam( FObjectReturnToPool, IObjectPooled* );
+DECLARE_DELEGATE_OneParam( FObjectReturnToPool, IPooledObject* );
 
 // UObjectPool Class Definition.
 //	TODO (trent, 12/10/17): Need to add logic for:
-//		- Method to reserve a set amount of created object instances (likely through a Create pure virtual method in IObjectPooled).
+//		- Method to reserve a set amount of created object instances (likely through a Create pure virtual method in IPooledObject).
 //		- Logic to create an object instance in ::GetPooledObject if one isn't found (via a ::Create method like above).
 UCLASS( )
 class STEELHUNTERS_API UObjectPool : public UObject
@@ -45,7 +45,7 @@ protected:
 	uint32 PoolID;
 
 	UPROPERTY( )
-	TArray< TWeakObjectPtr< IObjectPooled > > Pool;
+	TArray< TWeakObjectPtr< UObject > > Pool;
 
 	UPROPERTY( )
 	uint32 PoolSizeOptimal;
@@ -60,8 +60,7 @@ protected:
 	int64 PruneStale_Seconds;
 
 private:
-	UFUNCTION( )
-	void OnObjectReturn( IObjectPooled* pObject );
+	void OnObjectReturn( IPooledObject* pObject );
 
 	// Prune pooled objects if they are no longer valid (IPooledObject::Check) and, if PruneStale is true, prune stale objects.
 	UFUNCTION( )
@@ -75,20 +74,18 @@ public:
 	// Empty the pool and destroy its instances.
 	//	NOTE: if SeparateActiveInstances is enabled (it's disabled by default), then each object's ::OnPoolRemovalWhileActive will be executed.
 	UFUNCTION( )
-	bool Empty( bool SeparateActiveInstances = false );
+	void Empty( bool SeparateActiveInstances = false );
 
 	// Add an instance of a pooled object to this pool.
 	//	NOTE: will return false if this object is in this pool already.
-	UFUNCTION( )
-	bool Add( IObjectPooled* ObjectIn, bool Active = true );
+	bool Add( IPooledObject* ObjectIn, bool Active = true );
 
 	// Get an object from the pool.
 	//	NOTE: returns a nullptr if an object isn't found.
 	template< class T >
 	T* GetPooledObject( );
 
-	UFUNCTION( )
-	IObjectPooled* GetPooledObject( );
+	IPooledObject* GetPooledObject( );
 
 	// Set whether or not to prune the pool for inactive objects (default is false).
 	UFUNCTION( )
