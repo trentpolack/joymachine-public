@@ -50,6 +50,5 @@ protected:
 	virtual void Destroy( ) = 0;
 
 public:
-	UFUNCTION( )
-	virtual void Deactivate( );
+	void Deactivate( );
 };

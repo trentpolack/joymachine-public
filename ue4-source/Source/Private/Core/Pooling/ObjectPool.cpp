@@ -1,5 +1,7 @@
 // Copyright 2015-2017 Joy Machine, LLC. All rights reserved.
 
+#include "steelhunters.h"
+
 #include "ObjectPool.h"
 
 #include "DateTime.h"
@@ -50,7 +52,6 @@ void UObjectPool::OnObjectReturn( IObjectPooled* pObject )
 
 	// Reset the object (pure virtual method, so the logic is reliant on the child class).
 	pObject->IsActive = false;
-	pObject->Deactivate( );
 	pObject->Reset( );
 }
 
@@ -62,9 +63,11 @@ void UObjectPool::Prune( )
 		if( !pObject->GetIsActive( ) && !pObject->Check( ) || ( PruneStale && ( ( currentTime - pObject->LastActiveTimestamp ) > PruneStale_Seconds ) ) )
 		{
 			// This object is invalid or stale. Remove it.
-			if( IsValid( pObject ) )
+			if( pObject != nullptr )
 			{
 				// Just in case any logic in ::Deactivate is necessary, execute that, and then the ::Destroy method.
+				pObject->ReturnToPool.Unbind( );
+
 				pObject->Deactivate( );
 				pObject->Destroy( );
 			}
@@ -131,15 +134,26 @@ template< typename T >
 T* UObjectPool::GetPooledObject( )
 {
 	T* pPooledObject = GetPooledObject( );
-	if( !IsValid( pPooledObject ) )
+	if( pPooledObject == nullptr )
 	{
 		// No valid pooled objects.
 		return nullptr;
 	}
 
+	{
+		UObject* pUObject = static_cast< UObject* >( pPooledObject );
+		if( pUObject != nullptr )
+		{
+			pPooledObject = Cast< T >( pUObject );
+			check( IsValid( pPooledObject ) );
+
+			return pPooledObject;
+		}
+	}
+
 	// Not a UObject-derived class; use standard checks.
-	T* pCastPooledObject = Cast< T >( pPooledObject );
-	check( IsValid( pCastPooledObject ) );
+	T* pCastPooledObject = static_cast< T* >( pPooledObject );
+	check( pCastPooledObject != nullptr );
 	return pCastPooledObject;
 }
 
