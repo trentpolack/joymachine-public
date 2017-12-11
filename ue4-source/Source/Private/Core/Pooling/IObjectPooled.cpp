@@ -1,7 +1,5 @@
 // Copyright 2015-2017 Joy Machine, LLC. All rights reserved.
 
-#include "steelhunters.h"
-
 #include "IObjectPooled.h"
 
 #include "ObjectPool.h"

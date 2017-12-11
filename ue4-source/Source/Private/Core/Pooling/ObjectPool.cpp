@@ -1,7 +1,5 @@
 // Copyright 2015-2017 Joy Machine, LLC. All rights reserved.
 
-#include "steelhunters.h"
-
 #include "ObjectPool.h"
 
 #include "DateTime.h"
