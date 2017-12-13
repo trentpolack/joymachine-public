@@ -227,6 +227,18 @@ T* UObjectPool::GetPooledObject( )
 //----------------------------------------------------------------------------------------------------
 IPooledObject* UObjectPool::GetPooledObject( )
 {
+	if( Pool.Num( ) <= 0 )
+	{
+		const bool debug = CVarDebugObjectPooling.GetValueOnGameThread( );
+		if( debug )
+		{
+			// Debug logging.
+			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Pool size of 0 in ::GetPooledObject (Pool: %s, Object Count: %d)." ), *Name.ToString( ), Pool.Num( ) );
+		}
+
+		return nullptr;
+	}
+
 	const int64 currentTime = FDateTime::Now( ).ToUnixTimestamp( );
 	bool executePrune = PruneStale && ( ( currentTime - PruneLastTimestamp ) > PruneStale_Seconds );		// If this isn't true, then it may be time to prune anyway if the search finds an invalid object.
 
