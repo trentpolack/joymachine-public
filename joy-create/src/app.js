@@ -1,6 +1,3 @@
-// Here is the starting point for your application code.
-
-// Small helpers you might want to keep
 import './helpers/context_menu.js';
 import './helpers/external_links.js';
 
@@ -9,22 +6,17 @@ import { remote } from 'electron';
 import jetpack from 'fs-jetpack';
 import env from './env';
 
-import editor from './editor/editor';
+import program from './program/program';
 import { scene } from './viewport/scene';
 
 const app = remote.app;
 const appDir = jetpack.cwd(app.getAppPath());
 
-// Holy crap! This is browser window with HTML and stuff, but I can read
-// here files form disk like it's node.js! Welcome to Electron world :)
 const manifest = appDir.read('package.json', 'json');
-
 const osMap = {
   win32: 'Windows',
   darwin: 'macOS',
   linux: 'Linux',
 };
 
-scene.init();
-//document.querySelector('#viewport').innerHTML = greet();
-//document.querySelector('#editor').innerHTML = osMap[process.platform];
+scene.init( );

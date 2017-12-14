@@ -45,7 +45,8 @@ app.on('ready', () => {
   }));
 
   if (env.name === 'development') {
-    mainWindow.openDevTools();
+    // NOTE (trent, 11/8/17): This is annoying, but uncomment it to auto-open the chrome dev tools.
+//    mainWindow.openDevTools();
   }
 });
 

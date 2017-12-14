@@ -6,27 +6,14 @@ const DAT = require('dat-gui');
 
 const Stats = require('stats-js');
 
-//function initViewport(callback, update) {
 export default (callback, update) => {
     var gui = new DAT.GUI()
 
+	// Setup the viewport.
     var viewport = {
         gui: gui,
     };
 
-    /*
-        ipcRenderer.on('load-mesh', function(event, meshPath) {
-            meshDirectory = path.dirname(meshPath) + "/" // HACK, probably should write a better function here
-            meshFileName = path.basename(meshPath)
-            BABYLON.SceneLoader.Load(meshDirectory, meshFileName, engine, function(newScene) {
-                var camera = getDefaultCamera(newScene);
-                newScene.render()
-            })
-        })
-    */
-
-    //    // run this function after the window loads
-    //    window.addEventListener('load', function() {
     var container = document.createElement("div");
     viewport.container = document.querySelector("#viewport").appendChild(container);
 
@@ -91,5 +78,5 @@ export default (callback, update) => {
     })();
 
     // Pass all of the necessary renderer/scene/gui references to the callback for this.
-    return callback(viewport);
+	return callback( viewport );
 }
