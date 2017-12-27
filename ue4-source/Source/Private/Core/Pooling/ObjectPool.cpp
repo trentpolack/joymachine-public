@@ -52,7 +52,8 @@ void UObjectPool::OnObjectReturn( IPooledObject* pObject )
 
 	// Reset the object (pure virtual method, so the logic is reliant on the child class).
 	pObject->IsActive = false;
-	pObject->Reset( );
+	pObject->LastActiveTimestamp = FDateTime::Now( ).ToUnixTimestamp( );
+	pObject->ResetState( );
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -67,7 +68,7 @@ void UObjectPool::Prune( )
 		}
 
 		IPooledObject* pPooledObject = dynamic_cast< IPooledObject* >( pObject.Get( ) );
-		if( !pPooledObject->GetIsActive( ) && !pPooledObject->Check( ) || ( PruneStale && ( ( currentTime - pPooledObject->LastActiveTimestamp ) > PruneStale_Seconds ) ) )
+		if( !pPooledObject->GetIsActive( ) && ( !pPooledObject->CheckState( ) || ( PruneStale && ( ( currentTime - pPooledObject->LastActiveTimestamp ) > PruneStale_Seconds ) ) ) )
 		{
 			// This object is invalid or stale. Remove it.
 			if( pPooledObject != nullptr )
@@ -77,6 +78,9 @@ void UObjectPool::Prune( )
 
 				pPooledObject->DestroyInstance( );
 				pPooledObject = nullptr;
+
+				// Reset the weak pointer.
+				pObject.Reset( );
 			}
 
 			return true;
@@ -125,6 +129,8 @@ void UObjectPool::Empty( bool SeparateActiveInstances )
 
 			pPooledObject->DestroyInstance( );
 			pPooledObject = nullptr;
+
+			pObject.Reset( );
 			return true;
 		}
 
@@ -191,6 +197,7 @@ bool UObjectPool::Add( IPooledObject* ObjectIn, bool Active )
 	// Set whether or not the object is active (if being added, it usually is), and give it an ID.
 	ObjectIn->IsActive = Active;
 	ObjectIn->ID = IDCounter++;
+	ObjectIn->LastActiveTimestamp = FDateTime::Now( ).ToUnixTimestamp( );
 
 	// Setup the object's pool return delegate (executed when the object is deactivated).
 	ObjectIn->ReturnToPool.BindUObject( this, &UObjectPool::OnObjectReturn );
@@ -227,18 +234,6 @@ T* UObjectPool::GetPooledObject( )
 //----------------------------------------------------------------------------------------------------
 IPooledObject* UObjectPool::GetPooledObject( )
 {
-	if( Pool.Num( ) <= 0 )
-	{
-		const bool debug = CVarDebugObjectPooling.GetValueOnGameThread( );
-		if( debug )
-		{
-			// Debug logging.
-			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Pool size of 0 in ::GetPooledObject (Pool: %s, Object Count: %d)." ), *Name.ToString( ), Pool.Num( ) );
-		}
-
-		return nullptr;
-	}
-
 	const int64 currentTime = FDateTime::Now( ).ToUnixTimestamp( );
 	bool executePrune = PruneStale && ( ( currentTime - PruneLastTimestamp ) > PruneStale_Seconds );		// If this isn't true, then it may be time to prune anyway if the search finds an invalid object.
 
@@ -247,7 +242,7 @@ IPooledObject* UObjectPool::GetPooledObject( )
 		IPooledObject* pPooledObject = dynamic_cast< IPooledObject* >( pObject.Get( ) );
 		if( !pPooledObject->GetIsActive( ) )
 		{
-			if( !pPooledObject->Check( ) )
+			if( !pPooledObject->CheckState( ) )
 			{
 				// This object is invalid. Prune the pool after this search.
 				executePrune = true;
@@ -260,13 +255,22 @@ IPooledObject* UObjectPool::GetPooledObject( )
 		return false;
 	} );
 
-	if( idx == INDEX_NONE )
 	{
 		const bool debug = CVarDebugObjectPooling.GetValueOnGameThread( );
-		if( debug )
+		if( !Pool.IsValidIndex( idx ) )
+		{
+			if( debug )
+			{
+				// Debug logging.
+				UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Unable to get a free object from the pool using ::GetPooledObject (Pool: %s, Object Count: %d)." ), *Name.ToString( ), Pool.Num( ) );
+			}
+		
+			return nullptr;
+		}
+		else if( debug )
 		{
 			// Debug logging.
-			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Unable to get a free object from the pool using ::GetPooledObject (Pool: %s, Object Count: %d)." ), *Name.ToString( ), Pool.Num( ) );
+			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Got a valid pooled object in ::GetPooledObject (Pool: %s, Index: %d, Object Count: %d)." ), *Name.ToString( ), idx, Pool.Num( ) );
 		}
 	}
 

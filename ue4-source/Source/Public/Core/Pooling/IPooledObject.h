@@ -42,12 +42,12 @@ private:
 
 protected:
 	UFUNCTION( )
-	virtual bool Check( ) = 0;
+	virtual bool CheckState( ) = 0;
 
 	UFUNCTION( )
-	virtual void Reset( ) = 0;
+	virtual void ResetState( ) = 0;
 	UFUNCTION( )
-	virtual void Activate( ) = 0;
+	virtual void ActivateInstance( ) = 0;
 
 	UFUNCTION( )
 	virtual void DestroyInstance( ) = 0;
@@ -56,8 +56,9 @@ protected:
 	virtual void OnPoolRemovalWhileActive( ) = 0;
 
 public:
-	void Deactivate( )
+	UFUNCTION( )
+	virtual void Deactivate( )
 	{
-		ReturnToPool.Execute( this );
+		ReturnToPool.ExecuteIfBound( this );
 	}
 };
