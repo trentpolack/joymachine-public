@@ -1,0 +1,171 @@
+// Copyright 2015-2017 Joy Machine, LLC. All rights reserved.
+
+#include "Common.ush"
+#include "PostProcessCommon.ush"
+#include "EyeAdaptationCommon.ush"
+
+/*
+ *	MainVS Data Parameters.
+*/
+
+//----------------------------------------------------------------------------------------------------
+void MainPostprocessCommonVS( in float4 PositionIn : ATTRIBUTE0,
+							  in float2 TexCoordIn : ATTRIBUTE1,
+							  out noperspective float4 TexCoordOut : TEXCOORD0,
+							  out float4 PositionOut : SV_POSITION )
+{
+	DrawRectangle( PositionIn, TexCoordIn, PositionOut, TexCoordOut.xy );
+	TexCoordOut.zw = PositionOut.xy;
+}
+
+//----------------------------------------------------------------------------------------------------
+void MainVS( float4 PositionIn : ATTRIBUTE0,
+			 float2 TexCoordIn : ATTRIBUTE1,
+			 out noperspective float4 TexCoordOut : TEXCOORD0,
+			 out nointerpolation float ExposureScaleOut : TEXCOORD1,
+			 out float4 PositionOut : SV_POSITION )
+{
+	MainPostprocessCommonVS( PositionIn, TexCoordIn, TexCoordOut, PositionOut );
+
+#if FEATURE_LEVEL >= FEATURE_LEVEL_SM5
+	// Texture can be GWhiteTexture which is 1x1. It's important we don't read outside bounds.
+	ExposureScaleOut = EyeAdaptation.Load( int3( 0, 0, 0 ) ).r;
+#else
+	ExposureScaleOut = 1;
+#endif
+}
+
+//----------------------------------------------------------------------------------------------------
+float4 AnamorphicLensFlareComputeOutput( float2 UV, float LuminanceBase, float Threshold, float Intensity, float ExposureScale, float SampleCount, float Length, float4 TintColor )
+{
+	half4 sceneColor = Texture2DSample( PostprocessInput0, PostprocessInput0Sampler, UV );
+	float4 colorOut = sceneColor;
+
+	// Sample the scene buffer and clamp to avoid artifacts from exceeding fp16 through framebuffer blending of multiple bright lights (then grab the luminance from it).
+	colorOut.rgb = min( float3( 256.0f*256.0f, 256.0f*256.0f, 256.0f*256.0f ), sceneColor.rgb );
+
+	half3 linearColor = colorOut.rgb;
+	half luminanceTotal = ( Luminance( linearColor ) + LuminanceBase )*ExposureScale;
+
+	// Calculate the luminance and bloom values.
+	half luminance = luminanceTotal - Threshold;
+	half bloom = saturate( luminance*0.5f );
+
+	// Calculate the bloomed value.
+	colorOut.rgb = linearColor*bloom;
+
+	// Initialize the sample loop's data.
+	float2 newUv = float2( 0.0f, 0.0f );
+	float offset = 0.0f;
+	float3 modifier = float3( 0.0f, 0.0f, 0.0f );
+	float3 sample = float3( 0.0f, 0.0f, 0.0f );
+	float3 result = float3( 0.0f, 0.0f, 0.0f );
+
+	int steps = SampleCount + 1;
+	for( int i = 1, j = 0; i < steps; ++i, ++j )
+	{
+		offset = 1.0/steps*j*Length;
+		modifier = TintColor.rgb/i;
+
+		// Left sample.
+		newUv = UV + float2( -offset, 0 );
+		sample = pow( Texture2DSample( PostprocessInput0, PostprocessInput0Sampler, newUv ).rgb*2.0f, 8.0f );
+		result+= sample*modifier;
+
+		// Right sample.
+		newUv = UV + float2( offset, 0 );
+		sample = pow( Texture2DSample( PostprocessInput0, PostprocessInput0Sampler, newUv ).rgb*2.0f, 8.0f );
+		result+= sample*modifier;
+	}
+
+	// Calculate the final result of the sampling.
+	result-= Threshold*2.0f;
+	result*= Intensity;
+
+	// Apply the result of sampling to the initially-computed bloomed value.
+	colorOut.rgb+= result;
+	colorOut.rgb*= 0.5f;
+
+	colorOut+= Texture2DSample( PostprocessInput1, PostprocessInput1Sampler, UV );
+	return( colorOut );
+}
+
+/*
+ *	MainPS Data Parameters.
+*/
+
+// Tint color (linear).
+float4 LensTintColorPS;
+
+// Packed float4:
+//	x: Luminance Base.
+//	y: Threshold.
+//	z: Intensity.
+//	w: Exposure Modifier.
+float4 LensPackedDataPS_01;
+
+// Packed float4:
+//	x: Sample Count.
+//	y: Length.
+//	z: Unused.
+//	w: Unused.
+float4 LensPackedDataPS_02;
+
+//----------------------------------------------------------------------------------------------------
+void MainPS( noperspective float4 UVAndScreenPos : TEXCOORD0,
+			 nointerpolation float ExposureScaleIn : TEXCOORD1,
+			 out float4 ColorOut : SV_Target0 )
+{
+	float2 uv = UVAndScreenPos.xy;
+
+#if NO_EYEADAPTATION_EXPOSURE_FIX
+	float ExposureScale = LensPackedDataPS_01.w;
+#else
+	float exposureScale = max( ExposureScaleIn, 0.0001f )*LensPackedDataPS_01.w;
+#endif
+
+	ColorOut = AnamorphicLensFlareComputeOutput( uv, LensPackedDataPS_01.x, LensPackedDataPS_01.y, LensPackedDataPS_01.z, LensPackedDataPS_01.w, LensPackedDataPS_02.x, LensPackedDataPS_02.y, LensTintColorPS );
+}
+
+#if COMPUTESHADER
+/*
+ *	MainCS Data Parameters.
+*/
+
+// Tint color (linear).
+float4 LensTintColorCS;
+
+// Packed float4:
+//	x: Luminance Base.
+//	y: Threshold.
+//	z: Intensity.
+//	w: Exposure Modifier.
+float4 LensPackedDataCS_01;
+
+// Packed float4:
+//	x: Sample Count.
+//	y: Length.
+//	z: ThreadToUVScale.u.
+//	w: ThreadToUVScale.v.
+float4 LensPackedDataCS_02;
+
+RWTexture2D< float4 > OutComputeTex;
+
+//----------------------------------------------------------------------------------------------------
+[numthreads( THREADGROUP_SIZEX, THREADGROUP_SIZEY, 1 )]
+void MainCS( uint2 DispatchThreadId : SV_DispatchThreadID )
+{
+	float2 UV = ( ( float2 )DispatchThreadId + View.ViewRectMin.xy + 0.5f )*LensPackedDataCS_02.zw;
+	if( IsComputeUVOutOfBounds( UV ) )
+	{
+		return;
+	}
+
+	float exposureScale = max( EyeAdaptationLookup( ), 0.0001f )*LensPackedDataPS_01.w;
+	float4 ColorOut = AnamorphicLensFlareComputeOutput( UV, LensPackedDataCS_01.x, LensPackedDataCS_01.y, LensPackedDataCS_01.z, LensPackedDataCS_01.w, LensPackedDataCS_02.x, LensPackedDataCS_02.y, LensTintColorCS );
+
+	uint2 PixelPos = DispatchThreadId + ( uint2 )View.ViewRectMin.xy;
+	OutComputeTex[PixelPos] = ColorOut;
+}
+
+#endif
