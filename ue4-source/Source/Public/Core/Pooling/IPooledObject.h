@@ -1,4 +1,4 @@
-// Copyright 2015-2017 Joy Machine, LLC. All rights reserved.
+// Copyright 2015-2018 Joy Machine, LLC. All rights reserved.
 
 #pragma once
 

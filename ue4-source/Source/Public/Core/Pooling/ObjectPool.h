@@ -1,4 +1,4 @@
-// Copyright 2015-2017 Joy Machine, LLC. All rights reserved.
+// Copyright 2015-2018 Joy Machine, LLC. All rights reserved.
 
 #pragma once
 
@@ -12,8 +12,13 @@
 // Declarations.
 class IPooledObject;
 
+class IObjectPooling;
+
 // Delegate for pooled objects to execute when returning to the pool.
 DECLARE_DELEGATE_OneParam( FObjectReturnToPool, IPooledObject* );
+
+// Type definition for allocating an object instance when using UObjectPool::GetPooledObject.
+typedef IPooledObject* ( *FInstantiateObjectInstance )( void );
 
 // UObjectPool Class Definition.
 //	TODO (trent, 12/10/17): Need to add logic for:
@@ -45,6 +50,9 @@ protected:
 	uint32 PoolID;
 
 	UPROPERTY( )
+	TWeakObjectPtr< UObject > PoolOwner;
+
+	UPROPERTY( )
 	TArray< TWeakObjectPtr< UObject > > Pool;
 
 	UPROPERTY( )
@@ -73,6 +81,9 @@ public:
 	UFUNCTION( )
 	static FName GenerateName( const FName& BaseName = TEXT( "ObjectPool" ) );
 
+	// Assign this pool's owner.
+	void SetPoolOwner( UObject* PoolOwnerIn );
+
 	// Empty the pool and destroy its instances.
 	//	NOTE: if SeparateActiveInstances is enabled (it's disabled by default), then each object's ::OnPoolRemovalWhileActive will be executed.
 	UFUNCTION( )
@@ -80,7 +91,7 @@ public:
 
 	// Add an instance of a pooled object to this pool.
 	//	NOTE: will return false if this object is in this pool already.
-	bool Add( IPooledObject* ObjectIn, bool Active = true );
+	int32 Add( IPooledObject* ObjectIn, bool Active = true );
 
 	// Get an object from the pool.
 	//	NOTE: returns a nullptr if an object isn't found.

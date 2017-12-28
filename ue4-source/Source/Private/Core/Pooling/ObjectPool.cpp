@@ -1,4 +1,4 @@
-// Copyright 2015-2017 Joy Machine, LLC. All rights reserved.
+// Copyright 2015-2018 Joy Machine, LLC. All rights reserved.
 
 #include "steelhunters.h"
 
@@ -7,6 +7,7 @@
 #include "DateTime.h"
 
 #include "IPooledObject.h"
+#include "IObjectPooling.h"
 
 // Console variable definition.
 static TAutoConsoleVariable< int > CVarDebugObjectPooling( TEXT( "joy.DebugObjectPooling" ), 
@@ -24,6 +25,7 @@ uint32 UObjectPool::PoolCount = 0;
 UObjectPool::UObjectPool( const class FObjectInitializer& ObjectInitializer )
 : Name( *FString::Printf( TEXT( "Pool-%d" ), PoolCount ) )
 , PoolID( PoolCount )
+, PoolOwner( nullptr )
 , PoolSizeOptimal( 256 )
 , PoolSizeMaximum( 2048 )
 , PruneStale( false )
@@ -43,6 +45,34 @@ UObjectPool::UObjectPool( const class FObjectInitializer& ObjectInitializer )
 			UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Creating new pool (Pool Count: %d)." ), PoolCount );
 		}
 	}
+}
+
+//----------------------------------------------------------------------------------------------------
+void UObjectPool::SetPoolOwner( UObject* PoolOwnerIn )
+{
+	// Update the pool owner.
+	if( PoolOwner.IsValid( ) )
+	{
+		// Reset the existing pointer.
+		PoolOwner.Reset( );
+		PoolOwner = nullptr;
+	}
+
+	if( !IsValid( PoolOwnerIn ) )
+	{
+		// The call was just removing the prior owner.
+		return;
+	}
+
+#if WITH_EDITORONLY_DATA
+	{
+		// Ensure that this is a valid owner.
+		IObjectPooling* pObjectPooling = dynamic_cast< IObjectPooling* >( PoolOwnerIn );
+		ensure( pObjectPooling != nullptr );
+	}
+#endif	// WITH_EDITORONLY_DATA.
+
+	PoolOwner = TWeakObjectPtr< UObject >( PoolOwnerIn );
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -169,7 +199,7 @@ void UObjectPool::Empty( bool SeparateActiveInstances )
 }
 
 //----------------------------------------------------------------------------------------------------
-bool UObjectPool::Add( IPooledObject* ObjectIn, bool Active )
+int32 UObjectPool::Add( IPooledObject* ObjectIn, bool Active )
 {
 	check( ObjectIn != nullptr );
 
@@ -192,7 +222,7 @@ bool UObjectPool::Add( IPooledObject* ObjectIn, bool Active )
 	}
 
 	// Add this object to the pool.
-	Pool.Add( pUObject );
+	int32 objectIdx = Pool.Add( pUObject );
 
 	// Set whether or not the object is active (if being added, it usually is), and give it an ID.
 	ObjectIn->IsActive = Active;
@@ -211,7 +241,7 @@ bool UObjectPool::Add( IPooledObject* ObjectIn, bool Active )
 		}
 	}
 
-	return true;
+	return objectIdx;
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -259,13 +289,44 @@ IPooledObject* UObjectPool::GetPooledObject( )
 		const bool debug = CVarDebugObjectPooling.GetValueOnGameThread( );
 		if( !Pool.IsValidIndex( idx ) )
 		{
-			if( debug )
+			if( debug && !PoolOwner.IsValid( ) )
 			{
 				// Debug logging.
 				UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Unable to get a free object from the pool using ::GetPooledObject (Pool: %s, Object Count: %d)." ), *Name.ToString( ), Pool.Num( ) );
+				return nullptr;
 			}
-		
-			return nullptr;
+			else if( !PoolOwner.IsValid( ) )
+			{
+				// No assigned pool owner to instantiate a new pooled object, so it's up to the owner of this pool to either set itself as the owner (... yeah, see? makes sense) or instantiate and add a new instance on its own.
+				return nullptr;
+			}
+
+			// Instantiate a new pooled object using the parent's spawn method (and check it after, as it shouldn't fail at this point).
+			IPooledObject* pPooledObject = nullptr;
+			
+			{
+				// Get the IObjectPooling interface to execute the object instantiation method.
+				IObjectPooling* pObjectPooling = dynamic_cast< IObjectPooling* >( PoolOwner.Get( ) );
+				check( pObjectPooling != nullptr );
+
+				pPooledObject = dynamic_cast< IPooledObject* >( pObjectPooling->InstantiatePooledObject( ) );
+			}
+
+			check( pPooledObject != nullptr );
+
+			// Add the new instance to the pool.
+			idx = Add( pPooledObject, true );
+			if( !Pool.IsValidIndex( idx ) )
+			{
+				if( debug )
+				{
+					// Debug logging.
+					UE_LOG( SteelHuntersLog, Log, TEXT( "[UObjectPool] Unable to get a free object from the pool using ::GetPooledObject -- and an attempt to instantiate and add a new pooled object failed (Pool: %s, Object Count: %d)." ), *Name.ToString( ), Pool.Num( ) );
+					return nullptr;
+				}
+
+				return nullptr;
+			}
 		}
 		else if( debug )
 		{
