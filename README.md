@@ -10,8 +10,10 @@ Most recent change log (which is poorly-updated until we finally find a good gen
 * `joy-create` -- A very, very, _very_ work-in-progress electron application for procedurally generating meshes from simple primitives or other imported meshes. The result can then be exported as an FBX. Eventually.
 * `scripts` -- Miscellaneous scripts (tools, powershell, visual studio extensions, batch files, etc.) 
 * `ue4-source` -- Whatever C++ actors/components/utilities/etc. we end up being able to easily divorce from our projects. Or, if not easily divorced, whatever seems worth divorcing so others never have to know the pain that we did. This will likely be the least frequently-updated part of the repo.
+   * **NOTE**: The source is kind of a free-for-all; I infrequently add some of the more generic/widely-useful stuff I can, but I can't include the full source integrations (such as, in the case of the anamorphic lens flares, the updated `Scene.h`|`.cpp` nor `PostProcessing.cpp`) due to a whole lot of custom work done.
+   * The anamorphic lens flare code is also a very rough first-draft.
 * `ue4` -- Our general-purpose Unreal Engine 4 stockpile. Contains our team production conventions and, more interestingly at the moment, a variety of material functions and our "standard shader set" (they're just materials, but I call them shaders because they're pretty... intense).
-  * **NOTE**: These assets are output from Unreal Engine 4.18; there are archived versions of them (without the changes) for 4.17 in the `4.17` subfolder.
+   * **NOTE**: These assets are output from Unreal Engine 4.18; there are archived versions of them (without the changes) for 4.17 in the `4.17` subfolder.
 
 ### Other Things of Note:
 * [**RESEARCH PAPERS**](https://github.com/joymachinegames/joymachine-public/blob/master/RESEARCH_PAPERS.md) - For the nerdier among us (like me), here are some of the better research papers/presentations I've come across over the years. That have survived over time.
