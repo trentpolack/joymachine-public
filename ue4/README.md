@@ -1,9 +1,31 @@
-**NOTE**: This document needs to be updated for all the changes made in the 4.18 asset update. I will hopefully do that soon (trent, 12/5/17).
-
 # Unreal Engine 4 Infostorm
 This is a combination of random notes and mini-tutorials as well as any useful assets that we have.
 
-We also have our [**internal team conventions listed in extruciating detail**](https://github.com/joymachinegames/joymachine-public/blob/master/ue4/CONVENTIONS.md) for those that want to read them.
+## Index
+ * General Unreal Engine 4 Information and Resources
+  * Conventions
+ * [**Assets**](#assets)
+  * Setup
+  * Standard Shader Library
+  * Procedural Water Material
+  * Smear Frame
+ * C++ Development
+  * Object/Component/Actor Initialization Process
+ * Documentation
+ * Gameplay
+ * Collision
+ * Rendering/Shading
+ * Scripting
+ * Source Control
+ * Tools
+
+## General Unreal Engine 4 Information and Resources
+### Conventions
+Establishing a set, hard set of conventions for development across all departments/disciplines is absolutely essential -- for projects of any size, not just larger teams. I've seen so much time wasted as a result of poor organization and fast-and-loose conventions that I can't recommend strongly enough how important it is to think through your team's development practices early. And then, once established, make changes along the way as necessary (with the caveat that doing so generally entails a non-trivial amount of work).
+
+But, in general, a strong and adhered-to set of conventions can be hugely beneficial to limit confusion, bugs, and general human error.
+
+While not every one of the conventions I established for Joy Machine are useful universally, I feel fairly good about the ones that we have in place; I [**tossed up a document showing our standard practices across development, content, and design**](https://github.com/joymachinegames/joymachine-public/blob/master/ue4/CONVENTIONS.md).
 
 ## Assets
 ### Setup
