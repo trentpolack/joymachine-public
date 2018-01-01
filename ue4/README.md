@@ -2,22 +2,22 @@
 This is a combination of random notes and mini-tutorials as well as any useful assets that we have.
 
 ## Index
- * [**General Unreal Engine 4 Information and Resources**](#general-unreal-engine-4-information-and-resources)
-  * [**Conventions**](#conventions)
- * [**Assets**](#assets)
+* [**General Unreal Engine 4 Information and Resources**](#general-unreal-engine-4-information-and-resources)
+* [**Conventions**](#conventions)
+* [**Assets**](#assets)
   * [**Setup**](#setup)
   * [**Standard Shader Library**](#standard-shader-library)
   * [**Procedural Water Material**](#procedural-water-material)
   * [**Smear Frame**](#smear-frame)
- * [**C++ Development**](#c-development)
+* [**C++ Development**](#c-development)
   * [**Object/Component/Actor Initialization Process**](#objectcomponentactor-initialization-process)
- * [**Documentation**](#documentation)
- * [**Gameplay**](#gameplay)
- * [**Collision**](#collision)
- * [**Rendering/Shading**](#renderingshading)
- * [**Scripting**](#scripting)
- * [**Source Control**](#source-control)
- * [**Tools**](#tools)
+* [**Documentation**](#documentation)
+* [**Gameplay**](#gameplay)
+* [**Collision**](#collision)
+* [**Rendering/Shading**](#renderingshading)
+* [**Scripting**](#scripting)
+* [**Source Control**](#source-control)
+* [**Tools**](#tools)
 
 ## General Unreal Engine 4 Information and Resources
 ### Conventions
