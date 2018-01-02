@@ -129,7 +129,7 @@ Topic TODO: lambertian vs oren-nayar
  **NOTE**: Make sure that you have the program organize the nodes hierarchically, so you can see the actual order of operations.
 - A [concise engine and shader modification](https://github.com/hallatore/UnrealEngine) that handles sharper/less noisy temporal antiliasing.
 
-### RenderDoc
+#### RenderDoc
 As of UE 4.17 (or 4.18), the [RenderDoc](https://renderdoc.org) plugin ([originally from Temaran](https://github.com/Temaran/UE4RenderDocPlugin)) is part of the Unreal Engine 4 source plugins, making it easier to get working than setting it up yourself. And it is _wonderful_.
 
 This plugin adds an icon for RenderDoc in the upper-right of the primary editor viewport and clicking it (so long as you've set it up to point to your RenderDoc installation) will do a full frame capture of all API calls and let you see the entire frame's rendering progress. You can look at any given call and see what its input/output render targets are to see how the render progression is working, analyze the input/output of all postprocessor passes, as well as geometric/shader data for any given call.
