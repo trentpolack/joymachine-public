@@ -15,6 +15,7 @@ The rest of this will be general-purpose art, development, programming, and so o
     * [**Material Functions**](#material-functions)
 * [**C++ Development**](#c-development)
   * [**Object/Component/Actor Initialization Process**](#objectcomponentactor-initialization-process)
+  * [**Miscellaneous Code Snippets**](#miscellaneous-code-snippets)
 * [**Documentation**](#documentation)
 * [**Gameplay**](#gameplay)
 * [**Collision**](#collision)
@@ -77,12 +78,6 @@ The only really drastic change between particle material instances and standard 
 ## Development
 
 ### C++ Development
-Most of this section will be updated later, but for now here's a link to a gist about enumerations in UE4 C++ code: [Enumerations in Unreal Engine 4 C++ Code](https://gist.github.com/trentpolack/ad361a4d3d6e46d1a1ff82c03a997f28).
-
-#### Miscellaneous Code Snippets
-* [Houdini Engine Plugin for UE4](https://gist.github.com/trentpolack/203806b53fe06ee46bc5f24a41467211) -- Windows-only improvements I made to the Houdini Engine UE4 plugin for better Houdini path determination.
-* [Set/Get Accessor Creation Macros](https://gist.github.com/trentpolack/a1bdcd3002d0eda2bf17a46b5c292bf7) -- I've been working with a lot of serialization data structures which, generally, are just mirrored data to deserialize into an object instance with similar data. So, I created some macros to generate Set/Get accessors with one line of code (which also elminates set/get methods from accidentally setting/getting the wrong variable amidst mass copy-and-pasting).
-* [A More Useful UE4 Enumeration Structure](https://gist.github.com/trentpolack/ad361a4d3d6e46d1a1ff82c03a997f28) -- Rather than relying on a straight-up `UENUM` enumeration, it's far, far easier to create a namespace with your enumeration's name and embed the enumeration values in an `enum Type`. It makes life _so much simpler_.
 
 ### Object/Component/Actor Initialization Process
 There's backstory for this one.
@@ -101,6 +96,11 @@ Oh, and once I had the world simulation core in and working, I then decided it w
 * [Components Overview](https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Actors/Components/index.html)
 * [Actor Spawning](https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Actors/Spawning/index.html)
 * [Actor Ticking](https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Actors/Ticking/index.html)
+
+### Miscellaneous Code Snippets
+* [Houdini Engine Plugin for UE4](https://gist.github.com/trentpolack/203806b53fe06ee46bc5f24a41467211) -- Windows-only improvements I made to the Houdini Engine UE4 plugin for better Houdini path determination.
+* [Set/Get Accessor Creation Macros](https://gist.github.com/trentpolack/a1bdcd3002d0eda2bf17a46b5c292bf7) -- I've been working with a lot of serialization data structures which, generally, are just mirrored data to deserialize into an object instance with similar data. So, I created some macros to generate Set/Get accessors with one line of code (which also elminates set/get methods from accidentally setting/getting the wrong variable amidst mass copy-and-pasting).
+* [A More Useful UE4 Enumeration Structure](https://gist.github.com/trentpolack/ad361a4d3d6e46d1a1ff82c03a997f28) -- Rather than relying on a straight-up `UENUM` enumeration, it's far, far easier to create a namespace with your enumeration's name and embed the enumeration values in an `enum Type`. It makes life _so much simpler_.
 
 Read. Read so hard.
 
