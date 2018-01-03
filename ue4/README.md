@@ -77,7 +77,7 @@ The only really drastic change between particle material instances and standard 
 
 ## Development
 
-### C\+\+ Development Development
+### C\+\+ Development
 
 ### Object/Component/Actor Initialization Process
 There's backstory for this one.
