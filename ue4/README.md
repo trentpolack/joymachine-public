@@ -9,11 +9,11 @@ The rest of this will be general-purpose art, development, programming, and so o
 * [**Content Creation**](#content-creation)
   * [**Meshes**](#meshes)
   * [**Materials**](#materials)
-    * [**Using Materials**](#using-materials)
-    * [**Shaders**](#shaders)
-    * [**Particle Shaders**](#particle-shaders)
-    * [**Material Functions**](#material-functions)
-* [**C++ Development**](#c-development)
+	* [**Using Materials**](#using-materials)
+	* [**Shaders**](#shaders)
+	* [**Particle Shaders**](#particle-shaders)
+	* [**Material Functions**](#material-functions)
+* [**C\+\+ Development**](#c-development)
   * [**Object/Component/Actor Initialization Process**](#objectcomponentactor-initialization-process)
   * [**Miscellaneous Code Snippets**](#miscellaneous-code-snippets)
 * [**Documentation**](#documentation)
@@ -21,10 +21,10 @@ The rest of this will be general-purpose art, development, programming, and so o
 * [**Collision**](#collision)
 * [**Rendering/Shading**](#renderingshading)
   * [**Alternate Shading Models**](#alternate-shading-models)
-    * [**Microfacet BRDF Terms**](#microfacet-brdf-terms)
-      * [**Resources**](#resources)
+	* [**Microfacet BRDF Terms**](#microfacet-brdf-terms)
+	  * [**Resources**](#resources)
   * [**Debugging**](#debugging)
-    * [**RenderDoc**](#renderdoc)
+	* [**RenderDoc**](#renderdoc)
 * [**Scripting**](#scripting)
 * [**Source Control**](#source-control)
 * [**Tools**](#tools)
@@ -77,7 +77,7 @@ The only really drastic change between particle material instances and standard 
 
 ## Development
 
-### C++ Development
+### C\+\+ Development Development
 
 ### Object/Component/Actor Initialization Process
 There's backstory for this one.
@@ -86,7 +86,7 @@ For the most part, the creation/spawning of objects, components, actors, etc. (h
 
 That said, there is an aspect to this entire process that is a living nightmare from which there is not only no escape, but in this nightmare you also have nightmares. And that aspect is: **actors that must exist in a fully-initialized and functional form in the editor outside of gameplay**. With maybe one or two exceptions, everything in our workflow, game architecture, and general practices is completely dynamic. And we like to have as much of our worlds active and functioning like normal while we're in the editor. This is partially because it's just a fantastic way to sanity check the health of every system in the game and engine. The other reason is that we're a small team making a game whose events and flow are very difficult to every predict. If we can't build systems that are bulletproof during development, we're going to be constantly revisiting old work to bring it up to snuff throughout production (and, likely, beyond). And that's no bueno. Plus, it's nice to just see everything working in harmony while you're working in the editor. It's just a good feeling.
 
-Eventually, I'd like to be able to say: here's a C++ template for dealing with actors/components that must be routinely setup and torn down due to frequent editor manipulation. I thought I had a pretty good idea of the ins-and-outs of that whole *thing* when I wrapped up our `AMechController` which is the core pawn derivative that defines the logic for every mech in the world. And that meant destroying and reassembling the entire mech whenever that actor was affected by an editor change (at the time, we had an idle mech in the scene, so we had to deal with that often). Then when I started working on our primary world simulation mega-system -- which operates at an even higher level than a single mech -- I realized that I was so young and naive to think I had *things* down.
+Eventually, I'd like to be able to say: here's a C\+\+ template for dealing with actors/components that must be routinely setup and torn down due to frequent editor manipulation. I thought I had a pretty good idea of the ins-and-outs of that whole *thing* when I wrapped up our `AMechController` which is the core pawn derivative that defines the logic for every mech in the world. And that meant destroying and reassembling the entire mech whenever that actor was affected by an editor change (at the time, we had an idle mech in the scene, so we had to deal with that often). Then when I started working on our primary world simulation mega-system -- which operates at an even higher level than a single mech -- I realized that I was so young and naive to think I had *things* down.
 
 Oh, and once I had the world simulation core in and working, I then decided it would be neat to have it run its `::Tick` method while the editor was just running (not in PIE nor in simulation, just while working in the editor).
 
@@ -109,7 +109,7 @@ Read. Read so hard.
 ## Gameplay
 
 ## Collision
-I generally say that doing anything *unfamiliar* in C++ in Unreal Engine means you should double your time estimate for the given task. When it involves collision and collision response, maybe quadruple your time estimate.
+I generally say that doing anything *unfamiliar* in C\+\+ in Unreal Engine means you should double your time estimate for the given task. When it involves collision and collision response, maybe quadruple your time estimate.
 - The Unreal Engine blog has [one of the best breakdowns of collision filtering](https://www.unrealengine.com/en-US/blog/collision-filtering) around. I don't think it's integrated into the proper documentation, which is a source of endless confusion for me. But it exists! And that's what matters.
 
 ## Rendering/Shading
