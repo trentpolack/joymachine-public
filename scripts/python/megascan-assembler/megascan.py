@@ -18,10 +18,10 @@ def get_filename_root(directoryPath):
     albedo_idx = albedo_path.lower().find("albedo")
     return albedo_path[:albedo_idx]
 
-def get_filename_for_channel(directoryPath, filenameRoot, channel_type):
+def get_filename_for_channel(directoryPath, sourceRoot, channel_type):
     """ combine the directory path and filename root to guess the filename for a source image """
     # e.g. "pkfg22_4K_" + "Roughness.jpg"
-    return os.path.join(directoryPath, filenameRoot + channel_type)
+    return os.path.join(directoryPath, sourceRoot + channel_type)
 
 def is_combined_texture_plan(plan):
     """
@@ -30,12 +30,12 @@ def is_combined_texture_plan(plan):
     """
     return 'r' in plan and 'g' in plan and 'b' in plan
 
-def do_single_channel(directoryPath, familyRoot, filenameRoot, outputSuffix, single_channel_name):
+def do_single_channel(directoryPath, outputRoot, sourceRoot, outputSuffix, single_channel_name):
     """ Take a texture from disk and convert it to a single-channel texture """
-    output_file_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
+    output_file_path = lower(TEXTURE_FILE_PREFIX + outputRoot + outputSuffix)
 
     # load the channel
-    sourceChannelPath = get_filename_for_channel(directoryPath, filenameRoot, single_channel_name)
+    sourceChannelPath = get_filename_for_channel(directoryPath, sourceRoot, single_channel_name)
     try:
         sourceChannel = Image.open(sourceChannelPath)
     except IOError:
@@ -49,12 +49,12 @@ def do_single_channel(directoryPath, familyRoot, filenameRoot, outputSuffix, sin
     # File doesn't exist.
     return
 
-def do_saveas(directoryPath, familyRoot, filenameRoot, outputSuffix, output_name):
+def do_saveas(directoryPath, outputRoot, sourceRoot, outputSuffix, output_name):
     """ Take an RGB texture from disk and save it as an RGB texture with the name and format we expect """
-    output_file_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
+    output_file_path = lower(TEXTURE_FILE_PREFIX + outputRoot + outputSuffix)
 
     # Just copy the entire image over.
-    source_path = get_filename_for_channel(directoryPath, filenameRoot, output_name)
+    source_path = get_filename_for_channel(directoryPath, sourceRoot, output_name)
 
     try:
         source = Image.open(source_path)
@@ -66,17 +66,17 @@ def do_saveas(directoryPath, familyRoot, filenameRoot, outputSuffix, output_name
 
     return
 
-def do_rgb(directoryPath, familyRoot, filenameRoot, outputSuffix, plan):
+def do_rgb(directoryPath, outputRoot, sourceRoot, outputSuffix, plan):
     """ Take multiple textures and combine them into a single RGB texture. """
-    output_file_path = lower(TEXTURE_FILE_PREFIX + familyRoot + outputSuffix)
+    output_file_path = lower(TEXTURE_FILE_PREFIX + outputRoot + outputSuffix)
 
     # HACK: since M is optional in M_R_AO, we're going to go backwards
     # and just guess that AO is always here and M isn't. in the future, maybe
     # add some magic to the filename for 'is optional?' but then how do we decide
     # sizes? who cares for now...
-    b_path = get_filename_for_channel(directoryPath, filenameRoot, plan['b'])
-    g_path = get_filename_for_channel(directoryPath, filenameRoot, plan['g'])
-    r_path = get_filename_for_channel(directoryPath, filenameRoot, plan['r'])
+    b_path = get_filename_for_channel(directoryPath, sourceRoot, plan['b'])
+    g_path = get_filename_for_channel(directoryPath, sourceRoot, plan['g'])
+    r_path = get_filename_for_channel(directoryPath, sourceRoot, plan['r'])
 
     with Image.open(b_path) as bSource:
         with Image.open(g_path) as gSource:
