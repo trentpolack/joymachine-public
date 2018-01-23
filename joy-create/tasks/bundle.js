@@ -26,11 +26,11 @@ module.exports = (src, dest, opts) => {
   const options = opts || {};
 
   const plugins = [
-    // Add rollup plugins here
+    // Add rollup plugins here.
   ];
 
   return rollup({
-    entry: src,
+    input: src,
     external: generateExternalModulesList(),
     cache: cached[src],
     plugins: plugins.concat(options.rollupPlugins || []),
@@ -41,11 +41,10 @@ module.exports = (src, dest, opts) => {
     const jsFile = path.basename(dest);
     return bundle.generate({
       format: 'cjs',
-      sourceMap: true,
-      sourceMapFile: jsFile,
+      sourcemap: true,
+      sourcemapFile: jsFile,
     }).then(result => {
-      // Wrap code in self invoking function so the constiables don't
-      // pollute the global namespace.
+      // Wrap code in self invoking function so the variables don't pollute the global namespace.
       const isolatedCode = `(function () {${result.code}\n}());`;
       return Promise.all([
         jetpack.writeAsync(dest, `${isolatedCode}\n//# sourceMappingURL=${jsFile}.map`),

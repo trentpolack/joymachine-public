@@ -6,10 +6,6 @@
 
   <link href="css/photon.min.css" rel="stylesheet" type="text/css">
   <link href="css/main.css" rel="stylesheet" type="text/css">
-
-  <link href="vendor/codemirror/codemirror.css" rel="stylesheet" type="text/css">
-  <script src="vendor/codemirror/codemirror.js"></script>
-  <script src="vendor/codemirror/javascript.js"></script>
 </head>
 <body>
 
@@ -48,10 +44,7 @@
             </div>
             <div class="pane-one-fourth sidebar">
                 <!-- script editor -->
-                <div id="editor">
-                    <form><textarea id="code" name="code">type here, see a summary of the document b-tree below</textarea></form>
-                    <div style="display: inline-block; height: 402px; overflow-y: auto" id="output"></div>
-                </div>
+                <div id="container" style="width:800px;height:100%;border:1px solid grey"></div>
             </div>
         </div>
     </div>
@@ -59,4 +52,44 @@
 
   <script src="app.js"></script>
 </body>
+<script>
+    // Monaco uses a custom amd loader that over-rides node's require.
+    // Keep a reference to node's require so we can restore it after executing the amd loader file.
+    var nodeRequire = global.require;
+</script>
+<script src="vendor/vs/loader.js"></script>
+<script>
+    // Save Monaco's amd require and restore Node's require
+    var amdRequire = global.require;
+    global.require = nodeRequire;
+</script>
+
+<script>
+    // require node modules before loader.js comes in
+    var path = require('path');
+    function uriFromPath(_path) {
+        var pathName = path.resolve(_path).replace(/\\/g, '/');
+        if (pathName.length > 0 && pathName.charAt(0) !== '/') {
+            pathName = '/' + pathName;
+        }
+        return encodeURI('file://' + pathName);
+    }
+    amdRequire.config({
+        baseUrl: uriFromPath(path.join(__dirname, 'vendor'))
+    });
+    // workaround monaco-css not understanding the environment
+    self.module = undefined;
+    // workaround monaco-typescript not understanding the environment
+    self.process.browser = true;
+    amdRequire(['vs/editor/editor.main'], function() {
+        var editor = monaco.editor.create(document.getElementById('container'), {
+            value: [
+                'function x() {',
+                '\tconsole.log("Hello world!");',
+                '}'
+            ].join('\n'),
+            language: 'javascript'
+        });
+    });
+</script>
 </html>
