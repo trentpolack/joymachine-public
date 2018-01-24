@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const watch = require('gulp-watch');
 const batch = require('gulp-batch');
 
-gulp.task('watch', () => {
+gulp.task('watch', (done) => {
 	const beepOnError = (done) => {
 	  return (err) => {
 		if (err) {
@@ -20,4 +20,6 @@ gulp.task('watch', () => {
     console.log('rebuilding less');
 	  gulp.start('less', beepOnError(done));
 	}));
+
+  done();
 });
