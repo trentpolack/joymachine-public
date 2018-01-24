@@ -11,11 +11,13 @@ gulp.task('watch', () => {
 		done(err);
 	  };
 	};
-  
+
 	watch('src/**/*.js', batch((events, done) => {
+    console.log('bundling js');
 	  gulp.start('bundle', beepOnError(done));
 	}));
 	watch('src/**/*.less', batch((events, done) => {
+    console.log('rebuilding less');
 	  gulp.start('less', beepOnError(done));
 	}));
 });
