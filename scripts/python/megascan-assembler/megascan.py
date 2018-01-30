@@ -109,20 +109,20 @@ def pack_directory(directoryPath, plan):
             if greyscale_result is not None:
                 # single channel mode
                 converted.append(greyscale_result)
-                print 'Rule ' + planned_suffix + ' (1-channel) generated file ' + greyscale_result
+                print('Rule ' + planned_suffix + ' (1-channel) generated file ' + greyscale_result)
         elif 'rgb' in planned.keys():
             # copy this texture directly
             copied_result = do_saveas(directoryPath, family_root, filename_root, planned_suffix, planned['rgb'])
             if copied_result is not None:
                 converted.append(copied_result)
-                print 'Rule ' + planned_suffix + ' was converted to RGB texture ' + copied_result
+                print('Rule ' + planned_suffix + ' was converted to RGB texture ' + copied_result)
         elif is_combined_texture_plan(planned):
             # assume r, g, b => rgb
             colour_result = do_rgb(directoryPath, family_root, filename_root, planned_suffix, planned)
             converted.append(colour_result)
-            print 'Rule ' + planned_suffix + ' (RGB) generated file ' + colour_result
+            print('Rule ' + planned_suffix + ' (RGB) generated file ' + colour_result)
         else:
-            print 'Error in build plan: Do not know how to build ' + planned_suffix + ', channels provided are ' + ', '.join(planned.keys())
+            print('Error in build plan: Do not know how to build ' + planned_suffix + ', channels provided are ' + ', '.join(planned.keys()))
             return
 
     # all done, bundle them into a zip.
