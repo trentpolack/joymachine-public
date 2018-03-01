@@ -15,7 +15,7 @@ class IPooledObject;
 class IObjectPooling;
 
 // Delegate for pooled objects to execute when returning to the pool.
-DECLARE_DELEGATE_OneParam( FObjectReturnToPool, IPooledObject* );
+DECLARE_DELEGATE_TwoParams( FObjectReturnToPool, IPooledObject*, bool );
 
 // Type definition for allocating an object instance when using UObjectPool::GetPooledObject.
 typedef IPooledObject* ( *FInstantiateObjectInstance )( void );
@@ -68,11 +68,17 @@ protected:
 	int64 PruneStale_Seconds;
 
 private:
-	void OnObjectReturn( IPooledObject* pObject );
+	void OnObjectReturn( IPooledObject* PooledObject, bool Destroying );
 
 	// Prune pooled objects if they are no longer valid (IPooledObject::Check) and, if PruneStale is true, prune stale objects.
 	UFUNCTION( )
 	void Prune( );
+
+	// Destroy an object instance.
+	void DestroyObject( IPooledObject* PooledObject );
+
+protected:
+	IPooledObject* GetPooledObject( bool& SpawnedNewInstanceOut );
 
 public:
 	// Set the pool name; not necessary, just useful.
@@ -82,6 +88,7 @@ public:
 	static FName GenerateName( const FName& BaseName = TEXT( "ObjectPool" ) );
 
 	// Assign this pool's owner.
+	UFUNCTION( )
 	void SetPoolOwner( UObject* PoolOwnerIn );
 
 	// Empty the pool and destroy its instances.
@@ -96,9 +103,9 @@ public:
 	// Get an object from the pool.
 	//	NOTE: returns a nullptr if an object isn't found.
 	template< class T >
+	T* GetPooledObject( bool& SpawnedNewInstanceOut );
+	template< class T >
 	T* GetPooledObject( );
-
-	IPooledObject* GetPooledObject( );
 
 	// Set whether or not to prune the pool for inactive objects (default is false).
 	UFUNCTION( )
