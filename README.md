@@ -7,7 +7,8 @@ We're adding to this pretty regularly, so check in every now and then to see wha
 Most recent change log (which is poorly-updated until we finally find a good generator): [CHANGELOG.md](https://github.com/joymachinegames/joymachine-public/blob/master/CHANGELOG.md).
 
 * `git` -- Some git configurations for ignoring files, LFS-managed files, and then detailed config settings for everyday interaction with git on the command line.
-* `joy-create` -- A very, very, _very_ work-in-progress electron application for procedurally generating meshes from simple primitives or other imported meshes. The result can then be exported as an FBX. Eventually.
+* [**Joy Create (wip)**](https://github.com/joymachinegames/joymachine-public/tree/feature/joy-create-v0.1/joy-create) — This is a work-in-progress Electron application (eventually a general web app as well) for using [l-systems/turtle instantiation](https://cgjennings.ca/articles/l-systems.html) of shapes/meshes to create exportable OBJ/FBXs out of the results. As noted: *very work-in-progress*.
+  * The master branch has nothing even approaching something useful; check the branch for ongoing work.
 * `scripts` -- Miscellaneous scripts (tools, powershell, visual studio extensions, batch files, etc.) 
 * `ue4-source` -- Whatever C++ actors/components/utilities/etc. we end up being able to easily divorce from our projects. Or, if not easily divorced, whatever seems worth divorcing so others never have to know the pain that we did. This will likely be the least frequently-updated part of the repo.
    * **NOTE**: The source is kind of a free-for-all; I infrequently add some of the more generic/widely-useful stuff I can, but I can't include the full source integrations (such as, in the case of the anamorphic lens flares, the updated `Scene.h`|`.cpp` nor `PostProcessing.cpp`) due to a whole lot of custom work done.
