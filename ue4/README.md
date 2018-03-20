@@ -28,6 +28,8 @@ The rest of this will be general-purpose art, development, programming, and so o
 * [**Scripting**](#scripting)
 * [**Source Control**](#source-control)
 * [**Tools**](#tools)
+	* [**Joy Machine**](#joy-machine)
+	* [**Third-Party**](#third-party)
 
 ## Conventions
 Establishing a set, hard set of conventions for development across all departments/disciplines is absolutely essential — for projects of any size, not just larger teams. I've seen so much time wasted as a result of poor organization and fast-and-loose conventions that I can't recommend strongly enough how important it is to think through your team's development practices early. And then, once established, make changes along the way as necessary (with the caveat that doing so generally entails a non-trivial amount of work).
@@ -145,3 +147,9 @@ This plugin adds an icon for RenderDoc in the upper-right of the primary editor 
 Source control is great. And this repo already has [an entire section devoted to it](https://github.com/joymachinegames/joymachine-public/tree/master/git-template). Check it out! We're very git-focused. 
 
 ## Tools
+
+### Joy Machine
+- [**Joy Create (wip)**](https://github.com/joymachinegames/joymachine-public/tree/feature/joy-create-v0.1/joy-create) — This is a work-in-progress Electron application (eventually a general web app as well) for using [l-systems/turtle instantiation](https://cgjennings.ca/articles/l-systems.html) of shapes/meshes to create exportable OBJ/FBXs out of the results. As noted: *very work-in-progress*.
+
+### Third-Party
+- [**Procedural street and intersection plugin for UE4**](https://github.com/ydrive/StreetArch) — Procedural street and intersection building tool and plugin for Unreal Engine 4.
