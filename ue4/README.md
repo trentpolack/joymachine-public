@@ -145,3 +145,8 @@ This plugin adds an icon for RenderDoc in the upper-right of the primary editor 
 Source control is great. And this repo already has [an entire section devoted to it](https://github.com/joymachinegames/joymachine-public/tree/master/git-template). Check it out! We're very git-focused. 
 
 ## Tools
+
+### Joy Machine
+
+### Third-Party
+- [**Procedural street and intersection plugin for UE4**](https://github.com/ydrive/StreetArch) — Procedural street and intersection building tool and plugin for Unreal Engine 4.
