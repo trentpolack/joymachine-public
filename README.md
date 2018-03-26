@@ -2,7 +2,7 @@
 ### Currently Being Developed Alongside [*Steel Hunters*](https://joy-machine.com/steel-hunters)
 This is Joy Machine's public repository of everything that we can easily separate from our main engine and game source base that we think is useful for people. There are some proprietary things we'd adore to include as well, but alas, we have to have some secrets.
 
-We're adding to this pretty regularly, so check in every now and then to see what's new. And, of course, if there is anything in particular that you're looking for, just put up an Issue in the repo and we'll see what we can do. Or we'll shoot your idea down instantly and viciously 
+We're adding to this pretty regularly, so check in every now and then to see what's new. And, of course, if there is anything in particular that you're looking for, just put up an Issue in the repo and we'll see what we can do. Or we'll shoot your idea down instantly and viciously.
 
 Most recent change log (which is poorly-updated until we finally find a good generator): [CHANGELOG.md](https://github.com/joymachinegames/joymachine-public/blob/master/CHANGELOG.md).
 
