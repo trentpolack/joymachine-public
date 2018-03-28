@@ -61,7 +61,6 @@
     "gulp-less": "^3.5.0",
     "gulp-plumber": "^1.2.0",
     "gulp-promise": "^1.0.2",
-    "gulp-util": "^3.0.8",
     "gulp-watch": "^5.0.0",
     "istanbul": "^0.4.5",
     "minimist": "^1.2.0",
