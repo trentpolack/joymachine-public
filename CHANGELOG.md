@@ -1,3 +1,94 @@
+v0.1.5 / 2018-04-06
+==================
+  * Updating README for some clarifications.
+  * jshint added for linting, packages cleaned up
+  * Added a bunch of older-but-since-lost procedural water shaders along with gerstner wave/wave cluster generation functions (all use UE4 engine content for textures, so hopefully no errors on that front now). Also removed some deprecated procedural shaders (including the former bad water one).
+  * Updating all foliage shaders (standard and speedtree-related ones), updated material functions, updated the environment simulation material parameter collection, added some additional material functions, and added all generic textures for material placeholders.
+  * Adding some new material functions: albedo tinting, three types of normal blending operations.
+  * Updated NPM and then updated every package except gulp-watch's own reliance on gulp-util which gulp says should be removed.
+  * Okay. Maybe this time the security warning box will go away forever.
+  * Updating silly things because.
+  * More potential security fixes maybe maybe?
+  * Update package-lock
+  * ... Okay. Actually fixed it this time.
+  * Er. Properly addressed the security vulnerability in joy-create since, hey, it's handy to run npm update.
+  * Merged feature/joy-create-v0.1 as the one in master is woefully out of date and the feature branch was stable last I checked (the old master branch version was vulnerable to a security vulnerability).
+  * Merge branch 'feature/joy-create-v0.1'
+  * Miscellaneous blend and layer fixes (though something still isn't adding up. Literally and figuratively.
+  * Adding a first-pass at some rough material layers and blending functionality (based on car paints). It's... Not right yet, but it's something.
+  * More updates to the speedtree shaders; some fixes here and there and also made the per-instance fade parameter a static switch option.
+  * Rewrote the speedtree foliage shaders and added a new one for speedtree billboards. They are wonderful now.
+  * Added a note on the unreliability of the object pooling code and made a Little Red Riding Hood metaphor for some reason.
+  * Updates to the speedtree shaders based on iteration (after iteration (after iteration)) on Steel Hunters.
+  * Merge branch 'master' of https://github.com/joymachinegames/joymachine-public
+  * Replaced m_shader_foliage_speedtree with m_shader_speedtree_foliage (along with some minor tweaks). Added m_shader_speedtree_foliage_body for foliage with wrapping textures (mostly bark/stems/etc.).
+  * Updated the README.
+  * Updated Joy Create in the README.
+  * Added Joy Create with notes to the UE4 README.
+  * Added procedural street/intersection tool plugin (from @ydrive).
+  * Overhauled the speedtree foliage shader in conjunction with the new speedtree for UE4. Also fixed some albedo tinting/coloring issues in the standard shader. Tweaks to the standard POM shader.
+  * Updated standard shader and added a POM shader (with *roughly* equivalent features to the standard shader).
+  * Updates to the object pooling system (given some issues in the use of it with my test case).
+  * Convert some debug print statements to Python3-style
+  * Watch task bails out after setting up watches, so devstart can complete, although the gulp task will keep running since the watches themselves haven't ended
+  * Add done-signalling to devstart, but something else is holding it up
+  * Merge branch 'master' of https://github.com/joymachinegames/joymachine-public
+  * Updates to the standard shader.
+  * joy-create work; removed codemirror in favor of monaco-editor, updated gulp to v4, cleaned up dependencies, started removing npm run-scripts in favor of proper gulpfile and task setup. Broke a lot of things.
+  * Rename familyRoot to outputRoot, filenameRoot to inputRoot; closes #1
+  * Revamped the markdown for this page so I didn't have to commit every stupid change individually.
+  * Updated UE4 project conventions (todo: source asset conventions).
+  * Yes, I'm dumb.
+  * Updating markdown style to Ulysses'.
+  * RenderDoc section needed a lower heading.
+  * Forgot about the miscellaneous code snippets index link.
+  * An extensive UE4 infostorm update on content creation (material-focused atm), rendering/shading skeleton, and graphics debugging.
+  * Removed the asset library information into its own page; general UE4 info/resources-only here now.
+  * Separating out asset information and "documentation" (lol) from the UE4 megafile.
+  * Updating the license copyright year.
+  * GitHub markdown lists are a pain in the ass.
+  * Setup the page index.
+  * Initial update to Unreal Engine 4 information and resources page.
+  * Updated the metallic clearcoat shader with the customized fresnel term; cleanup on standard shader and tossed an alpha-masked standard shader in.
+  * Merge branch 'master' of https://github.com/joymachinegames/joymachine-public
+  * Added IObjectPooling for any object using a pool to be able to override an instantiation method that will be used by the object pool for creating new instances.
+  * I suck at formatting.
+  * Added some information on the anamorphic lens flare code.
+  * Very, very rough first pass anamorphic lens flare postprocessing effect (intended to be integrated into PostProcessing.cpp).
+  * Merge branch 'master' of https://github.com/joymachinegames/joymachine-public
+  * Updating metallic and metallic-clear coat shaders.
+  * More object pooling fixes.
+  * Apparently had joy-create files I never checked in.
+  * Fixed an occasional first-run crash with the pooling system.
+  * The UE4 buildchain really likes piecemealing out those errors one-by-one, huh.
+  * I swear, this object pooling thing was so much prettier and simpler when I started it. UHT/UE4 do not make non-UObject interfaces easy to deal with whatsoever.
+  * Added UObjectPool::GenerateName for pool object creation time help.
+  * UE4 didn't like my interface not inheriting from UObject so I did awful things to make the Unreal Header Tool believe that this was a legit setup (I crashed UHT a couple times). Anyway, pool should work now.
+  * Why is it that the small, general classes are always the most nitpicky and complex. Renamed IObjectPooled::Destroy to ::DestroyInstance, so it doesn't conflict with actors/components' ::Destroy.
+  * Added an ::Empty method to the object pooling system because... That's helpful. Argument to separate out instances that are still active. Removed auto-execution of IObjectPooled::Activate, as that's more useful to manually call. Added safety checks and asserts.
+  * Prevent an infinite loop when deactivating a pooled object. Made IObjectPooled::Deactivate non-virtual. Reverted some code which assumed IObjectPooled was a UObject derivative.
+  * Should probably remove the dependence on steelhunters.h as I'm willing to bet most people don't have that header.
+  * Merge branch 'master' of https://github.com/joymachinegames/joymachine-public
+  * Added UObject-pooling interface and pool class functionality to ue4-source (NOTE: pool does not auto-add object instances if the pool fails to find a valid object; this is later work).
+  * Er, misleading heading.
+  * Cleaned up the UE4 base README document, added link to enum gist.
+  * Fixed the broken-as-hell duplicate file logging PowerShell script.
+  * Merge branch 'master' of https://github.com/joymachinegames/joymachine-public into feature/joy-create-v0.1
+  * Merging master.
+  * YES. I FINALLY FIGURED OUT WHAT SYNTAX I WAS SUPPOSED TO USE.
+  * More of me trying to figure out the syntax here.
+  * About two minutes worth of work on getting the new structure to work.
+  * Alternate electron setup for joy-create since, hey, my experience with javascript/node is entirely HEY WHAT DOES THIS DO *PRESS ENTER*.
+  * Started maybe figuring more things out and structuring appropriately?
+  * WHITESPACE CLEANING WOOOOO.
+  * Reworked/styled/themed the electron window a bit, refactored things. Though I'm not sure what I refactored them into since I'm still figuring out what the hell is happening.
+  * Got everything working slightly better than it did in the last check-in (less horrifying hacks).
+  * Removing ace from the vendors/ subdirectory (it's handled in the install/postinstall step now). Added rimraf and vendor-copy to package.json.
+  * Reworked the entire SHEBANG to be a bit more properly setup (except the mad dash to get the viewport working at the end). Got the three.js viewport working even though it's just pitch black. The editor pane isn't coorperating yet, but that's not far off.
+  * Refactored files and filenames to make more sense; worked to get the old page working properly with the viewport/editor.
+  * Updated the app, added webpack-dashboard telemetry support.
+  * Setting up a proper procgen system (l-system, turtle placement, and first-order shapes). Also moving over to three.js. Nothing about this commit will work at all right now.
+
 v0.1.1 / 2017-12-05
 ==================
   * Removed the tools subdirectory as the kernel generator was not anywhere near properly conceived (my fault).
