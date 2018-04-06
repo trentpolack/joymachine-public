@@ -38,6 +38,8 @@
   },
   "dependencies": {
     "dat-gui": "^0.5.0",
+    "jshint": "^2.9.5",
+    "mkdirp": "^0.5.1",
     "monaco-editor": "^0.10.1",
     "npm": "^5.8.0",
     "stats-js": "^1.0.0-alpha1",
@@ -79,5 +81,8 @@
       "from": "node_modules/monaco-editor/min/vs",
       "to": "app/vendor/vs"
     }
-  ]
+  ],
+  "jshintConfig": {
+    "esversion": 6
+  }
 }
