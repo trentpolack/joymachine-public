@@ -4,6 +4,8 @@ This is Joy Machine's public repository of everything that we can easily separat
 
 We're adding to this pretty regularly, so check in every now and then to see what's new. And, of course, if there is anything in particular that you're looking for, just put up an Issue in the repo and we'll see what we can do. Or we'll shoot your idea down instantly and viciously.
 
+But, if you want to read more, check out the [**Joy Machine Development Blog's post about this repo**](https://blog.joy-machine.com/game-development-resources-scripts-ue4-assets-a-sample-landscape-node-graph-all-free-ee0fb09c13b2) you're looking at right now.
+
 Most recent change log (which is poorly-updated until we finally find a good generator): [CHANGELOG.md](https://github.com/joymachinegames/joymachine-public/blob/master/CHANGELOG.md).
 
 * [**`git`**](https://github.com/joymachinegames/joymachine-public/tree/master/git) -- Some git configurations for ignoring files, LFS-managed files, and then detailed config settings for everyday interaction with git on the command line.
