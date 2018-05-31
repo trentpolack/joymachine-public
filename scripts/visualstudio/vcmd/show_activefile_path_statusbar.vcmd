@@ -3,7 +3,7 @@
   <commands />
   <extensions>
     <Snippet>
-      <id>3</id>
+      <id>2</id>
       <name>Display Path for Active File (Status Bar)</name>
       <code>public class E : VisualCommanderExt.IExtension
 {

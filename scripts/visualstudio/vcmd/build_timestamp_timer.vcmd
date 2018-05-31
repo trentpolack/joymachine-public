@@ -42,7 +42,9 @@ Public Class E
 
 		build.Activate()
 
-		Dim completed As String = "Build Completed: " &amp; DateTime.Now.ToLocalTime().ToString() &amp; Environment.NewLine &amp; "Build Time: " &amp; DateTime.Now.Subtract(timerStart).ToString("hh\:mm\:ss") &amp; Environment.NewLine &amp; ""
+        My.Computer.Audio.PlaySystemSound(System.Media.SystemSounds.Exclamation)
+
+        Dim completed As String = "Build Completed: " &amp; DateTime.Now.ToLocalTime().ToString() &amp; Environment.NewLine &amp; "Build Time: " &amp; DateTime.Now.Subtract(timerStart).ToString("hh\:mm\:ss") &amp; Environment.NewLine &amp; ""
 		build.OutputString(completed)
 		ow.Activate()
 	End Sub

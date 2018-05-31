@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SerializableSnippets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <commands />
+  <extensions>
+    <Snippet>
+      <id>5</id>
+      <name>Add confirmation before running Build.RebuildSolution and other rebuild commands</name>
+      <code>public class E : VisualCommanderExt.IExtension
+{
+    public void SetSite(EnvDTE80.DTE2 DTE, Microsoft.VisualStudio.Shell.Package package)
+    {
+        events = DTE.Events;
+        commandEvents = events.get_CommandEvents(null, 0);
+        commands = DTE.Commands as EnvDTE80.Commands2;
+        commandEvents.BeforeExecute += OnBeforeExecute;
+    }
+
+    public void Close()
+    {
+        commandEvents.BeforeExecute -= OnBeforeExecute;
+    }
+
+    private void OnBeforeExecute(string Guid, int ID, object CustomIn, object CustomOut, ref bool CancelDefault)
+    {
+        string name = GetCommandName(Guid, ID);
+        if (name.Contains("Rebuild"))
+        {
+            if (System.Windows.MessageBox.Show("Are you sure you want to Rebuild?", "Confirm",
+                System.Windows.MessageBoxButton.YesNo) != System.Windows.MessageBoxResult.Yes)
+            {
+                CancelDefault = true;
+            }
+        }
+    }
+
+    private string GetCommandName(string Guid, int ID)
+    {
+        if (Guid == null)
+            return "null";
+        try
+        {
+            return commands.Item(Guid, ID).Name;
+        }
+        catch (System.Exception)
+        {
+        }
+        return "";
+    }
+
+    private EnvDTE.Events events;
+    private EnvDTE.CommandEvents commandEvents;
+    private EnvDTE80.Commands2 commands;
+}</code>
+      <referencedAssemblies />
+      <type>Extension</type>
+      <lang>CS</lang>
+      <langVersion>v4.0</langVersion>
+      <enabled>true</enabled>
+      <includeDebugInformation>false</includeDebugInformation>
+    </Snippet>
+  </extensions>
+  <commonCode />
+</SerializableSnippets>
