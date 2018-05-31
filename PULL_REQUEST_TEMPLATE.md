@@ -5,5 +5,5 @@ But that's a lot of guidelines and writing. So, if you want to contribute, just 
 
 We're always looking to expand what's here to make it a more useful resource for folks.
 
-hugs,
+hugs,  
 [trent](mailto:trent@joy-machine.com)
