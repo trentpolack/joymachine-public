@@ -39,12 +39,25 @@ def convert(input_json_text):
     return output_obj
 
 
+def guess_encoding(filename):
+    if open(filename, 'rb').read(2) in [b'\xff\xfe', 'b\xfe\xff']:
+        return 'utf-16'
+    else:
+        return 'utf-8'
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('inputfile', help='Input file path')
+    parser.add_argument('--encoding', metavar='ENCODING',default='auto', help='Input file encoding (e.g. utf-8, utf-16, ...)')
     args = parser.parse_args()
 
-    output_obj = convert(open(args.inputfile, 'r').read())
+    if args.encoding == 'auto':
+        encoding = guess_encoding(args.inputfile)
+    else:
+        encoding = args.encoding
+
+    json_str = open(args.inputfile,'r',encoding=encoding).read()
+    output_obj = convert(json_str)
     print(json.dumps(output_obj, indent=2))
 
 if __name__ == '__main__':
