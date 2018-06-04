@@ -40,7 +40,7 @@ def convert(input_json_text):
 
 
 def guess_encoding(filename):
-    if open(filename, 'rb').read(2) in [b'\xff\xfe', 'b\xfe\xff']:
+    if open(filename, 'rb').read(2) in [b'\xff\xfe', b'\xfe\xff']:
         return 'utf-16'
     else:
         return 'utf-8'
