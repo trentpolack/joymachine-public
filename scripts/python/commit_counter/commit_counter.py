@@ -49,6 +49,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('inputfile', help='Input file path')
     parser.add_argument('--encoding', metavar='ENCODING',default='auto', help='Input file encoding (e.g. utf-8, utf-16, ...)')
+    parser.add_argument('-o', '--output', metavar='OUTPUTFILE', default='-', help='Output file name')
     args = parser.parse_args()
 
     if args.encoding == 'auto':
@@ -58,7 +59,12 @@ def main():
 
     json_str = open(args.inputfile,'r',encoding=encoding).read()
     output_obj = convert(json_str)
-    print(json.dumps(output_obj, indent=2))
+    output = json.dumps(output_obj, indent=2)
+    if args.output == '-':
+        print(output)
+    else:
+        with open(args.output,'wt') as f:
+            f.write(output)
 
 if __name__ == '__main__':
     main()
