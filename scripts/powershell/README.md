@@ -32,3 +32,7 @@
     * Iterate through all PNGs in that directory recursively. Compress them to a temp file. If temp file is significantly smaller than
       the original file, replace original file with temp file.
     * Requires ImageMagick's `magick` to be in your `PATH`.
+
+## One-Liners
+ * Replace filename text within a directory (X being source substring, Y being target substring):
+	* `Get-ChildItem *.h -Recurse | Rename-Item -NewName {$_.name -replace '^X','Y'}`
